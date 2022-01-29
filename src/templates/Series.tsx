@@ -8,7 +8,7 @@ import SEO from 'components/SEO';
 import PostList from 'components/PostList';
 import Divider from 'components/Divider';
 
-import { description, siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 const Header = styled.div`
   @media (max-width: 768px) {
@@ -81,7 +81,11 @@ const Series = ({ pathContext, data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={`SERIES: ${seriesName}`} description={description} url={siteUrl} />
+      <SEO
+        title={`SERIES: ${seriesName}`}
+        description={blogConfig.description}
+        url={blogConfig.siteUrl}
+      />
 
       <Header>
         <Subtitle> SERIES </Subtitle>

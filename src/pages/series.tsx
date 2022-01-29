@@ -12,7 +12,7 @@ import SeriesList from 'components/SeriesList';
 import VerticalSpace from 'components/VerticalSpace';
 import NoContent from 'components/NoContent';
 
-import { title, description, siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;
@@ -88,7 +88,7 @@ const SeriesPage = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={description} url={siteUrl} />
+      <SEO title={blogConfig.title} description={blogConfig.description} url={blogConfig.siteUrl} />
 
       <TagListWrapper>
         {series.length > 0 && <Title size="sm">There are {series.length} series.</Title>}

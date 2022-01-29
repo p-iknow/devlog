@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Link } from 'gatsby';
 
-import { title } from '../../../../blog-config';
+import blogConfig from '../../../../blog-config';
 
 import { FaSun, FaMoon, FaTags, FaRss, FaSearch, FaListUl } from 'react-icons/fa';
 
@@ -136,7 +136,7 @@ const Header = ({ toggleTheme }: Props) => {
     <HeaderWrapper isHidden={hidden}>
       <Inner>
         <BlogTitle>
-          <Link to="/">{title}</Link>
+          <Link to="/">{blogConfig.title}</Link>
         </BlogTitle>
         <Menu>
           <ToggleWrapper>

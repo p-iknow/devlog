@@ -10,7 +10,7 @@ import SideTagList from 'components/SideTagList';
 import Divider from 'components/Divider';
 import VerticalSpace from 'components/VerticalSpace';
 
-import { title, description, siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 interface Props {
   data: {
@@ -56,7 +56,7 @@ const BlogIndex = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={description} url={siteUrl} />
+      <SEO title={blogConfig.title} description={blogConfig.description} url={blogConfig.siteUrl} />
       <VerticalSpace size={48} />
       <Bio />
       <Divider />

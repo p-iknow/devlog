@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { author } from '../../../../blog-config';
+import blogConfig from '../../../../blog-config';
 
 import Divider from 'components/Divider';
 import TagList from 'components/TagList';
@@ -47,7 +47,7 @@ const ArticleHeader = ({ title, date, tags }: Props) => {
     <Wrapper>
       <ArticleTitle> {title} </ArticleTitle>
       <Information>
-        <Author> @{author} </Author>
+        <Author> @{blogConfig.author} </Author>
         <Date>· {date} </Date>
       </Information>
       {tags && <TagList tagList={tags} />}

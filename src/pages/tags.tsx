@@ -14,7 +14,7 @@ import TagList from 'components/TagList';
 import PostList from 'components/PostList';
 import VerticalSpace from 'components/VerticalSpace';
 
-import { title, description, siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;
@@ -81,7 +81,7 @@ const TagsPage = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={description} url={siteUrl} />
+      <SEO title={blogConfig.title} description={blogConfig.description} url={blogConfig.siteUrl} />
 
       <TagListWrapper>
         {selected ? (

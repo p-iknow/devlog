@@ -4,7 +4,7 @@ import styled, { useTheme } from 'styled-components';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 import ReactUtterences from 'react-utterances';
 
-import { utterances } from '../../../../blog-config';
+import blogConfig from '../../../../blog-config';
 
 import MDSpinner from 'react-md-spinner';
 
@@ -187,7 +187,7 @@ const Comment = () => {
     <>
       {flag || <Spinner />}
       <HiddenWrapper isHidden={!flag}>
-        <ReactUtterences repo={utterances.repo} type={utterances.type} />
+        <ReactUtterences repo={blogConfig.utterances.repo} type={blogConfig.utterances.type} />
       </HiddenWrapper>
     </>
   );

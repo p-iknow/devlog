@@ -9,7 +9,7 @@ import TextField from 'components/TextField';
 import Title from 'components/Title';
 import VerticalSpace from 'components/VerticalSpace';
 
-import { title, description, siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 const SearchWrapper = styled.div`
   margin-top: 20px;
@@ -58,7 +58,7 @@ const Search = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={description} url={siteUrl} />
+      <SEO title={blogConfig.title} description={blogConfig.description} url={blogConfig.siteUrl} />
       <SearchWrapper>
         <Title size="sm">
           There are {filteredPosts.length} post{filteredPosts.length > 1 && 's'}.

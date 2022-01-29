@@ -55,7 +55,6 @@ interface Props {
       date: string;
       title: string;
       tags: string[];
-      update: string;
     };
   }[];
 }
