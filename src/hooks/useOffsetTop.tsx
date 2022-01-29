@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
 const useOffsetTop = () => {
-  const ref = useRef<HTMLElement>();
+  const ref = useRef<HTMLDivElement>(null);
 
   const offsetTop = ref.current
     ? ref.current.getBoundingClientRect().top + document.documentElement.scrollTop
