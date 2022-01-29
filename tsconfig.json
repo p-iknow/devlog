@@ -5,6 +5,7 @@
     "jsx": "preserve",
     "lib": [
       "dom",
+      "dom.iterable",
       "es2015",
       "es2017"
     ],
@@ -20,13 +21,14 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
-      "components/*": ["./styles/*"],
-      "utils/*": ["./utils/*"],
-      "hooks/*": ["./hooks/*"]
-    },
+      "*": [
+        "types/*",
+        "*"
+      ]
+    }
   },
   "include": [
     "./src/**/*",
-    "./src/styles/styled.d.ts"
+    "./src/styles/styled.d.ts",
   ],
 }
