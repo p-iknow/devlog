@@ -29,9 +29,6 @@ interface Props {
       };
       fields: {
         slug: string;
-        readingTime: {
-          minutes: number;
-        };
       };
     };
     seriesList: {
@@ -72,7 +69,7 @@ const Post = ({ data }: Props) => {
 
   const { title, date, tags, series } = post.frontmatter;
   const { excerpt } = post;
-  const { readingTime, slug } = post.fields;
+  const { slug } = post.fields;
 
   const filteredSeries = series
     ? seriesList.edges.map(seriesPost => {
@@ -94,12 +91,7 @@ const Post = ({ data }: Props) => {
     <Layout>
       <SEO title={title} description={excerpt} url={`${siteUrl}${slug}`} />
       <article>
-        <ArticleHeader
-          title={title}
-          date={date}
-          tags={tags}
-          minToRead={Math.round(readingTime.minutes)}
-        />
+        <ArticleHeader title={title} date={date} tags={tags} />
         {filteredSeries.length > 0 && <ArticleSeries header={series} series={filteredSeries} />}
         <ArticleBody html={post.html} />
         <ArticleFooter previous={previous} next={next} />

@@ -38,19 +38,17 @@ const Date = styled.span`
 
 interface Props {
   date: string;
-  minToRead: number;
   tags: string[];
   title: string;
 }
 
-const ArticleHeader = ({ title, date, tags, minToRead }: Props) => {
+const ArticleHeader = ({ title, date, tags }: Props) => {
   return (
     <Wrapper>
       <ArticleTitle> {title} </ArticleTitle>
       <Information>
         <Author> @{author} </Author>
         <Date>· {date} </Date>
-        <Date>· {minToRead} min read </Date>
       </Information>
       {tags && <TagList tagList={tags} />}
       <Divider mt={0} />

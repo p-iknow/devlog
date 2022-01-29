@@ -29,6 +29,6 @@
   },
   "include": [
     "./src/**/*",
-    "./src/styles/styled.d.ts",
+    "./src/styles/styled.d.ts", "gatsby-browser.js",
   ],
 }

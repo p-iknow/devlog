@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SEO from 'components/SEO';
 import filter from 'lodash/filter';
 
-import { graphql, navigate } from 'gatsby';
+import { graphql } from 'gatsby';
 
 import queryString from 'query-string';
 
