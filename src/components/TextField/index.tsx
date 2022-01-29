@@ -42,7 +42,6 @@ const TextField = ({ ...props }) => {
   return (
     <Wrapper>
       <Input {...props} />
-
       <Icon>
         <FiSearch />
       </Icon>
