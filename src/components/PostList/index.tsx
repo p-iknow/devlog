@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 
@@ -92,7 +92,7 @@ const PostList = ({ postList }: Props) => {
         const { slug } = post.fields;
 
         return (
-          <>
+          <Fragment key={slug}>
             <PostWrapper>
               <Title size="bg">
                 <Link to={slug}>{title}</Link>
@@ -103,7 +103,7 @@ const PostList = ({ postList }: Props) => {
             </PostWrapper>
 
             {postCount - 1 !== i && postList.length - 1 !== i && <Divider mt={48} mb={32} />}
-          </>
+          </Fragment>
         );
       })}
     </PostListWrapper>

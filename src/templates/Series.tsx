@@ -70,13 +70,13 @@ interface Props {
       }[];
     };
   };
-  pathContext: {
+  pathContext?: {
     series: string;
   };
 }
 
 const Series = ({ pathContext, data }: Props) => {
-  const seriesName = pathContext.series;
+  const seriesName = pathContext?.series ?? '';
   const posts = data.posts.nodes;
 
   return (

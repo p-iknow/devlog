@@ -2,7 +2,6 @@ import React from 'react';
 import { createGlobalStyle } from 'styled-components';
 
 import reset from 'styled-reset';
-import { GlobalStyles as BaseStyles } from 'twin.macro';
 
 const CustomStyles = createGlobalStyle`
 	${reset}
@@ -12,11 +11,6 @@ const CustomStyles = createGlobalStyle`
 	}
 `;
 
-const GlobalStyles = () => (
-  <>
-    <BaseStyles />
-    <CustomStyles />
-  </>
-);
+const GlobalStyles = () => <CustomStyles />;
 
 export default GlobalStyles;

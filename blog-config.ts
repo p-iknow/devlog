@@ -1,22 +1,4 @@
-export interface WebsiteConfig {
-  title: string;
-  description: string;
-  author: string;
-  siteUrl: string;
-  links: {
-    github: string;
-    linkedIn: string;
-    facebook: string;
-    instagram: string;
-    email: string;
-  };
-  utterances: {
-    repo: string;
-    type: string;
-  };
-}
-
-const config: WebsiteConfig = {
+const config = {
   title: 'hoodie',
   description: "Hello :) I'm Hudi who developed gatsby-starter-hoodie theme.",
   author: 'Hudi',
@@ -32,6 +14,6 @@ const config: WebsiteConfig = {
     repo: 'devHudi/gatsby-starter-hoodie',
     type: 'pathname',
   },
-};
+} as const;
 
 export default config;
