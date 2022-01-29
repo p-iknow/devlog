@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import _ from 'lodash';
 
@@ -67,11 +67,15 @@ interface Props {
 const SeriesList = ({ seriesList }: Props) => {
   const [seriesCount, setSeriesCount] = useState(10);
 
-  const handleMoreLoad = _.throttle(() => {
-    if (checkIsScrollAtBottom() && seriesCount < seriesList.length) {
-      setTimeout(() => setSeriesCount(seriesCount + 10), 300);
-    }
-  }, 250);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleMoreLoad = useCallback(
+    _.throttle(() => {
+      if (checkIsScrollAtBottom() && seriesCount < seriesList.length) {
+        setTimeout(() => setSeriesCount(seriesCount + 10), 300);
+      }
+    }, 250),
+    [seriesCount, setSeriesCount, seriesList]
+  );
 
   useEffect(() => {
     window.addEventListener('scroll', handleMoreLoad);
@@ -79,7 +83,7 @@ const SeriesList = ({ seriesList }: Props) => {
     return () => {
       window.removeEventListener('scroll', handleMoreLoad);
     };
-  }, [seriesCount, seriesList]);
+  }, [handleMoreLoad]);
 
   useEffect(() => {
     setSeriesCount(10);
