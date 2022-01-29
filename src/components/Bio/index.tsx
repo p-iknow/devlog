@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { FaGithub, FaFacebook, FaLinkedin, FaInstagram, FaEnvelope } from 'react-icons/fa';
 
-import { siteUrl, description, author, links } from '../../../blog-config';
+import blogConfig from '../../../blog-config';
 
 const BioWrapper = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ const BioWrapper = styled.div`
 const profileImageRoot =
   typeof window !== 'undefined' && window.location.host === 'localhost:8000'
     ? 'http://localhost:8000'
-    : siteUrl;
+    : blogConfig.siteUrl;
 
 const Profile = styled.div`
   flex: 0 0 auto;
@@ -79,14 +79,14 @@ const Link = ({ link, children }: Props) => {
 };
 
 const Bio = () => {
-  const { github, instagram, facebook, linkedIn, email } = links;
+  const { github, instagram, facebook, linkedIn, email } = blogConfig.links;
 
   return (
     <BioWrapper id="bio">
       <Profile />
       <div>
-        <Author>@{author}</Author>
-        <Description>{description}</Description>
+        <Author>@{blogConfig.author}</Author>
+        <Description>{blogConfig.description}</Description>
         <LinksWrapper>
           <Link link={github}>
             <FaGithub />

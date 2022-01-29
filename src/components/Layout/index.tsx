@@ -4,11 +4,19 @@ import { ThemeProvider } from 'styled-components';
 import Header from './Header';
 import Body from './Body';
 import Footer from './Footer';
-import { useSetTheme, useThemeState } from 'context';
+import { ThemeContextProvider, useSetTheme, useThemeState } from 'context';
 import GlobalStyles from 'styles/GlobalStyles';
 import { darkTheme, lightTheme } from 'styles/theme';
 
 const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <ThemeContextProvider>
+      <_Layout>{children}</_Layout>
+    </ThemeContextProvider>
+  );
+};
+
+const _Layout = ({ children }: { children: ReactNode }) => {
   const setTheme = useSetTheme();
   const theme = useThemeState();
 

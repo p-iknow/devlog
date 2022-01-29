@@ -7,12 +7,14 @@ export type SetTheme = (Theme: Theme) => void;
 export const ThemeContext = createContext<Theme | null>(null);
 export const SetThemeContext = createContext<SetTheme | null>(null);
 
-export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+export const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setTheme] = useState<Theme>('light');
 
-  <ThemeContext.Provider value={theme}>
-    <SetThemeContext.Provider value={setTheme}>{children}</SetThemeContext.Provider>
-  </ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={theme}>
+      <SetThemeContext.Provider value={setTheme}>{children}</SetThemeContext.Provider>
+    </ThemeContext.Provider>
+  );
 };
 
 export const useThemeState = () => {

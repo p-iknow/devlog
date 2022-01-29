@@ -7,7 +7,7 @@ import SEO from 'components/SEO';
 import { graphql } from 'gatsby';
 import React from 'react';
 
-import { siteUrl } from '../../blog-config';
+import blogConfig from '../../blog-config';
 
 interface Props {
   data: {
@@ -89,7 +89,7 @@ const Post = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={excerpt} url={`${siteUrl}${slug}`} />
+      <SEO title={title} description={excerpt} url={`${blogConfig.siteUrl}${slug}`} />
       <article>
         <ArticleHeader title={title} date={date} tags={tags} />
         {filteredSeries.length > 0 && <ArticleSeries header={series} series={filteredSeries} />}
@@ -127,9 +127,6 @@ export const pageQuery = graphql`
       }
       fields {
         slug
-        readingTime {
-          minutes
-        }
       }
     }
     seriesList: allMarkdownRemark(

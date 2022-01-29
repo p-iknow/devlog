@@ -1,15 +1,37 @@
-export const title = 'p-iknow';
-export const description = '피아노의 개발 일지 입니다.';
-export const author = 'p-iknow';
-export const siteUrl = 'https://devhudi.github.io/gatsby-starter-hoodie/';
-export const links = {
-  github: 'https://github.com/devHudi',
-  linkedIn: 'https://linkedin.com',
-  facebook: 'https://www.facebook.com',
-  instagram: 'https://www.instagram.com',
-  email: 'mailto:devhudi@gmail.com',
+export interface WebsiteConfig {
+  title: string;
+  description: string;
+  author: string;
+  siteUrl: string;
+  links: {
+    github: string;
+    linkedIn: string;
+    facebook: string;
+    instagram: string;
+    email: string;
+  };
+  utterances: {
+    repo: string;
+    type: string;
+  };
+}
+
+const config: WebsiteConfig = {
+  title: 'hoodie',
+  description: "Hello :) I'm Hudi who developed gatsby-starter-hoodie theme.",
+  author: 'Hudi',
+  siteUrl: 'https://devhudi.github.io/gatsby-starter-hoodie/',
+  links: {
+    github: 'https://github.com/devHudi',
+    linkedIn: 'https://linkedin.com',
+    facebook: 'https://www.facebook.com',
+    instagram: 'https://www.instagram.com',
+    email: 'mailto:devhudi@gmail.com',
+  },
+  utterances: {
+    repo: 'devHudi/gatsby-starter-hoodie',
+    type: 'pathname',
+  },
 };
-export const utterances = {
-  repo: 'devHudi/gatsby-starter-hoodie',
-  type: 'pathname',
-};
+
+export default config;
