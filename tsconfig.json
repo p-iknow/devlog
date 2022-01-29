@@ -17,9 +17,16 @@
     "noUnusedParameters": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "baseUrl": "./src",
+    "paths": {
+      "components/*": ["./styles/*"],
+      "utils/*": ["./utils/*"],
+      "hooks/*": ["./hooks/*"]
+    },
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./src/styles/styled.d.ts"
   ],
 }
