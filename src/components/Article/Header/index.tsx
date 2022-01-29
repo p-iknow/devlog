@@ -43,7 +43,7 @@ interface Props {
   title: string;
 }
 
-const Header = ({ title, date, tags, minToRead }: Props) => {
+const ArticleHeader = ({ title, date, tags, minToRead }: Props) => {
   return (
     <Wrapper>
       <ArticleTitle> {title} </ArticleTitle>
@@ -58,4 +58,4 @@ const Header = ({ title, date, tags, minToRead }: Props) => {
   );
 };
 
-export default Header;
+export default ArticleHeader;

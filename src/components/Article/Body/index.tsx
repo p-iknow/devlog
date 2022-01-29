@@ -16,10 +16,9 @@ const Wrapper = styled.div`
 `;
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  html: any;
+  html: string;
 }
-const Body = ({ html }: Props) => {
+const ArticleBody = ({ html }: Props) => {
   const [toc, setToc] = useState<HTMLHeadElement[]>([]);
 
   const [ref, offsetTop] = useOffsetTop();
@@ -43,4 +42,4 @@ const Body = ({ html }: Props) => {
   );
 };
 
-export default Body;
+export default ArticleBody;

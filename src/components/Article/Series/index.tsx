@@ -87,7 +87,7 @@ interface Props {
   }[];
 }
 
-const Series = ({ header, series }: Props) => {
+const ArticleSeries = ({ header, series }: Props) => {
   const [fold, setFold] = useState(true);
 
   const filteredPosts = useMemo(() => {
@@ -134,4 +134,4 @@ const Series = ({ header, series }: Props) => {
   );
 };
 
-export default Series;
+export default ArticleSeries;

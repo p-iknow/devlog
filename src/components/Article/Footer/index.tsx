@@ -212,7 +212,7 @@ interface Props {
   } | null;
 }
 
-const Footer = ({ previous, next }: Props) => {
+const ArticleFooter = ({ previous, next }: Props) => {
   return (
     <>
       <ArticleButtonContainer>
@@ -247,4 +247,4 @@ const Footer = ({ previous, next }: Props) => {
   );
 };
 
-export default Footer;
+export default ArticleFooter;
