@@ -39,9 +39,9 @@ type Props =
       selected?: string;
     }
   | {
-      count: undefined;
+      count?: undefined;
       tagList: string[];
-      selected: undefined;
+      selected?: undefined;
     };
 
 const TagList = (props: Props) => {
