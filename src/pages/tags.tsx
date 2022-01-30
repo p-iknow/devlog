@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 import styled from 'styled-components';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 import filter from 'lodash/filter';
 
 import { graphql } from 'gatsby';

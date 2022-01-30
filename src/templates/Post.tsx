@@ -3,7 +3,7 @@ import ArticleFooter from 'components/Article/Footer';
 import ArticleHeader from 'components/Article/Header';
 import ArticleSeries from 'components/Article/Series';
 import Layout from 'components/Layout';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 import { graphql } from 'gatsby';
 import React from 'react';
 

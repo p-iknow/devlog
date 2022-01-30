@@ -4,7 +4,7 @@ import { graphql } from 'gatsby';
 import styled from 'styled-components';
 
 import Layout from 'components/Layout';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 import PostList from 'components/PostList';
 import Divider from 'components/Divider';
 

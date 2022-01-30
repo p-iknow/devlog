@@ -2,7 +2,7 @@
 import React from 'react';
 import { flow, map, groupBy, sortBy, filter, reverse } from 'lodash/fp';
 import styled from 'styled-components';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 
 import { graphql } from 'gatsby';
 

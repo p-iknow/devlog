@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { graphql } from 'gatsby';
 
 import Layout from 'components/Layout';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 import Bio from 'components/Bio';
 import PostList from 'components/PostList';
 import SideTagList from 'components/SideTagList';

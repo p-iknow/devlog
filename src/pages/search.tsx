@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components';
-import SEO from 'components/SEO';
+import SEO from 'containers/SEO';
 import { graphql } from 'gatsby';
 
 import Layout from 'components/Layout';
