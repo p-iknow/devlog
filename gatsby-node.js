@@ -86,15 +86,36 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
-  if (node.internal.type === `MarkdownRemark`) {
-    const slug = createFilePath({ node, getNode })
-    const newSlug = `/${slug.split("/").reverse()[1]}/`
+  if (node.internal.type === 'MarkdownRemark') {
+    if (typeof node.frontmatter.slug !== 'undefined') {
+      createNodeField({
+        node,
+        name: 'slug',
+        value: node.frontmatter.slug
+      });
+    } else {
+      const value = createFilePath({ node, getNode });
+      createNodeField({
+        node,
+        name: 'slug',
+        value
+      });
+    }
 
-    createNodeField({
-      node,
-      name: `slug`,
-      value: newSlug,
-    })
+    if (node.frontmatter.tags) {
+      const tagSlugs = node.frontmatter.tags.map((tag) => `/tag/${_.kebabCase(tag)}/`);
+      createNodeField({ node, name: 'tagSlugs', value: tagSlugs });
+    }
+
+    if (node.frontmatter.category) {
+      const categorySlug = `/category/${_.kebabCase(node.frontmatter.category)}/`;
+      createNodeField({ node, name: 'categorySlug', value: categorySlug });
+    }
+
+
+    if (node.frontmatter.img) {
+      createNodeField({ node, name: 'ogImg', value: node.frontmatter.img });
+    }
   }
 }
 
