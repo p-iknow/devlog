@@ -63,6 +63,9 @@ const TagsPage = ({ data }: Props) => {
   const [selected, setSelected] = useState<string | undefined>();
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
+  const query = document.location.search;
+  const q = queryString.parse(query)['q'] as string;
+
   useEffect(() => {
     if (!selected) {
       setFilteredPosts(posts);
@@ -73,11 +76,8 @@ const TagsPage = ({ data }: Props) => {
   }, [selected, posts]);
 
   useEffect(() => {
-    const query = document.location.search;
-
-    const q = queryString.parse(query)['q'] as string;
     setSelected(q);
-  }, []);
+  }, [q]);
 
   return (
     <Layout>
