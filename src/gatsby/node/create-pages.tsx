@@ -23,7 +23,7 @@ type TypeData = {
   };
 };
 
-export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, reporter }) => {
+const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
 
   const postTemplate = require.resolve(`./src/templates/Post.tsx`);
@@ -100,3 +100,5 @@ export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions,
     });
   }
 };
+
+export default createPages;

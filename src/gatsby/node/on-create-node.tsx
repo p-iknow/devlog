@@ -6,6 +6,7 @@ import _ from 'lodash';
 
 export type TypeFrontmatter = {
   title: string;
+  description?: string;
   date: Date;
   update: Date;
   template: string;
@@ -13,11 +14,10 @@ export type TypeFrontmatter = {
   slug: string;
   category: string;
   tags: string[];
-  description?: string;
   img?: string;
 };
 
-export const onCreateNode: GatsbyNode['onCreateNode'] = ({ node, actions, getNode }) => {
+const onCreateNode: GatsbyNode['onCreateNode'] = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
   node;
@@ -54,3 +54,5 @@ export const onCreateNode: GatsbyNode['onCreateNode'] = ({ node, actions, getNod
     }
   }
 };
+
+export default onCreateNode;
