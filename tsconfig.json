@@ -31,4 +31,5 @@
     "./src/**/*",
     "./src/styles/styled.d.ts",
   ],
+  "exclude": ["node_modules"]
 }
