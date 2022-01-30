@@ -28,6 +28,7 @@
     }
   },
   "include": [
+    ".blog-config.ts",
     "./src/**/*",
     "./src/styles/styled.d.ts",
   ],
