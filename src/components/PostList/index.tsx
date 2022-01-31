@@ -80,9 +80,9 @@ const PostList = ({ postList }: Props) => {
     };
   }, [handleMoreLoad]);
 
-  useEffect(() => {
-    setPostCount(10);
-  }, [postList]);
+  //useEffect(() => {
+  //  setPostCount(10);
+  //}, [postList]);
 
   return (
     <PostListWrapper>
