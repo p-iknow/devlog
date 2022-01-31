@@ -1,6 +1,15 @@
-
-
-
+---
+title: programmers - 네트워크 with JS
+date: '2019-10-04T23:46:37.121Z'
+template: 'post'
+draft: true
+slug: 'algorithm/programmers/word-change'
+category: 'algorithm'
+tags:
+  - 'algorithm'
+  - 'programmers'
+description: 'JS 로 programmers 의 "네트워크"를 풀었다.'
+---
 
 ## zip
 
