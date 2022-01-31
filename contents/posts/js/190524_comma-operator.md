@@ -11,7 +11,7 @@ description: '"," 가 operator 였다는 사실을 알았는가?, 타인의 코�
 ---
 ## 들어가며
 
-[Code Signal](https://app.codesignal.com/)의 BoxBlur 라는 문제를 풀었다. 문제는 아래와 같다.
+[Code Signal](https://app.code-signal.com/)의 BoxBlur 라는 문제를 풀었다. 문제는 아래와 같다.
 
 ![image](https://user-images.githubusercontent.com/35516239/58382860-5b38fb00-800a-11e9-828f-b3f1e1908601.png)
 
