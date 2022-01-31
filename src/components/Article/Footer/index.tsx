@@ -175,12 +175,15 @@ const Comment = () => {
   }, [setCommentTheme]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       if (!flag) {
         setCommentTheme();
         setFlag(true);
       }
     }, 2000);
+    return () => {
+      clearTimeout(timer);
+    };
   }, [setCommentTheme, flag]);
 
   return (
