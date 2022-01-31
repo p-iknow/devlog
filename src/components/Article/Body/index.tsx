@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import useOffsetTop from 'hooks/useOffsetTop';
 
 import Toc from './Toc';
-import StyledMarkdown from './StyledMarkdown';
+import StyledMarkdown from 'styles/StyledMarkdown';
 
 const Wrapper = styled.div`
   position: relative;
@@ -30,10 +30,8 @@ const ArticleBody = ({ html }: Props) => {
   return (
     <Wrapper>
       <Toc items={toc} articleOffset={offsetTop} />
-
       <StyledMarkdown
         id="article-body"
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         dangerouslySetInnerHTML={{ __html: html }}
         itemProp="articleBody"
         ref={ref}
