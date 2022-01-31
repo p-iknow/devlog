@@ -1,7 +1,6 @@
 ---
 title: Custom Promise 구현으로 프로미스 파혜치기
 date: '2019-06-30T23:46:37.121Z'
-update: '2019-06-30T23:46:37.121Z'
 template: 'post'
 img: 'https://user-images.githubusercontent.com/35516239/69477287-b451e200-0e27-11ea-9770-217e576f08e1.jpg'
 draft: false

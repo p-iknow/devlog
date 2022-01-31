@@ -1,7 +1,6 @@
 ---
 title: String.prototype.replace()
 date: '2019-07-30T23:46:37.121Z'
-update: '2019-07-30T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/string-replace/'

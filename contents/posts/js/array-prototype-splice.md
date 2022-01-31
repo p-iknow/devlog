@@ -1,7 +1,6 @@
 ---
 title: Array.prototype.splice()
 date: '2019-09-02T23:46:37.121Z'
-update: '2019-09-02T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/array-splice/'

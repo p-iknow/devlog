@@ -1,7 +1,6 @@
 ---
 title: JS Object destructuring
 date: '2019-05-24T23:46:37.121Z'
-update: '2019-05-24T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/object-destructuring/'

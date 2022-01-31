@@ -1,7 +1,6 @@
 ---
 title: Array.apply(null, Array(n))
 date: '2019-09-09T23:46:37.121Z'
-update: '2019-09-09T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/array-apply-null-new-array/'

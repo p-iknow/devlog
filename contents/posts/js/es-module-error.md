@@ -1,7 +1,6 @@
 ---
 title: ESModule 확장자(.js) 쓰지 않았을 때 404 Not Found 오류
 date: '2020-01-31T23:46:37.121Z'
-update: '2020-01-31T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/es-module/error-without-extension'

@@ -1,7 +1,6 @@
 ---
-title: JS split 적용시 구분자도 결과에 포함시키기 
+title: JS split 적용시 구분자도 결과에 포함시키기
 date: '2019-11-10T23:46:37.121Z'
-update: '2019-11-10T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'javascript/split-regexp'

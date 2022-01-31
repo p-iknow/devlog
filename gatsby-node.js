@@ -130,6 +130,8 @@ exports.createSchemaCustomization = ({ actions }) => {
   type Frontmatter {
     title: String!
     description: String!
+    date: Date! @dateformat
+    update: Date @dateformat
     template: String!
     draft: Boolean!
     slug: String

@@ -1,7 +1,6 @@
 ---
 title: JS 단축평가(short-circuit evaluation)
 date: '2019-06-30T23:46:37.121Z'
-update: '2019-06-30T23:46:37.121Z'
 template: 'post'
 draft: true
 slug: 'javascript/short-circuit-evaluation'
