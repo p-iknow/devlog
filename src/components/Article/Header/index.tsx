@@ -48,7 +48,7 @@ const ArticleHeader = ({ title, date, tags }: Props) => {
       <ArticleTitle> {title} </ArticleTitle>
       <Information>
         <Author> @{blogConfig.author} </Author>
-        <Date>· {date} </Date>
+        <Date> {date} </Date>
       </Information>
       {tags && <TagList tagList={tags} />}
       <Divider mt={0} />
