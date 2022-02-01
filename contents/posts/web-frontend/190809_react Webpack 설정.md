@@ -3,10 +3,10 @@ title: React 빌드(webpack) 환경 직접 구성하기 (without CRA)
 date: '2019-08-09T10:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'web-front-end/react-webpack-config'
-category: 'web-front-end'
+slug: 'front-end/react-webpack-config'
+category: 'front-end'
 tags:
-  - 'web-front-end'
+  - 'front-end'
   - 'webpack'
   - 'react'
 description: 'webpack, babel 많이 들어는 봤으나 정작 해당 설정을 눈앞에 마주하면 아득 하기만 했다. 설정 이라는 영역은 사실 경험이 쌓이지 않으면 단번에 이해하기가 어렵다. 또한 webpack 과 babel은 수시로 update 되고 규칙과 네이밍이 미세하게 조정되며 어려움을 더한다. 그래서 이번에 리엑트를 시작하며  CRA(create react app) 없이 직접  Webpack 설정을 통해  React 빌드 환경을 구성하고자 한다. webpack에 어려움을 느꼈던 분들에게 도움이 될 수 있었으며 좋겠다. 참고로 이 글은  2019.08.09 에 webpack v4, babel 7 기준으로 작성했다.'

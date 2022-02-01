@@ -3,10 +3,10 @@ title: css loader의 sourceMap 사용시 발생하는 FOUC 이슈
 date: '2019-07-24T10:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'web-front-end/fouc-when-using-css-loader-sourceMap'
-category: 'web-front-end'
+slug: 'front-end/fouc-when-using-css-loader-sourceMap'
+category: 'front-end'
 tags:
-  - 'web-front-end'
+  - 'front-end'
   - 'webpack'
   - 'javascript'
 description: 'webpack 을 통해 번들링한 React 활용 TODO 어플을 로드했다.  CSS 가 미적용 된 상태로 DOM 컨텐츠가 로드되는 이슈가 있다. 알고보니 CSS Loader 의 sourceMap 옵션 을 켜둔 것이 원인이었다. 해당 옵션을 끄면 이슈가 해결된다. '

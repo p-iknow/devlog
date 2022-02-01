@@ -11,6 +11,7 @@ import Divider from 'components/Divider';
 import VerticalSpace from 'components/VerticalSpace';
 
 import blogConfig from '../../blog-config';
+import SideCategoryList from 'components/SideCatergoryList';
 
 interface Props {
   data: {
@@ -43,7 +44,7 @@ interface Props {
 
 const BlogIndex = ({ data }: Props) => {
   const posts = data.allMarkdownRemark.nodes;
-  const tags = _.sortBy(data.allMarkdownRemark.group, ['totalCount']).reverse();
+  const categories = _.orderBy(data.allMarkdownRemark.group, ['totalCount'], ['desc']);
 
   if (posts.length === 0) {
     return (
@@ -60,7 +61,7 @@ const BlogIndex = ({ data }: Props) => {
       <VerticalSpace size={48} />
       <Bio />
       <Divider />
-      <SideTagList tags={tags} postCount={posts.length} />
+      <SideCategoryList categories={categories} postCount={posts.length} />
       <PostList postList={posts} />
     </Layout>
   );
@@ -80,7 +81,7 @@ export const pageQuery = graphql`
       sort: { fields: [frontmatter___date], order: DESC }
       filter: { frontmatter: { draft: { ne: true } } }
     ) {
-      group(field: frontmatter___tags) {
+      group(field: frontmatter___category) {
         fieldValue
         totalCount
       }

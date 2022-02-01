@@ -4,10 +4,10 @@ date: '2019-07-12T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'project/lib/carousel'
-category: 'web-front-end'
+category: 'front-end'
 tags:
   - 'observer-pattern'
-  - 'web-front-end'
+  - 'front-end'
   - 'OOP'
   - 'carousel'
   - 'javascript'

@@ -4,9 +4,9 @@ date: '2019-09-19T10:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'front-end/react-codespliting'
-category: 'Front End'
+category: 'front-end'
 tags:
-  - 'Front End'
+  - 'front-end'
   - 'Webpack'
   - 'React'
 description: '리엑트 앱에 코드스플리팅을 적용한 경험에 대해 다룬다. 이와 관련된 웹펙 설정과 리엑트 코드에 대해 다룬다.'
@@ -306,4 +306,3 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 ```
 
 이렇게 미리 청크 해시값을 알 수 있게 json 구조로 나와있다.  
-
