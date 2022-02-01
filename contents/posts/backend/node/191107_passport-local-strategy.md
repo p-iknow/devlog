@@ -4,9 +4,9 @@ date: '2019-11-07T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'backend/node/passport-local-strategy'
-category: 'node'
+category: 'Node.js'
 tags:
-  - 'node'
+  - 'Node.js'
   - 'passport'
 
 description: 'passport는 한마디로 인증을 편하게 관리하기 위한 패키지이다.  passport 가 실제로  하는 일은 session 객체 내부에 passport 프로퍼티를 만들고, 값으로 쿠키와 식별자를 매칭해서 저장한다(serialize). 이후 매 요청시에 세션에 저장된 식별자를 이용해 유저의 데이터를 찾아 express 라우터 콜백함수의 request.user 에 해당 데이터를 저장한다(deserialize).'
