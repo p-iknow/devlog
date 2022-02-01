@@ -3,13 +3,14 @@ title: 퀵 정렬, quick sort(with JS)
 date: '2019-08-20T23:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'algorithm/merge-sort'
+slug: 'algorithm/quick sort'
 category: 'algorithm'
 tags:
   - '자료구조'
   - 'ADT'
   - 'Sorting'
-description: '병합 정렬(merge sort)의 핵심은 분할과 정복이다. 정렬할 배열을 원소가 하나뿐인 배열 단위로 나뉠 때까지 분할하고, 반대로 이렇게 분할된 배열을 점점 더 큰 배열로 병합하면서 정렬을 완성한다. 분할/정복이라는 접근 방식은 재귀 호출을 통해 구현된다.'
+description: '퀵 정렬(quick sort)은 가장 애용되는 정렬 알고리즘이다. 복잡도는 O(n long n)이고, 복잡도가 동일한 여타 정렬 알고리즘보다 성능이 낮다. 병합 정렬과 마찬가지로 분할/정복 방식으로 접근한다(그러나 병합 정렬 과는 달리, 원소를 하나 가진 배열까지 잘게 쪼개지 않는다.) 이 [링크](https://visualgo.net/ko/sorting)를 통해 퀵 정렬이 어떻게 작동하는지 참고할 수 있다.
+'
 ---
 
 ## 퀵 정렬(quick sort)?
@@ -144,4 +145,3 @@ const swap = (arr, index1, index2) => {
 ## 참고
 
 [자바스크립트 자료 구조와 알고리즘, 로이아니 그로네르 지음](http://www.yes24.com/Product/Goods/22885878)
-

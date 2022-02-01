@@ -60,13 +60,13 @@ interface Props {
 }
 
 const PostList = ({ postList }: Props) => {
-  const [postCount, setPostCount] = useState(10);
+  const [postCount, setPostCount] = useState(20);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const handleMoreLoad = useCallback(
     _.throttle(() => {
       if (checkIsScrollAtBottom() && postCount < postList.length) {
-        setTimeout(() => setPostCount(postCount + 10), 300);
+        setTimeout(() => setPostCount(postCount + 20), 300);
       }
     }, 250),
     [postCount, postList]
@@ -79,10 +79,6 @@ const PostList = ({ postList }: Props) => {
       window.removeEventListener('scroll', handleMoreLoad);
     };
   }, [handleMoreLoad]);
-
-  //useEffect(() => {
-  //  setPostCount(10);
-  //}, [postList]);
 
   return (
     <PostListWrapper>
