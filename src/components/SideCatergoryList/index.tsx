@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
@@ -31,6 +30,7 @@ const Category = styled.li`
   color: ${props => props.theme.colors.tertiaryText};
   cursor: pointer;
   transition: color 0.3s;
+  text-transform: capitalize;
 
   &:hover {
     color: ${props => props.theme.colors.text};
@@ -59,7 +59,7 @@ const SideCategoryList = ({ categories, postCount }: Props) => {
           <Category>
             <Link to="/categories">all ({postCount})</Link>
           </Category>
-          {_.map(categories, category => (
+          {categories.map(category => (
             <Category key={category.fieldValue}>
               <Link to={`/categories?q=${category.fieldValue}`}>
                 {category.fieldValue} ({category.totalCount})
