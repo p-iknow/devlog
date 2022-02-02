@@ -48,7 +48,7 @@ const Toc = ({ items, articleOffset }: Props) => {
   return (
     <RevealOnScroll revealAt={revealAt} reverse>
       <TocWrapper stick={y > articleOffset - STICK_OFFSET}>
-        <>
+        <div>
           {items.map((item, i) => (
             <ParagraphTitle
               key={i}
@@ -59,7 +59,7 @@ const Toc = ({ items, articleOffset }: Props) => {
               {item.innerText}
             </ParagraphTitle>
           ))}
-        </>
+        </div>
       </TocWrapper>
     </RevealOnScroll>
   );
@@ -79,22 +79,22 @@ const TocWrapper = styled.div<{ stick: boolean }>`
     max-height: calc(100% - 185px);
     overflow-y: auto;
 
-    ::-webkit-scrollbar {
-      width: 3px;
+    :hover::-webkit-scrollbar {
+      width: 5px;
     }
-    ::-webkit-scrollbar-track {
+    :hover::-webkit-scrollbar-track {
       background: ${props => props.theme.colors.scrollTrack};
     }
 
-    ::-webkit-scrollbar-thumb {
+    :hover::-webkit-scrollbar-thumb {
       background: ${props => props.theme.colors.scrollHandle};
     }
-
     ${props =>
       props.stick &&
       css`
         position: fixed;
         top: ${STICK_OFFSET}px;
+        overflow-y: scroll;
       `}
   }
 
