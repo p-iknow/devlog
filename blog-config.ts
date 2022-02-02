@@ -11,8 +11,15 @@ const config = {
     email: 'mailto:apricotsoul@gmail.com',
   },
   utterances: {
-    repo: 'devHudi/gatsby-starter-hoodie',
+    repo: 'p-iknow/p-iknow-devlog-comment',
     type: 'pathname',
+  },
+  googleAnalyticsId: 'UA-110581115-1',
+  share: {
+    facebookAppId: '991665871006232', // Add facebookAppId for using facebook share feature v3.2
+  },
+  sponsor: {
+    buyMeACoffeeId: 'piknow',
   },
 } as const;
 

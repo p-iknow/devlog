@@ -5,7 +5,7 @@ require('ts-node').register({
   },
 })
 
-const { title, description, siteUrl } = require('./blog-config');
+const { title, description, siteUrl, googleAnalyticsId } = require('./blog-config');
 
 module.exports = {
   siteMetadata: {
@@ -43,9 +43,12 @@ module.exports = {
       },
     },
     {
-      resolve: 'gatsby-plugin-google-analytics',
+      resolve: 'gatsby-plugin-google-gtag',
       options: {
-        trackingId: 'G-82GQNE95K7',
+        trackingIds: [googleAnalyticsId],
+        pluginConfig: {
+          head: true,
+        },
       },
     },
     {
