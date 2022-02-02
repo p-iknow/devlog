@@ -6,7 +6,7 @@ const SEO = ({
   title,
   description,
   url,
-  ogImg = `${blogConfig.siteUrl}/og-image.jpeg`,
+  ogImg = `${blogConfig.siteUrl}/og-img.jpeg`,
   keywords,
 }: {
   title: string;
