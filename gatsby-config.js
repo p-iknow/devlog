@@ -25,6 +25,7 @@ module.exports = {
     'gatsby-plugin-mdx',
     'gatsby-transformer-remark',
     'gatsby-plugin-sharp',
+    `gatsby-plugin-netlify`,
     {
       resolve: `gatsby-plugin-typescript`,
       options: {
