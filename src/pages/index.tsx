@@ -6,12 +6,11 @@ import Layout from 'components/Layout';
 import SEO from 'containers/SEO';
 import Bio from 'components/Bio';
 import PostList from 'components/PostList';
-import SideTagList from 'components/SideTagList';
 import Divider from 'components/Divider';
 import VerticalSpace from 'components/VerticalSpace';
 
 import blogConfig from '../../blog-config';
-import SideCategoryList from 'components/SideCatergoryList';
+import SideCategoryList from 'components/SideCategoryList';
 
 interface Props {
   data: {
