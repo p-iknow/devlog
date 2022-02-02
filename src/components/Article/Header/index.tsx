@@ -16,7 +16,7 @@ const Wrapper = styled.div`
 const ArticleTitle = styled.h1`
   margin-bottom: 25.6px;
   line-height: 1.2;
-  font-size: 44.8px;
+  font-size: 35px;
   font-weight: 700;
   color: ${props => props.theme.colors.text};
 `;
@@ -48,7 +48,7 @@ const ArticleHeader = ({ title, date, tags }: Props) => {
       <ArticleTitle> {title} </ArticleTitle>
       <Information>
         <Author> @{blogConfig.author} </Author>
-        <Date> {date} </Date>
+        <Date>· {date} </Date>
       </Information>
       {tags && <TagList tagList={tags} />}
       <Divider mt={0} />
