@@ -42,6 +42,7 @@
     "gatsby-transformer-sharp": "^4.6.0",
     "katex": "^0.15.2",
     "lodash": "^4.17.21",
+    "pretendard": "^1.2.1",
     "prismjs": "^1.26.0",
     "query-string": "^7.1.0",
     "react": "^17.0.1",
