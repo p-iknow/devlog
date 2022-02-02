@@ -26,6 +26,7 @@ interface Props {
         update: string;
         tags: string[];
         series: string;
+        img?: string;
       };
       fields: {
         slug: string;
@@ -67,7 +68,7 @@ const Post = ({ data }: Props) => {
   const post = data.markdownRemark;
   const { previous, next, seriesList } = data;
 
-  const { title, date, tags, series } = post.frontmatter;
+  const { title, date, tags, series, img } = post.frontmatter;
   const { excerpt } = post;
   const { slug } = post.fields;
 
@@ -89,7 +90,7 @@ const Post = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={excerpt} url={`${blogConfig.siteUrl}${slug}`} />
+      <SEO title={title} description={excerpt} url={`${blogConfig.siteUrl}${slug}`} ogImg={img} />
       <article>
         <ArticleHeader title={title} date={date} tags={tags} />
         {filteredSeries.length > 0 && <ArticleSeries header={series} series={filteredSeries} />}
@@ -124,6 +125,7 @@ export const pageQuery = graphql`
         update(formatString: "MMMM DD, YYYY")
         tags
         series
+        img
       }
       fields {
         slug
