@@ -68,6 +68,7 @@ const BlogIndex = ({ data }: Props) => {
 
 export default BlogIndex;
 
+// 알고리즘은 index page에서 제외하도록 세팅함
 export const pageQuery = graphql`
   query {
     site {
@@ -78,7 +79,7 @@ export const pageQuery = graphql`
 
     allMarkdownRemark(
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { draft: { ne: true } } }
+      filter: { frontmatter: { draft: { ne: true }, category: { ne: "algorithm" } } }
     ) {
       group(field: frontmatter___category) {
         fieldValue
