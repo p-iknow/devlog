@@ -15,6 +15,7 @@ import PostList from 'components/PostList';
 import VerticalSpace from 'components/VerticalSpace';
 
 import blogConfig from '../../blog-config';
+import isServer from 'utils/isServer';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;
@@ -63,7 +64,7 @@ const TagsPage = ({ data }: Props) => {
   const [selected, setSelected] = useState<string | undefined>();
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
 
-  const query = document.location.search;
+  const query = isServer() ? '' : document?.location.search;
   const q = queryString.parse(query)['q'] as string;
 
   useEffect(() => {

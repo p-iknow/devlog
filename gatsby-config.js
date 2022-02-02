@@ -5,12 +5,14 @@ require('ts-node').register({
   },
 })
 
-const { title, description, siteUrl, googleAnalyticsId } = require('./blog-config');
+const { title, description, author, siteUrl, googleAnalyticsId } = require('./blog-config');
 
 module.exports = {
   siteMetadata: {
-    title: title,
-    siteUrl: siteUrl,
+    title,
+    description,
+    author,
+    siteUrl,
   },
   plugins: [
     'gatsby-plugin-styled-components',
@@ -64,14 +66,6 @@ module.exports = {
         display: `standalone`,
         icon: `static/favicon.png`,
       },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        name: 'images',
-        path: './src/images/',
-      },
-      __key: 'images',
     },
     {
       resolve: `gatsby-source-filesystem`,

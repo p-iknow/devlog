@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
   title: `p-iknow's devlog`,
   description: '많은 것을 이해하고 싶습니다. 더 이해하기 위해 노력합니다.',
   author: 'p-iknow 🎹',
@@ -21,6 +21,4 @@ const config = {
   sponsor: {
     buyMeACoffeeId: 'piknow',
   },
-} as const;
-
-export default config;
+};

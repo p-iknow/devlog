@@ -28,9 +28,11 @@
     }
   },
   "include": [
-    ".blog-config.ts",
+    "blog-config.js",
     "./src/**/*",
     "./src/styles/styled.d.ts",
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
