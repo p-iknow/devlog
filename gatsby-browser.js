@@ -1,4 +1,4 @@
-require("prism-themes/themes/prism-dracula.css")
+
 require("katex/dist/katex.min.css")
 require("pretendard/dist/web/static/pretendard-dynamic-subset.css")
 import WrapRootElement from "./src/index";
