@@ -90,7 +90,13 @@ const Post = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={title} description={excerpt} url={`${blogConfig.siteUrl}${slug}`} ogImg={img} />
+      <SEO
+        title={title}
+        description={excerpt}
+        url={`${blogConfig.siteUrl}${slug}`}
+        ogImg={img}
+        keywords={tags}
+      />
       <article>
         <ArticleHeader title={title} date={date} tags={tags} />
         {filteredSeries.length > 0 && <ArticleSeries header={series} series={filteredSeries} />}

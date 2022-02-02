@@ -6,22 +6,29 @@ const SEO = ({
   title,
   description,
   url,
-  ogImg,
+  ogImg = `${blogConfig.siteUrl}/og-image.jpeg`,
+  keywords,
 }: {
   title: string;
   description: string;
   url: string;
   ogImg?: string;
+  keywords?: string[];
 }) => {
-  const ogImgUrl = ogImg ?? `${blogConfig.siteUrl}/og-image.jpeg`;
   return (
     <Helmet>
       <title>{title}</title>
-      <meta property="og:url" content={url} />
+      <meta name="description" content={description} />
+      <meta name="author" content={blogConfig.author} />
+      {keywords && <meta name="keywords" content={keywords?.join(' ')} />}
+
       <meta property="og:title" content={title} />
-      <meta property="og:image" content={ogImgUrl} />
-      {description && <meta name="description" content={description} />}
-      {description && <meta property="og:description" content={description} />}
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={ogImg} />
+
+      <meta property="twitter:url" content={url} />
+      <meta property="twitter:title" content={title} />
+      <meta property="twitter:image" content={ogImg} />
     </Helmet>
   );
 };
