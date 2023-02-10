@@ -8,6 +8,7 @@ require('ts-node').register({
 const { title, description, author, siteUrl, googleAnalyticsId } = require('./blog-config');
 
 module.exports = {
+  graphqlTypegen: true,
   siteMetadata: {
     title,
     description,
