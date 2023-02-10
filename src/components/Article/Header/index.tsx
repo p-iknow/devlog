@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const ArticleTitle = styled.h1`
   margin-bottom: 25.6px;
-  line-height: 1.2;
+  line-height: 1.4;
   font-size: 35px;
   font-weight: 700;
   color: ${props => props.theme.colors.text};
