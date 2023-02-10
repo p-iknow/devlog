@@ -9,8 +9,8 @@ import PostList from 'components/PostList';
 import Divider from 'components/Divider';
 import VerticalSpace from 'components/VerticalSpace';
 
-import blogConfig from '../../blog-config';
 import SideCategoryList from 'components/SideCategoryList';
+import { blogConfig } from '../../blog-config';
 
 interface Props {
   data: {

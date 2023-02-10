@@ -12,7 +12,7 @@ import SeriesList from 'components/SeriesList';
 import VerticalSpace from 'components/VerticalSpace';
 import NoContent from 'components/NoContent';
 
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;

@@ -14,8 +14,8 @@ import TagList from 'components/TagList';
 import PostList from 'components/PostList';
 import VerticalSpace from 'components/VerticalSpace';
 
-import blogConfig from '../../blog-config';
 import isServer from 'utils/isServer';
+import { blogConfig } from '../../blog-config';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;

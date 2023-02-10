@@ -4,13 +4,12 @@ import styled, { useTheme } from 'styled-components';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 import ReactUtterences from 'react-utterances';
 
-import blogConfig from '../../../../blog-config';
-
 import MDSpinner from 'react-md-spinner';
 
 import Divider from 'components/Divider';
 import Bio from 'components/Bio';
 import { useThemeState } from 'context';
+import { blogConfig } from '../../../../blog-config';
 
 const ArticleButtonContainer = styled.div`
   display: flex;

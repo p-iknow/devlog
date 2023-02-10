@@ -12,9 +12,9 @@ import Title from 'components/Title';
 import PostList from 'components/PostList';
 import VerticalSpace from 'components/VerticalSpace';
 
-import blogConfig from '../../blog-config';
 import CategoryList from 'components/CategoryList';
 import isServer from 'utils/isServer';
+import { blogConfig } from '../../blog-config';
 
 const CategoryListWrapper = styled.div`
   margin-top: 20px;

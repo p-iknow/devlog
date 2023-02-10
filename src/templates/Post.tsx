@@ -6,8 +6,7 @@ import Layout from 'components/Layout';
 import SEO from 'containers/SEO';
 import { graphql } from 'gatsby';
 import React from 'react';
-
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 interface Props {
   data: {

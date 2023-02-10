@@ -8,8 +8,7 @@ import PostList from 'components/PostList';
 import TextField from 'components/TextField';
 import Title from 'components/Title';
 import VerticalSpace from 'components/VerticalSpace';
-
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 const SearchWrapper = styled.div`
   margin-top: 20px;

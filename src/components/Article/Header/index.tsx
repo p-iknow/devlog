@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import blogConfig from '../../../../blog-config';
+import { blogConfig } from '../../../../blog-config';
 
 import Divider from 'components/Divider';
 import TagList from 'components/TagList';
