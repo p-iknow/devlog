@@ -1,9 +1,9 @@
 require('ts-node').register({
   compilerOptions: {
-      module: 'commonjs',
-      target: 'es2017',
+    module: 'commonjs',
+    target: 'es2017',
   },
-})
+});
 
 const { title, description, author, siteUrl, googleAnalyticsId } = require('./blog-config');
 
@@ -159,28 +159,26 @@ module.exports = {
                 });
               });
             },
-            query: `
-              {
-                allMarkdownRemark(
-                  sort: { order: DESC, fields: [frontmatter___date] },
-                ) {
-                  edges {
-                    node {
-                      excerpt
-                      html
-                      fields { slug }
-                      frontmatter {
-                        title
-                        date
-                        template
-                        draft
-                        description
-                      }
-                    }
-                  }
-                }
-              }
-            `,
+            query: `{
+  allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {
+    edges {
+      node {
+        excerpt
+        html
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+          date
+          template
+          draft
+          description
+        }
+      }
+    }
+  }
+}`,
             output: `/rss.xml`,
             title: `RSS Feed of ${title}`,
             match: '^/blog/',

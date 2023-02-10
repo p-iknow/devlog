@@ -221,8 +221,8 @@ const ArticleFooter = ({ previous, next }: Props) => {
       <ArticleButtonContainer>
         {previous ? (
           <ArticleButton
-            onClick={async () => {
-              await navigate(previous?.fields?.slug);
+            onClick={() => {
+              void navigate(previous?.fields?.slug);
             }}
           >
             {previous?.frontmatter?.title}
@@ -233,8 +233,8 @@ const ArticleFooter = ({ previous, next }: Props) => {
         {next && (
           <ArticleButton
             right
-            onClick={async () => {
-              await navigate(next?.fields?.slug);
+            onClick={() => {
+              void navigate(next?.fields?.slug);
             }}
           >
             {next?.frontmatter?.title}

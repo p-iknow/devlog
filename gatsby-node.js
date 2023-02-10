@@ -4,30 +4,28 @@ const _ = require("lodash")
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions
 
-  const result = await graphql(`
-    {
-      postsRemark: allMarkdownRemark(
-        sort: { fields: [frontmatter___date], order: ASC }
-				filter: { frontmatter: { template: { eq: "post" }, draft: { ne: true } } }
-        limit: 1000
-      ) {
-        nodes {
-          id
-          fields {
-            slug
-          }
-          frontmatter {
-            series
-          }
-        }
+  const result = await graphql(`{
+  postsRemark: allMarkdownRemark(
+    sort: {frontmatter: {date: ASC}}
+    filter: {frontmatter: {template: {eq: "post"}, draft: {ne: true}}}
+    limit: 1000
+  ) {
+    nodes {
+      id
+      fields {
+        slug
       }
-      tagsGroup: allMarkdownRemark(limit: 2000) {
-        group(field: frontmatter___tags) {
-          fieldValue
-        }
+      frontmatter {
+        series
       }
     }
-  `)
+  }
+  tagsGroup: allMarkdownRemark(limit: 2000) {
+    group(field: {frontmatter: {tags: SELECT}}) {
+      fieldValue
+    }
+  }
+}`)
 
   if (result.errors) {
     reporter.panicOnBuild(
