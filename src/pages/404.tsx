@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import Layout from 'components/Layout';
 import SEO from 'containers/SEO';
-
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 const NotFound = styled.div`
   height: 800px;

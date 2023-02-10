@@ -12,7 +12,7 @@ import SeriesList from 'components/SeriesList';
 import VerticalSpace from 'components/VerticalSpace';
 import NoContent from 'components/NoContent';
 
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 const TagListWrapper = styled.div`
   margin-top: 20px;
@@ -106,17 +106,17 @@ const SeriesPage = ({ data }: Props) => {
 export default SeriesPage;
 
 export const pageQuery = graphql`
-  query {
+  {
     site {
       siteMetadata {
         title
       }
     }
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { draft: { ne: true } } }
     ) {
-      group(field: frontmatter___tags) {
+      group(field: { frontmatter: { tags: SELECT } }) {
         fieldValue
         totalCount
       }

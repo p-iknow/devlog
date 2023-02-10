@@ -12,9 +12,9 @@ import Title from 'components/Title';
 import PostList from 'components/PostList';
 import VerticalSpace from 'components/VerticalSpace';
 
-import blogConfig from '../../blog-config';
 import CategoryList from 'components/CategoryList';
 import isServer from 'utils/isServer';
+import { blogConfig } from '../../blog-config';
 
 const CategoryListWrapper = styled.div`
   margin-top: 20px;
@@ -107,17 +107,17 @@ const CategoriesPage = ({ data }: Props) => {
 export default CategoriesPage;
 
 export const pageQuery = graphql`
-  query {
+  {
     site {
       siteMetadata {
         title
       }
     }
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { draft: { ne: true } } }
     ) {
-      group(field: frontmatter___category) {
+      group(field: { frontmatter: { category: SELECT } }) {
         fieldValue
         totalCount
       }

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Link } from 'gatsby';
 
-import blogConfig from '../../../../blog-config';
+import { blogConfig } from '../../../../blog-config';
 
 import { FaSun, FaMoon, FaTags, FaSearch, FaListUl, FaHashtag } from 'react-icons/fa';
 

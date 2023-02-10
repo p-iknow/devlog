@@ -7,8 +7,7 @@ import Layout from 'components/Layout';
 import SEO from 'containers/SEO';
 import PostList from 'components/PostList';
 import Divider from 'components/Divider';
-
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 const Header = styled.div`
   @media (max-width: 768px) {
@@ -110,7 +109,7 @@ export default Series;
 export const pageQuery = graphql`
   query BlogSeriesBySeriesName($series: String) {
     posts: allMarkdownRemark(
-      sort: { order: ASC, fields: [frontmatter___date] }
+      sort: { frontmatter: { date: ASC } }
       filter: { frontmatter: { series: { eq: $series } } }
     ) {
       nodes {

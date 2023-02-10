@@ -1,6 +1,6 @@
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import blogConfig from '../../../blog-config';
+import { blogConfig } from '../../../blog-config';
 
 const SEO = ({
   title,

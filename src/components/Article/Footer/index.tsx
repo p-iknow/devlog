@@ -4,13 +4,12 @@ import styled, { useTheme } from 'styled-components';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 import ReactUtterences from 'react-utterances';
 
-import blogConfig from '../../../../blog-config';
-
 import MDSpinner from 'react-md-spinner';
 
 import Divider from 'components/Divider';
 import Bio from 'components/Bio';
 import { useThemeState } from 'context';
+import { blogConfig } from '../../../../blog-config';
 
 const ArticleButtonContainer = styled.div`
   display: flex;
@@ -221,8 +220,8 @@ const ArticleFooter = ({ previous, next }: Props) => {
       <ArticleButtonContainer>
         {previous ? (
           <ArticleButton
-            onClick={async () => {
-              await navigate(previous?.fields?.slug);
+            onClick={() => {
+              void navigate(previous?.fields?.slug);
             }}
           >
             {previous?.frontmatter?.title}
@@ -233,8 +232,8 @@ const ArticleFooter = ({ previous, next }: Props) => {
         {next && (
           <ArticleButton
             right
-            onClick={async () => {
-              await navigate(next?.fields?.slug);
+            onClick={() => {
+              void navigate(next?.fields?.slug);
             }}
           >
             {next?.frontmatter?.title}

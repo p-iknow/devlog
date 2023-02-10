@@ -1,13 +1,15 @@
-require('ts-node').register({
-  compilerOptions: {
-      module: 'commonjs',
-      target: 'es2017',
-  },
-})
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/restrict-plus-operands */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+import { GatsbyConfig } from 'gatsby';
+import { blogConfig } from './blog-config';
 
-const { title, description, author, siteUrl, googleAnalyticsId } = require('./blog-config');
+const { title, description, author, siteUrl, googleAnalyticsId } = blogConfig;
 
-module.exports = {
+const config: GatsbyConfig = {
+  graphqlTypegen: true,
   siteMetadata: {
     title,
     description,
@@ -96,7 +98,7 @@ module.exports = {
               inlineCodeMarker: null,
               aliases: {},
               showLineNumbers: true,
-              noInlineHighlight: false,
+              noInlineHighlight: true,
               languageExtensions: [
                 {
                   language: 'superscript',
@@ -148,39 +150,44 @@ module.exports = {
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }) => {
-              return allMarkdownRemark.edges.map(edge => {
-                return Object.assign({}, edge.node.frontmatter, {
-                  description: edge.node.excerpt,
-                  date: edge.node.frontmatter.date,
-                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  custom_elements: [{ 'content:encoded': edge.node.html }],
-                });
-              });
-            },
-            query: `
-              {
-                allMarkdownRemark(
-                  sort: { order: DESC, fields: [frontmatter___date] },
-                ) {
-                  edges {
-                    node {
-                      excerpt
-                      html
-                      fields { slug }
-                      frontmatter {
-                        title
-                        date
-                        template
-                        draft
-                        description
-                      }
-                    }
-                  }
-                }
-              }
-            `,
+            serialize: ({ query: { site, allMarkdownRemark } }): any =>
+              allMarkdownRemark.edges.map(
+                (edge: {
+                  node: {
+                    frontmatter: { date: any };
+                    excerpt: any;
+                    fields: { slug: any };
+                    html: any;
+                  };
+                }) =>
+                  Object.assign({}, edge.node.frontmatter, {
+                    description: edge.node.excerpt,
+                    date: edge.node.frontmatter.date,
+                    url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                    guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                    custom_elements: [{ 'content:encoded': edge.node.html }],
+                  })
+              ),
+            query: `{
+  allMarkdownRemark(sort: {frontmatter: {date: DESC}}) {
+    edges {
+      node {
+        excerpt
+        html
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+          date
+          template
+          draft
+          description
+        }
+      }
+    }
+  }
+}`,
             output: `/rss.xml`,
             title: `RSS Feed of ${title}`,
             match: '^/blog/',
@@ -190,3 +197,5 @@ module.exports = {
     },
   ],
 };
+
+export default config;

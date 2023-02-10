@@ -3,11 +3,7 @@
     "module": "commonjs",
     "target": "esnext",
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "strict": true,
     "noEmit": true,
@@ -21,18 +17,9 @@
     "resolveJsonModule": true,
     "baseUrl": "./src",
     "paths": {
-      "*": [
-        "types/*",
-        "*"
-      ]
+      "*": ["types/*", "*"]
     }
   },
-  "include": [
-    "blog-config.js",
-    "./src/**/*",
-    "./src/styles/styled.d.ts",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["blog-config.ts", "gatsby-config.ts", "./src/**/*", "./src/styles/styled.d.ts"],
+  "exclude": ["node_modules"]
 }

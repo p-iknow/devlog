@@ -1,4 +1,4 @@
-module.exports = {
+export const blogConfig = {
   title: `p-iknow's devlog`,
   description: '많은 것을 이해하고 싶습니다. 더 이해하기 위해 노력합니다.',
   author: 'p-iknow 🎹',

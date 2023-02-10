@@ -9,8 +9,8 @@ import PostList from 'components/PostList';
 import Divider from 'components/Divider';
 import VerticalSpace from 'components/VerticalSpace';
 
-import blogConfig from '../../blog-config';
 import SideCategoryList from 'components/SideCategoryList';
+import { blogConfig } from '../../blog-config';
 
 interface Props {
   data: {
@@ -70,18 +70,17 @@ export default BlogIndex;
 
 // 알고리즘은 index page에서 제외하도록 세팅함
 export const pageQuery = graphql`
-  query {
+  {
     site {
       siteMetadata {
         title
       }
     }
-
     allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
       filter: { frontmatter: { draft: { ne: true }, category: { ne: "algorithm" } } }
     ) {
-      group(field: frontmatter___category) {
+      group(field: { frontmatter: { category: SELECT } }) {
         fieldValue
         totalCount
       }

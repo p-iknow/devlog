@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 import { FaGithub, FaFacebook, FaLinkedin, FaInstagram, FaEnvelope } from 'react-icons/fa';
-
-import blogConfig from '../../../blog-config';
+import { blogConfig } from '../../../blog-config';
 
 const BioWrapper = styled.div`
   display: flex;

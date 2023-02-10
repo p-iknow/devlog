@@ -6,8 +6,7 @@ import Layout from 'components/Layout';
 import SEO from 'containers/SEO';
 import { graphql } from 'gatsby';
 import React from 'react';
-
-import blogConfig from '../../blog-config';
+import { blogConfig } from '../../blog-config';
 
 interface Props {
   data: {
@@ -138,7 +137,7 @@ export const pageQuery = graphql`
       }
     }
     seriesList: allMarkdownRemark(
-      sort: { order: ASC, fields: [frontmatter___date] }
+      sort: { frontmatter: { date: ASC } }
       filter: { frontmatter: { series: { eq: $series } } }
     ) {
       edges {

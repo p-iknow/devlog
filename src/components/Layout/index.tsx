@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { ThemeProvider } from 'styled-components';
 
 import Header from './Header';
