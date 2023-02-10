@@ -8,16 +8,16 @@ category: 'front-end'
 tags:
   - 'front-end'
   - 'Webpack'
-  - 'React'
+  - 'react'
 description: '리엑트 앱에 코드스플리팅을 적용한 경험에 대해 다룬다. 이와 관련된 웹펙 설정과 리엑트 코드에 대해 다룬다.'
 ---
 
 ## TLDR
 
-- 리엑트 앱에 코드스플리팅을 적용한 경험에 대해 다룬다. 
+- 리엑트 앱에 코드스플리팅을 적용한 경험에 대해 다룬다.
 - 이와 관련된 웹펙 설정과 리엑트 코드에 대해 다룬다.
 
-## 왜 code Spliting 이 필요할까? 
+## 왜 code Spliting 이 필요할까?
 
 대부분의 React 앱은 [Webpack](https://webpack.js.org/)  같은 도구를 사용하여 "번들 된"파일을 갖게 된다. 번들링은 가져온 파일을 따라 하나의 파일, 즉 "번들"으로 병합하는 프로세스다. 이 번들(js)은 웹 페이지에 포함되어 한 번에 전체 앱을 로드 할 수 있다.
 
@@ -27,11 +27,11 @@ description: '리엑트 앱에 코드스플리팅을 적용한 경험에 대해 
 
 큰 번들로 묶이지 않으려면 번들을 [`code splitting`](https://webpack.js.org/guides/code-splitting/) 하는것이 좋다. `code splitting` 기능은 런타임시 동적으로 로드할 수 있는 여러 번들을 만들 수 있는 `Webpack`  번들러에서 지원되는 기능이다.
 
-`code splitting`을 하면 자주 바뀌지 않는 부분을 브라우저에 캐싱하고, 바뀐 부분만 로드하거나, 사용자가 현재 필요로하는 것들만 `lazy-load`할 수 있으므로 앱의 성능을 크게 향상시킬 수 있다. 앱의 전체 코드 양을 줄이지는 않지만 사용자가 필요로하지 않은 코드를 로드하는 것을 피하고, 초기 페이지 로드시 필요한 코드만 받게 된다. 이것이 `code splitting` 을 해야하는 이유다. 아래 그 방법을 적었다. 
+`code splitting`을 하면 자주 바뀌지 않는 부분을 브라우저에 캐싱하고, 바뀐 부분만 로드하거나, 사용자가 현재 필요로하는 것들만 `lazy-load`할 수 있으므로 앱의 성능을 크게 향상시킬 수 있다. 앱의 전체 코드 양을 줄이지는 않지만 사용자가 필요로하지 않은 코드를 로드하는 것을 피하고, 초기 페이지 로드시 필요한 코드만 받게 된다. 이것이 `code splitting` 을 해야하는 이유다. 아래 그 방법을 적었다.
 
 ## [splitChunk](https://webpack.js.org/plugins/split-chunks-plugin/)
 
-> 하기 내용은 [요즘 잘나가는 프론트엔드 개발환경](https://shiren.github.io/2018-04-16-요즘-잘나가는-프론트엔드-개발-환경-만들기(2018)-Webpack-4/) 블로그의 글을 옮겼다. 
+> 하기 내용은 [요즘 잘나가는 프론트엔드 개발환경](https://shiren.github.io/2018-04-16-요즘-잘나가는-프론트엔드-개발-환경-만들기(2018)-Webpack-4/) 블로그의 글을 옮겼다.
 
 우선 splitChunk 라는 플러그인을 통해 코드 스플리팅이 가능하다. node_modules 처럼 변하지 않는 JS 파일을 vendor파일로 분리(chunkhash로 네이밍)하여 브라우저 캐시를 활용하도록 최적화 하기 위해 splitChunk 라는 webPakck 내장 플러그인을 설정했다.
 
@@ -69,23 +69,23 @@ module.exports = {
 
 ### before
 
-- bundle 하나만 로드되었다. 
+- bundle 하나만 로드되었다.
 
 ![before-one-bundle](https://user-images.githubusercontent.com/35516239/65139125-10267600-da47-11e9-8a67-ecf9c91af77e.png)
 
 ### After
 
-- bundle 이 main 과 vendor 코드로 분리되었다. 잘 바뀌지 않는 vendor 번들의 경우 브라우저에 캐싱하여 매번 로드되지 않도록 하면 초기 로딩시간을 일부 향상 시킬 수 있다. 
+- bundle 이 main 과 vendor 코드로 분리되었다. 잘 바뀌지 않는 vendor 번들의 경우 브라우저에 캐싱하여 매번 로드되지 않도록 하면 초기 로딩시간을 일부 향상 시킬 수 있다.
 
 ![after-spliting](https://user-images.githubusercontent.com/35516239/65244941-99f94080-db26-11e9-85fd-5b37de08ff9e.png)
 
 ## `React.lazy` 와 `React.Suspend`를 통한 코드 스플리팅
 
-다음은 `React.lazy` 이다. 이를 사용하면 사용자가 현재 필요로하는 것들만 `lazy-load`할 수 있으므로 앱의 성능을 크게 향상시킬 수 있다`React.lazy` 은 내부적으로  `dynamic import()`(동적 import)구문을 이용한다. 
+다음은 `React.lazy` 이다. 이를 사용하면 사용자가 현재 필요로하는 것들만 `lazy-load`할 수 있으므로 앱의 성능을 크게 향상시킬 수 있다`React.lazy` 은 내부적으로  `dynamic import()`(동적 import)구문을 이용한다.
 
 `dynamic import`에 대한 자세한 내용은 [여기](https://javascript.info/modules-dynamic-imports) 와 코드 [리엑트 공식문서](https://javascript.info/modules-dynamic-imports)를 살펴보자.( 참고로 해당 문법은 JS stage3 에 등록된 문법으로 [Babel](http://babeljs.io/)을 사용할 때는 `Babel` 이 dynamic `import` 구문을 분석하게 하기위해서 [babel-plugin-syntax-dynamic-import](https://yarnpkg.com/en/package/babel-plugin-syntax-dynamic-import) 플러그인이 필요하다.)
 
-`React.lazy` 함수를 사용하면 `dynamic import`를 사용하여 가져온 컴포넌트를 랜더링 할 수 있다. 
+`React.lazy` 함수를 사용하면 `dynamic import`를 사용하여 가져온 컴포넌트를 랜더링 할 수 있다.
 
 ### before
 
@@ -119,7 +119,7 @@ function MyComponent() {
 
 ## Suspense
 
-`dynamic import` 를 사용하여 해당 자원이 필요할 때 로딩하면 초기 로딩속도는 분명하게 빨라진다. 그러나 필요할 때 네트워크 요청이 시작되어 불러오므로 요청 부터 화면 렌더링 까지 일정시간  delay가 있을 수 있다. 이때  `Suspense` 컴포넌트를 사용한다면, `MyComponent`가 랜더링 될 때까지 동적으로 불러온 `OtherComponent`가 아직 로드가 되지 않은경우 **로딩중**과 같은 `fallback content` 표현이 가능하다. (실제로 `React.lazy`를 통해 불러온 컴포넌트를 `Suspense` 컴포넌트로 감싸지 않으면 브라우저에서 에러를 낸다.) 
+`dynamic import` 를 사용하여 해당 자원이 필요할 때 로딩하면 초기 로딩속도는 분명하게 빨라진다. 그러나 필요할 때 네트워크 요청이 시작되어 불러오므로 요청 부터 화면 렌더링 까지 일정시간  delay가 있을 수 있다. 이때  `Suspense` 컴포넌트를 사용한다면, `MyComponent`가 랜더링 될 때까지 동적으로 불러온 `OtherComponent`가 아직 로드가 되지 않은경우 **로딩중**과 같은 `fallback content` 표현이 가능하다. (실제로 `React.lazy`를 통해 불러온 컴포넌트를 `Suspense` 컴포넌트로 감싸지 않으면 브라우저에서 에러를 낸다.)
 
 ```jsx
 const OtherComponent = React.lazy(() => import('./OtherComponent'));
@@ -211,7 +211,7 @@ const TodoListTemplate = () => {
       <h1 className="title">TODO LIST</h1>
       <Router>
         <Nav />
-        // 서스펜스 적용 
+        // 서스펜스 적용
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path={['/', '/home']} component={Home} />
@@ -239,11 +239,11 @@ export default TodoListTemplate;
 
 ## clean webpack plugin
 
-코드를 스플리팅하고 캐쉬 활용을 위해 output 옵션에  [chunkhash] 를 설정했다.  빌드를 몇번 하니 dist 폴더에 금세 분리된 chunk 가 한 가득이다. 이런 경우 빌드할 때 기존의 dist 디렉터리를 지워주고 싶을 수 있는데, `clean webpack plugin` 이 그 역할을 한다.  
+코드를 스플리팅하고 캐쉬 활용을 위해 output 옵션에  [chunkhash] 를 설정했다.  빌드를 몇번 하니 dist 폴더에 금세 분리된 chunk 가 한 가득이다. 이런 경우 빌드할 때 기존의 dist 디렉터리를 지워주고 싶을 수 있는데, `clean webpack plugin` 이 그 역할을 한다.
 
 ![dirty-dist-because-of-chunk](https://user-images.githubusercontent.com/35516239/65146963-12dd9700-da58-11e9-8c66-f5d7f6d31e9b.png)
 
-플러그인을 설치하고 
+플러그인을 설치하고
 
 ```bash
 yarn add clean-webpack-plugin -D
@@ -255,21 +255,21 @@ yarn add clean-webpack-plugin -D
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 {...
     plugins: [
-			new CleanWebpackPlugin()	
+			new CleanWebpackPlugin()
   ],
- ...     
+ ...
 }
 ```
 
-이제 매 프로덕션 빌드전에 dist 디렉토리는 깔끔하게 지워지고 새로 빌드된 js 파일만 남게된다. 
+이제 매 프로덕션 빌드전에 dist 디렉토리는 깔끔하게 지워지고 새로 빌드된 js 파일만 남게된다.
 
 ![image](https://user-images.githubusercontent.com/35516239/65149184-99947300-da5c-11e9-8c1b-89f1df673711.png)
 
 ## ManifestPlugin
 
-**hash**와 **chunkhash**를 쓰면 다음과 같이 느낄 수 있다. *app.js*를 쓰다가 청크해시를 준 이후부터는 *app.청크해시.js*를 사용해야 한다. 문제는 청크해시 부분이 어떻게 나올지 미리 예측할 수가 없다는 것이다. 예를 들어 `<script src="app.청크해시.js"></script>`를 할 때 청크해시 부분에 뭐를 넣어줘야할지 모르는 상황이 생긴다.(사실 `HtmlWebpackPlugin` 을 사용하면, `script` 태그를 자동으로 넣어주기 때문에 걱정할 필요가없다.) 이런 상황을 해결하는게  `manifest` 플러그인 이다 
+**hash**와 **chunkhash**를 쓰면 다음과 같이 느낄 수 있다. *app.js*를 쓰다가 청크해시를 준 이후부터는 *app.청크해시.js*를 사용해야 한다. 문제는 청크해시 부분이 어떻게 나올지 미리 예측할 수가 없다는 것이다. 예를 들어 `<script src="app.청크해시.js"></script>`를 할 때 청크해시 부분에 뭐를 넣어줘야할지 모르는 상황이 생긴다.(사실 `HtmlWebpackPlugin` 을 사용하면, `script` 태그를 자동으로 넣어주기 때문에 걱정할 필요가없다.) 이런 상황을 해결하는게  `manifest` 플러그인 이다
 
-플러그인을 설치하고  
+플러그인을 설치하고
 
 ```bash
 yarn add webpack-manifest-plugin -D
@@ -286,7 +286,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
       	basePath: '/'
     }),
   ],
- ...     
+ ...
 }
 ```
 
@@ -305,4 +305,4 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 }
 ```
 
-이렇게 미리 청크 해시값을 알 수 있게 json 구조로 나와있다.  
+이렇게 미리 청크 해시값을 알 수 있게 json 구조로 나와있다.

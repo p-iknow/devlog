@@ -1,19 +1,19 @@
 ---
-title: "Error: getaddrinfo ENOTFOUND localhost"
-date: '2020-03-21T23:46:37.121Z'
+title: "webpack 으로 번들링된 파일에서 에러가 날때 디버깅 하"
+date: '2023-02-11T23:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'issue/node-js/getaddrinfo-entfound-localhost'
+slug: 'issue/bundle-error-debug'
 category: 'issue'
 tags:
   - 'javascript'
-  - 'node'
+  - 'webpack'
   - 'issue'
 description: 'yarn gatsby develop 으로 gatsby 정적 사이트 블로그의 dev server를 실행시켰는데, 계속적으로 Error: getaddrinfo ENOTFOUND localhost 라는 오류가 발생한다. 이를 해결하는 방법을 다룬다.'
 ---
 ![issue log](https://imgur.com/h49WNfq.png)
 
-## 이슈
+## 이
 
 `yarn gatsby develop` 으로 정적 사이트 블로그의 dev server를 실행시켰는데, 계속적으로 `Error: getaddrinfo ENOTFOUND localhost` 라는 오류가 발생한다.
 

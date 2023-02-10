@@ -4,7 +4,7 @@ date: '2020-03-15T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'react/how-to-handle-newline-text-from-api'
-category: 'React'
+category: 'react'
 tags:
   - 'React'
   - 'front-end'
@@ -13,9 +13,9 @@ description: '리엑트로 서비스를 운영할 때 api 에서 전달되는 �
 ---
 
 ![react-logo](https://imgur.com/ayndzLx.png)
-## 이슈 
+## 이슈
 
-리엑트로 서비스를 운영할 때 api 에서 전달되는 텍스트가 길어서 특정 부분에 개행을 해야하는 경우가 있다. api 로 전달되는 텍스트 이기에 텍스트 중간에 `<br/>` 태그 등의 강제 개행 태그를 추가할 수도 없다. 이럴때 어떻게 해야할까? 
+리엑트로 서비스를 운영할 때 api 에서 전달되는 텍스트가 길어서 특정 부분에 개행을 해야하는 경우가 있다. api 로 전달되는 텍스트 이기에 텍스트 중간에 `<br/>` 태그 등의 강제 개행 태그를 추가할 수도 없다. 이럴때 어떻게 해야할까?
 
 ```js
 // props로 api로 전달받은 텍스가 전달된다.
@@ -27,7 +27,7 @@ const textExam = ({ apiText }) => {
 }
 ```
 
-## 해결 
+## 해결
 
 [html-react-parser](https://www.npmjs.com/package/html-react-parser) 를 활용하면 이런 문제를 해결할 수 있다. api로 전달되는 값에 개행을 할 수 있는 `<br/>` 태그를 포함시키고 `Parser` 함수에 해당 텍스트를 인자로 전달하면 이를 html 형태로 parsing 이 되어 개행을 할 수 있게 된다.
 
@@ -56,7 +56,7 @@ const textExam = ({ apiText }) => {
 
 
 
-> ## 참고 
+> ## 참고
 >
 > - https://developer.mozilla.org/en-US/docs/Web/CSS/white-space
 > - https://www.codingfactory.net/10597

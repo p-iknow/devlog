@@ -4,9 +4,9 @@ date: '2019-11-07T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'backend/node/passport-local-strategy'
-category: 'Node.js'
+category: 'node'
 tags:
-  - 'Node.js'
+  - 'node'
   - 'passport'
 
 description: 'passport는 한마디로 인증을 편하게 관리하기 위한 패키지이다.  passport 가 실제로  하는 일은 session 객체 내부에 passport 프로퍼티를 만들고, 값으로 쿠키와 식별자를 매칭해서 저장한다(serialize). 이후 매 요청시에 세션에 저장된 식별자를 이용해 유저의 데이터를 찾아 express 라우터 콜백함수의 request.user 에 해당 데이터를 저장한다(deserialize).'
@@ -16,13 +16,13 @@ description: 'passport는 한마디로 인증을 편하게 관리하기 위한 �
 
 프론트 개발을 공부하다 처음으로 백엔드 코드를 작성하기 시작했다. 로그인을 구현하기 위해 passport 를 사용해야 했다. 가려진 부분이 많아 해당 패키지를 이용할 때 무슨 일이 일어나는지 알수가 없었다. 필자 처럼 passport 의 마법 같은 인증 로직 처리에 당황할 사람들을 위해 아래에 passport local 전략에 대해 정리했다. 참고로 [생활코딩에 갓고잉님의 passport 강좌](https://opentutorials.org/course/3402)가 마련되어 있다. 보다 나은 이해를 위해 참고 부탁드린다.
 
-## pssport 의 역할 
+## pssport 의 역할
 
-passport는 한마디로 인증을 편하게 관리하기 위한 패키지이다.  passport 가 실제로  하는 일은 `session` 객체 내부에 `passport` 프로퍼티를 만들고, 값으로 쿠키와 식별자를 매칭해서 저장한다(serialize). 이후 매 요청시에 세션에 저장된 식별자를 이용해 유저의 데이터를 찾아 express 라우터 콜백함수의 request.user 에 해당 데이터를 저장한다(deserialize).    
+passport는 한마디로 인증을 편하게 관리하기 위한 패키지이다.  passport 가 실제로  하는 일은 `session` 객체 내부에 `passport` 프로퍼티를 만들고, 값으로 쿠키와 식별자를 매칭해서 저장한다(serialize). 이후 매 요청시에 세션에 저장된 식별자를 이용해 유저의 데이터를 찾아 express 라우터 콜백함수의 request.user 에 해당 데이터를 저장한다(deserialize).
 
-https://velog.io/@ground4ekd/nodejs-passport 참고 
+https://velog.io/@ground4ekd/nodejs-passport 참고
 
-## passport localStrategy 실행순서 
+## passport localStrategy 실행순서
 
 ![image](https://user-images.githubusercontent.com/35516239/68285677-0f16da00-00c3-11ea-93ae-2fbf735296fa.png)
 
@@ -75,10 +75,10 @@ const db = require('../models');
 module.exports = () => {
   passport.use(
     new LocalStrategy(
-      /*  
-      { 
+      /*
+      {
         userId: ...,
-        password: ... 
+        password: ...
       }
       */
       {
@@ -110,7 +110,7 @@ module.exports = () => {
 ```
 
 
-`pssport.authenticate` 의 콜백 `(err, user, info) => {...}` 이 실행되며, callback 내부의 `req.login(user, loginErr => {...})` 실행, 현재는 위에서 언급했던 authenticate의 custom callback을 활용하기 때문에 
+`pssport.authenticate` 의 콜백 `(err, user, info) => {...}` 이 실행되며, callback 내부의 `req.login(user, loginErr => {...})` 실행, 현재는 위에서 언급했던 authenticate의 custom callback을 활용하기 때문에
 
 ```js
 router.post('/login', (req, res, next) => {
@@ -125,7 +125,7 @@ router.post('/login', (req, res, next) => {
       return res.status(401).send(info.reason);
     }
    // req.login 실행
-    return req.login(user, loginErr => {  
+    return req.login(user, loginErr => {
       if (loginErr) {
         return next(loginErr);
       }
@@ -137,18 +137,18 @@ router.post('/login', (req, res, next) => {
   })(req, res, next);
 });
 ```
-`req.login` 의 실행으로 ` sequalizeUser((user, done )=> {...})` 의 인자로 전달된 callback 이 실행되며  
+`req.login` 의 실행으로 ` sequalizeUser((user, done )=> {...})` 의 인자로 전달된 callback 이 실행되며
 
 ```js
 const passport = require('passport');
 const db = require('../models');
 const local = require('./local');
 
-passport.serializeUser((user, done) => { // 이 부분 실행 
+passport.serializeUser((user, done) => { // 이 부분 실행
     return done(null, user.id);
   });
 ```
-`done(null, user.id)` 의 결과로 아래의 세션 객체가 생성된다. 
+`done(null, user.id)` 의 결과로 아래의 세션 객체가 생성된다.
 
 ```json
 {
@@ -164,7 +164,7 @@ passport.serializeUser((user, done) => { // 이 부분 실행
 }
 
 ```
-`passport.serializeUser` 의 callback 함수의 done 이 실행되고 난 뒤에는 `req.login( user, (loginErr) => {..}) `에 인자로 전달된 callback 함수가 실행되고 해당 함수 내부에서 res.json(fillteredUser) 을 통해  프론트에 필요한 정보를 전달하고 서버의 로직이 종료된다. 
+`passport.serializeUser` 의 callback 함수의 done 이 실행되고 난 뒤에는 `req.login( user, (loginErr) => {..}) `에 인자로 전달된 callback 함수가 실행되고 해당 함수 내부에서 res.json(fillteredUser) 을 통해  프론트에 필요한 정보를 전달하고 서버의 로직이 종료된다.
 
 ```js
 router.post('/login', (req, res, next) => {
@@ -179,7 +179,7 @@ router.post('/login', (req, res, next) => {
     if (info) {
       return res.status(401).send(info.reason);
     }
-    return req.login(user, loginErr => { // 이 부분 callback 실행 
+    return req.login(user, loginErr => { // 이 부분 callback 실행
       console.log('req.login callback');
       if (loginErr) {
         return next(loginErr);

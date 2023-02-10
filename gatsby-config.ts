@@ -98,7 +98,7 @@ const config: GatsbyConfig = {
               inlineCodeMarker: null,
               aliases: {},
               showLineNumbers: true,
-              noInlineHighlight: false,
+              noInlineHighlight: true,
               languageExtensions: [
                 {
                   language: 'superscript',

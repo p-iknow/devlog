@@ -8,7 +8,7 @@ category: 'algorithm'
 tags:
   - '자료구조'
   - 'ADT'
-  - 'Sorting'
+  - 'sorting'
 description: '선택정렬(selection sort)은 제자리(in-place) 정렬 알고리즘의 하나로, 최솟값을 찾아 맨 앞으로 보내고, 그 다음으로 작은 값을 찾아 2번째 위치로 보내는 식으로 정렬한다. '
 ---
 

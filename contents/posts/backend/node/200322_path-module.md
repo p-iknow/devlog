@@ -4,9 +4,9 @@ date: '2020-03-22T23:46:37.121Z'
 template: 'post'
 draft: false
 slug: 'node-js/path-moudle/'
-category: 'Node.js'
+category: 'node'
 tags:
-  - 'Node.js'
+  - 'node'
   - 'path'
   - 'webpack'
 description: '웹펙을 입문하려 할 때 처음 마주하게 되는게 entry 옵션이고, entry 옵션을 설정할 때 path.resolve("...") 처럼, node.js 의 path 모듈이 쓰이는 것을 볼 수 있다. 나를 포함한 입문자들이 대충 경로를 설정하는 구나 하고 넘어가는데, 나중에 가면 이를 자세하게 알아야 하는 순간이 올 것이고, 그 때를 위해 미리 path 모듈과 __dirname 변수에 대해 정리했다.'

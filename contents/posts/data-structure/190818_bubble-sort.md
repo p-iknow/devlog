@@ -8,7 +8,7 @@ category: 'algorithm'
 tags:
   - '자료구조'
   - 'ADT'
-  - 'Sorting'
+  - 'sorting'
 description: '버블 정렬(bubble-sort)은 인접한 두 원소를 모두 다 비교하고 그 결과에 따라 두 원소의 위치를 서로 바꾼다. 원소가 정렬돼가는 모습이 마치 수면 위로 떠오르는 거품(버블) 같다고 하여 버블 정렬이란 이름이 붙었다.'
 ---
 
