@@ -24,6 +24,10 @@ const StyledMarkdown = styled.div`
     margin-bottom: 24px;
   }
 
+  & img:first-child {
+    margin-top: 24px;
+  }
+
   & p {
     overflow-x: scroll;
     word-break: break-all;
@@ -172,6 +176,7 @@ const StyledMarkdown = styled.div`
   }
 
   & img {
+    margin-top: 24px;
     display: block;
     margin-left: auto;
     margin-right: auto;

@@ -85,9 +85,9 @@ const config: GatsbyConfig = {
           {
             resolve: `gatsby-remark-images`,
             options: {
-              maxWidth: 680,
+              maxWidth: 600,
               loading: 'lazy',
-              wrapperStyle: 'margin-bottom: 16px;',
+              wrapperStyle: 'margin-bottom: 16px; margin-top: 16px;',
               quality: 100,
             },
           },
@@ -98,7 +98,6 @@ const config: GatsbyConfig = {
               inlineCodeMarker: null,
               aliases: {},
               showLineNumbers: true,
-              noInlineHighlight: true,
               languageExtensions: [
                 {
                   language: 'superscript',
