@@ -21,6 +21,7 @@ interface Props {
       html: string;
       frontmatter: {
         title: string;
+        description?: string;
         date: string;
         update: string;
         tags: string[];
@@ -67,7 +68,7 @@ const Post = ({ data }: Props) => {
   const post = data.markdownRemark;
   const { previous, next, seriesList } = data;
 
-  const { title, date, tags, series, img } = post.frontmatter;
+  const { title, date, tags, series, img, description } = post.frontmatter;
   const { excerpt } = post;
   const { slug } = post.fields;
 
@@ -91,7 +92,7 @@ const Post = ({ data }: Props) => {
     <Layout>
       <SEO
         title={title}
-        description={excerpt}
+        description={description ?? excerpt}
         url={`${blogConfig.siteUrl}${slug}`}
         ogImg={img}
         keywords={tags}
@@ -126,6 +127,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
+        description
         date(formatString: "MMMM DD, YYYY")
         update(formatString: "MMMM DD, YYYY")
         tags
