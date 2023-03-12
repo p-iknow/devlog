@@ -1,5 +1,5 @@
 ---
-title: Next.js 에서 router.query 사용시 type 정의해서 사용하기 
+title: Next.js 에서 router.query 사용시 type 정의해서 사용하기
 date: '2023-03-12T23:46:37.121Z'
 template: 'post'
 draft: false
@@ -13,7 +13,7 @@ description: 'next.js 를 router.query 사용할 때 불필요한 타입체크�
 
 ---
 
-![react-logo](https://imgur.com/ayndzLx.png)
+![next-js-logo](https://imgur.com/kQii7ow.png)
 
 ##  Code
 
@@ -41,7 +41,6 @@ export const UseQueryParamPage:React.FC<Props> = () => {
 pathParam 인 `id` 와 queryParam 인 `queryValue` 는 아래와 같은 타입으로 추론된다.
 
 ![image-20230312224721441](https://i.imgur.com/JeNUePT.png)
-
 ![image-20230312224745117](https://i.imgur.com/0nc3PKw.png)
 
 `pathParam` 의 경우 명시적으로 url 에 포함되어야 하고, SSR을 사용할 경우 router.isReady 상태와 무관하게 `router.query` 에는 `pathParam` 값이 담겨 있다.
@@ -69,13 +68,11 @@ export const UseQueryParamPage:React.FC<Props> = () => {
 ```
 
 ![image-20230312224857453](https://i.imgur.com/Ea1uWkG.png)
-
 > NextJs 의 타입은 `router.isReady` 가 `false` 될때, pathParam이 `undefined` 가 될 수 있는 점을 고려하여 `string | string [] | undefined` 타입으로 추론된다.
 
 ## Solution
 
 목표는 다음과 같다.
-
 > 각 queryKey가 특정 타입으로 추론될 것이 확실한 경우 각 key에 맞는 타입으로 추론되게 한다.
 
 ### `usePathParam`
@@ -93,19 +90,13 @@ export const usePathParam = (paramKey: ParamKeys) => {
   return query[paramKey] as string;
 };
 ```
-
 `pathParam` 의 경우 `string` 타입이 보장되므로 `string` 으로 타입 캐스팅해준다.
-
 ![image-20230312224929352](https://i.imgur.com/HrFokPZ.png)
-
 `usePathParam` 을 사용할 땐 위와 같이 key가 suggestion 된다.
-
 ![image-20230312224947458](https://i.imgur.com/NnpNqke.png)
-
 `pathParam` 인 `id` 는 `string`  으로 추론되고 불필요한 분기 코드를 삭제할 수 있다.
 
 ### `useQueryParam`
-
 ```tsx
 export type UrlQueryParams = {
   'queryKey'?: stirng[];
@@ -115,23 +106,15 @@ export const useQueryParam = <T extends keyof UrlQueryParams>(queryKey: T) => {
   return (query as UrlQueryParams)[queryKey];
 };
 ```
-
 `queryParam` 의 경우 각 key에 따라 리턴타입이 달라져야 한다. 따라서 generic(`T`) 을 써서 각 key 에 따라 미리 설정한 타입이 추론되도록 한다.
-
 ![image-20230312225006625](https://i.imgur.com/bJLj9Px.png)
-
 `useQueryParam` 을 사용할 때 위와 같이 key가 suggest 된다.
-
 ![image-20230312225032602](https://i.imgur.com/3tW8Rfk.png)
-
 `queryValue` 는 `UrlQueryParams` 에서 정의한 대로 `stirng[]` 으로 추론된다.
-
 ![image-20230312225040666](https://i.imgur.com/l9GlOpa.png)
-
 결과적으로 불필요한 분기문을 삭제하고, 의도한대로 타입을 추론하여 사용할 수 있다.
 
 ## Caveat
-
 `usePathParam`, `useQueryParam` 은 query 의 타입이 확실하게 보장될 때 사용할 수 있다. 타입이 확실 보장되지 않는 경우에 위 hook의 사용은 런타임 오류로 이어진다. query 타입이 보장되지 않는 상황은 다음과 같다.
 
 페이지에 getServerSideProps 또는 getInitialProps가 없는 경우 Next.js는 페이지를 정적 HTML로  prerendering 하여 page를 `statically optimize` 한다. prerendering 이 진행되는 시점에는 router `query` object 가 비어있게 된다. 따라서 prerendering 시점에 `router.query.queryKey` 는 undefined 가 될 수 있다. 따라서 이때는 `router.isReady` 상태를 확인하여 true 가 되었을 때 비어있는 queryKey가 업데이트 됬음을 보장받아야 한다. 보다 자세한 내용은 [Next.js 의 문서](https://nextjs.org/docs/advanced-features/automatic-static-optimization#how-it-works)를 참고하자.
