@@ -3,7 +3,7 @@ title: Next.js 에서 router.query 사용시 type 정의해서 사용하기
 date: '2023-03-12T23:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'next-js/how-to-handle-newline-text-from-api'
+slug: 'next-js/apply-type-narrowing-to-router-query'
 category: 'next.js'
 tags:
   - 'next.js'
