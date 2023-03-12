@@ -5,6 +5,7 @@ template: 'post'
 draft: false
 slug: 'next-js/apply-type-narrowing-to-router-query'
 category: 'next.js'
+img: 'https://imgur.com/kQii7ow.png'
 tags:
   - 'next.js'
   - 'react'

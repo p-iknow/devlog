@@ -15,6 +15,7 @@ const SEO = ({
   ogImg?: string;
   keywords?: string[];
 }) => {
+  const ogImgUrl = ogImg ?? `${blogConfig.siteUrl}/og-img.jpeg`;
   return (
     <Helmet>
       <title>{title}</title>
@@ -24,11 +25,11 @@ const SEO = ({
 
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
-      <meta property="og:image" content={ogImg} />
+      <meta property="og:image" content={ogImgUrl} />
 
       <meta property="twitter:url" content={url} />
       <meta property="twitter:title" content={title} />
-      <meta property="twitter:image" content={ogImg} />
+      <meta property="twitter:image" content={ogImgUrl} />
     </Helmet>
   );
 };
