@@ -18,33 +18,33 @@ const config: GatsbyConfig = {
   },
   plugins: [
     'gatsby-plugin-styled-components',
-    'gatsby-plugin-react-helmet',
+    'gatsby-plugin-sitemap',
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-catch-links`,
     `gatsby-plugin-robots-txt`,
     `gatsby-plugin-resolve-src`,
-    'gatsby-plugin-sitemap',
     'gatsby-plugin-image',
     'gatsby-plugin-mdx',
     'gatsby-transformer-remark',
     'gatsby-plugin-sharp',
     `gatsby-plugin-netlify`,
     {
+      resolve: 'gatsby-plugin-web-font-loader',
+      options: {
+        custom: {
+          families: ['Pretendard'],
+          urls: [
+            'https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css',
+          ],
+        },
+      },
+    },
+    {
       resolve: `gatsby-plugin-typescript`,
       options: {
         isTSX: true, // defaults to false
         allExtensions: true, // defaults to false
-      },
-    },
-    {
-      resolve: `gatsby-plugin-google-fonts`,
-      options: {
-        fonts: [
-          `noto sans kr:300,400,500,700,900`,
-          `source code pro:700`, // you can also specify font weights and styles
-        ],
-        display: 'swap',
       },
     },
     {
