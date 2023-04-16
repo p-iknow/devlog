@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import React from 'react';
-import { flow, map, groupBy, sortBy, filter, reverse } from 'lodash/fp';
+import { pipe, map, groupBy, sortBy, filter, mapValues, values } from 'remeda';
 import styled from 'styled-components';
 
 import { graphql } from 'gatsby';
@@ -93,21 +93,22 @@ type Series = {
 
 const SeriesPage = ({ data }: Props) => {
   const posts = data.allMarkdownRemark.nodes;
-  const series: Series[] = flow(
-    map<Post, Frontmatter & { slug: string }>(post => ({
+  const series: Series[] = pipe(
+    posts,
+    map(post => ({
       ...post.frontmatter,
       slug: post.fields.slug,
     })),
-    groupBy<Frontmatter & { slug: string }>('series'),
-    map(series => ({
+    groupBy(v => v.series),
+    mapValues(series => ({
       name: series[0].series,
       posts: series,
       lastUpdated: series[0].date,
     })),
+    values,
     sortBy(series => new Date(series.lastUpdated)),
-    filter(series => Boolean(series.name)),
-    reverse
-  )(posts);
+    filter(series => Boolean(series.name))
+  ).reverse();
 
   return (
     <Layout>
