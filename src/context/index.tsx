@@ -9,7 +9,7 @@ export const ThemeContext = createContext<Theme | null>(null);
 export const SetThemeContext = createContext<SetTheme | null>(null);
 
 export const ThemeContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('dark');
 
   useIsomorphicLayoutEffect(() => {
     const isSystemDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
