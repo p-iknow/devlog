@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
-import SEO from 'containers/SEO';
 
 import { graphql } from 'gatsby';
 
@@ -15,12 +13,37 @@ import VerticalSpace from 'components/VerticalSpace';
 import CategoryList from 'components/CategoryList';
 import isServer from 'utils/isServer';
 import { blogConfig } from '../../blog-config';
+import { sortBy } from 'remeda';
 
-const CategoryListWrapper = styled.div`
-  margin-top: 20px;
-
-  @media (max-width: 768px) {
-    padding: 0 15px;
+export const pageQuery = graphql`
+  {
+    site {
+      siteMetadata {
+        title
+      }
+    }
+    allMarkdownRemark(
+      sort: { frontmatter: { date: DESC } }
+      filter: { frontmatter: { draft: { ne: true } } }
+    ) {
+      group(field: { frontmatter: { category: SELECT } }) {
+        fieldValue
+        totalCount
+      }
+      nodes {
+        excerpt(pruneLength: 200, truncate: true)
+        fields {
+          slug
+        }
+        frontmatter {
+          date
+          update
+          title
+          category
+          tags
+        }
+      }
+    }
   }
 `;
 
@@ -58,7 +81,7 @@ interface Props {
 }
 
 const CategoriesPage = ({ data }: Props) => {
-  const categories = _.orderBy(data.allMarkdownRemark.group, ['totalCount'], ['desc']);
+  const categories = sortBy(data.allMarkdownRemark.group, [v => v.totalCount, 'desc']);
   const posts = data.allMarkdownRemark.nodes;
 
   const [selected, setSelected] = useState<string | undefined>();
@@ -82,8 +105,6 @@ const CategoriesPage = ({ data }: Props) => {
 
   return (
     <Layout>
-      <SEO title={blogConfig.title} description={blogConfig.description} url={blogConfig.siteUrl} />
-
       <CategoryListWrapper>
         {selected ? (
           <Title size="sm">
@@ -104,36 +125,44 @@ const CategoriesPage = ({ data }: Props) => {
   );
 };
 
-export default CategoriesPage;
+const CategoryListWrapper = styled.div`
+  margin-top: 20px;
 
-export const pageQuery = graphql`
-  {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allMarkdownRemark(
-      sort: { frontmatter: { date: DESC } }
-      filter: { frontmatter: { draft: { ne: true } } }
-    ) {
-      group(field: { frontmatter: { category: SELECT } }) {
-        fieldValue
-        totalCount
-      }
-      nodes {
-        excerpt(pruneLength: 200, truncate: true)
-        fields {
-          slug
-        }
-        frontmatter {
-          date
-          update
-          title
-          category
-          tags
-        }
-      }
-    }
+  @media (max-width: 768px) {
+    padding: 0 15px;
   }
 `;
+
+export default CategoriesPage;
+
+export const Head = ({ data }: Props) => {
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const title = data.site.siteMetadata.title;
+  const description = `p-iknow's dev-log category page`;
+  const url = blogConfig.siteUrl + 'categories/';
+  return (
+    <>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="author" content={blogConfig.author} />
+
+      {/* Facebook Meta Tags */}
+      <meta property="og:url" content={url} />
+      <meta property="og:type" content="website" />
+      <meta property="og:site_name" content={title} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:image" content={ogImgUrl} />
+      {/*  Twitter Meta Tags  */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta property="twitter:domain" content="p-iknow.netlify.app" />
+      <meta property="twitter:url" content={url} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={ogImgUrl} />
+      <meta name="twitter:label1" content="Category" />
+      <meta name="twitter:data1" content="개발" />
+    </>
+  );
+};
