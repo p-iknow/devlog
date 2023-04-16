@@ -18,7 +18,7 @@ const profileImageRoot =
     ? 'http://localhost:8000'
     : blogConfig.siteUrl;
 
-const Profile = styled.image`
+const Profile = styled.img`
   flex: 0 0 auto;
   margin-right: 16px;
   width: 128px;
