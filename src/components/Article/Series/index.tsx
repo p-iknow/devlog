@@ -1,5 +1,4 @@
 import React, { useState, useMemo } from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
@@ -94,7 +93,7 @@ const ArticleSeries = ({ header, series }: Props) => {
     if (series.length < 5) return series;
     if (!fold) return series;
 
-    const currentPostIdx = _.findIndex(series, { currentPost: true });
+    const currentPostIdx = series.findIndex(v => v.currentPost === true);
 
     if (currentPostIdx < 2) return series.slice(0, 5);
     if (series.length - currentPostIdx - 1 < 2)
@@ -110,7 +109,7 @@ const ArticleSeries = ({ header, series }: Props) => {
   return (
     <SeriesWrapper>
       <SeriesHeader>
-        <Link to={`/series/${_.replace(header, /\s/g, '-')}`}>SERIES: {header}</Link>{' '}
+        <Link to={`/series/${header.replace(/\s/g, '-')}`}>SERIES: {header}</Link>{' '}
         <span>({series.length})</span>
       </SeriesHeader>
       <PostWrapper>

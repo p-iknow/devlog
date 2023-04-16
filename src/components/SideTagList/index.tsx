@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 import styled from 'styled-components';
 import { Link } from 'gatsby';
 
@@ -59,7 +58,7 @@ const SideTagList = ({ tags, postCount }: Props) => {
           <Tag>
             <Link to="/tags">all ({postCount})</Link>
           </Tag>
-          {_.map(tags, tag => (
+          {tags.map(tag => (
             <Tag key={tag.fieldValue}>
               <Link to={`/tags?q=${tag.fieldValue}`}>
                 {tag.fieldValue} ({tag.totalCount})

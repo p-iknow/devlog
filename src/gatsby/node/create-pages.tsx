@@ -1,7 +1,6 @@
 // TODO: Gatsby에서 타입스크립트 지원이 완벽하게 되면 아래 파일 사용할 것
 
 import { GatsbyNode } from 'gatsby';
-import _ from 'lodash';
 
 type TypePost = {
   id: string;
@@ -56,15 +55,11 @@ const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, report
   }
 
   const posts = (result?.data?.postsRemark.nodes as TypePost[]) ?? [];
-  const series = _.reduce(
-    posts,
-    (acc, cur) => {
-      const seriesName = cur.frontmatter.series;
-      if (seriesName && !_.includes(acc, seriesName)) return [...acc, seriesName];
-      return acc;
-    },
-    [] as string[]
-  );
+  const series = posts.reduce((acc, cur) => {
+    const seriesName = cur.frontmatter.series;
+    if (seriesName && !acc.includes(seriesName)) return [...acc, seriesName];
+    return acc;
+  }, [] as string[]);
 
   if (posts.length > 0) {
     posts.forEach((post, index) => {
@@ -86,7 +81,7 @@ const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, report
 
   if (series.length > 0) {
     series.forEach(singleSeries => {
-      const path = `/series/${_.replace(singleSeries, /\s/g, '-')}`;
+      const path = `/series/${singleSeries.replace(/\s/g, '-')}`;
       createPage({
         path,
         component: seriesTemplate,

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
 
 import { Link } from 'gatsby';
 
 import Title from 'components/Title';
 import Divider from 'components/Divider';
+import { useThrottledCallback } from '@react-hookz/web';
 
 const SeriesListWrapper = styled.div`
   margin-bottom: 60px;
@@ -67,14 +67,14 @@ interface Props {
 const SeriesList = ({ seriesList }: Props) => {
   const [seriesCount, setSeriesCount] = useState(10);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleMoreLoad = useCallback(
-    _.throttle(() => {
+  const handleMoreLoad = useThrottledCallback(
+    () => {
       if (checkIsScrollAtBottom() && seriesCount < seriesList.length) {
         setTimeout(() => setSeriesCount(seriesCount + 10), 300);
       }
-    }, 250),
-    [seriesCount, setSeriesCount, seriesList]
+    },
+    [seriesCount, setSeriesCount, seriesList],
+    250
   );
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const SeriesList = ({ seriesList }: Props) => {
           <Fragment key={series.name}>
             <SeriesWrapper>
               <Title size="bg">
-                <Link to={`/series/${_.replace(series.name, /\s/g, '-')}`}>{series.name}</Link>
+                <Link to={`/series/${series.name.replace(/\s/g, '-')}`}>{series.name}</Link>
               </Title>
               <SeriesInform>
                 <PostCount>{series.posts.length} Posts</PostCount>

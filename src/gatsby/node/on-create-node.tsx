@@ -2,7 +2,7 @@
 
 import { GatsbyNode } from 'gatsby';
 import { createFilePath } from 'gatsby-source-filesystem';
-import _ from 'lodash';
+import { decamelize } from 'humps';
 
 export type TypeFrontmatter = {
   title: string;
@@ -40,12 +40,14 @@ const onCreateNode: GatsbyNode['onCreateNode'] = ({ node, actions, getNode }) =>
     }
 
     if (frontmatter.tags) {
-      const tagSlugs = frontmatter.tags.map(tag => `/tag/${_.kebabCase(tag)}/`);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/restrict-template-expressions
+      const tagSlugs = frontmatter.tags.map(tag => `/tag/${decamelize(tag, { separator: '-' })}/`);
       createNodeField({ node, name: 'tagSlugs', value: tagSlugs });
     }
 
     if (frontmatter.category) {
-      const categorySlug = `/category/${_.kebabCase(frontmatter.category)}/`;
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unsafe-call
+      const categorySlug = `/category/${decamelize(frontmatter.category, { separator: '-' })}/`;
       createNodeField({ node, name: 'categorySlug', value: categorySlug });
     }
 

@@ -1,5 +1,5 @@
 const { createFilePath } = require(`gatsby-source-filesystem`);
-const _ = require('lodash');
+const { decamelize } = require('humps');
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
@@ -54,19 +54,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   }
 
-  const series = _.reduce(
-    posts,
-    (acc, cur) => {
-      const seriesName = cur.frontmatter.series;
-      if (seriesName && !_.includes(acc, seriesName)) return [...acc, seriesName];
-      return acc;
-    },
-    []
-  );
+  const series = posts.reduce((acc, cur) => {
+    const seriesName = cur.frontmatter.series;
+    if (seriesName && !acc.includes(seriesName)) return [...acc, seriesName];
+    return acc;
+  }, []);
   if (series.length > 0) {
     const seriesTemplate = require.resolve(`./src/templates/Series.tsx`);
     series.forEach(singleSeries => {
-      const path = `/series/${_.replace(singleSeries, /\s/g, '-')}`;
+      const path = `/series/${singleSeries.replace(/\s/g, '-')}`;
       createPage({
         path,
         component: seriesTemplate,
@@ -100,12 +96,16 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
     }
 
     if (node.frontmatter.tags) {
-      const tagSlugs = node.frontmatter.tags.map(tag => `/tag/${_.kebabCase(tag)}/`);
+      const tagSlugs = node.frontmatter.tags.map(
+        tag => `/tag/${decamelize(tag, { separator: '-' })}/`
+      );
       createNodeField({ node, name: 'tagSlugs', value: tagSlugs });
     }
 
     if (node.frontmatter.category) {
-      const categorySlug = `/category/${_.kebabCase(node.frontmatter.category)}/`;
+      const categorySlug = `/category/${decamelize(node.frontmatter.category, {
+        separator: '-',
+      })}/`;
       createNodeField({ node, name: 'categorySlug', value: categorySlug });
     }
 

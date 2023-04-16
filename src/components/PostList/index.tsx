@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import styled from 'styled-components';
-import _ from 'lodash';
 
 import { Link } from 'gatsby';
 
 import Title from 'components/Title';
 import Divider from 'components/Divider';
 import TagList from 'components/TagList';
+import { useThrottledCallback } from '@react-hookz/web';
 
 const PostListWrapper = styled.div`
   @media (max-width: 768px) {
@@ -62,14 +62,14 @@ interface Props {
 const PostList = ({ postList }: Props) => {
   const [postCount, setPostCount] = useState(20);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const handleMoreLoad = useCallback(
-    _.throttle(() => {
+  const handleMoreLoad = useThrottledCallback(
+    () => {
       if (checkIsScrollAtBottom() && postCount < postList.length) {
         setTimeout(() => setPostCount(postCount + 20), 300);
       }
-    }, 250),
-    [postCount, postList]
+    },
+    [postCount, postList],
+    250
   );
 
   useEffect(() => {
