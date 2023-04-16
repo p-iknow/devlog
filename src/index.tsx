@@ -1,9 +1,13 @@
+require('katex/dist/katex.min.css');
+require('pretendard/dist/web/static/pretendard-dynamic-subset.css');
+
 import React from 'react';
-import { GatsbySSR } from 'gatsby';
 import { ThemeContextProvider } from 'context';
 
-const wrapRootElement: GatsbySSR['wrapRootElement'] = ({ element }) => (
-  <ThemeContextProvider>{element}</ThemeContextProvider>
-);
+interface RootProps {
+  children: React.ReactNode;
+}
 
-export default wrapRootElement;
+const Root = ({ children }: RootProps) => <ThemeContextProvider>{children}</ThemeContextProvider>;
+
+export default Root;
