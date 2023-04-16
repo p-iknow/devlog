@@ -40,7 +40,7 @@ const NotFoundPage = () => (
 export default NotFoundPage;
 
 export const Head = () => {
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = `p-iknow's dev-log not found page`;
   const description = title;
   const url = blogConfig.siteUrl + '404/';

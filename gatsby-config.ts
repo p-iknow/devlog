@@ -86,9 +86,22 @@ const config: GatsbyConfig = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 600,
-              loading: 'lazy',
-              wrapperStyle: 'margin-bottom: 16px; margin-top: 16px;',
-              quality: 100,
+              wrapperStyle: 'margin-bottom: 16px; margin-top: 10px;',
+              quality: 80,
+              withWebp: true,
+              loading: 'auto',
+            },
+          },
+          {
+            resolve: `gatsby-remark-images-anywhere`,
+            options: {
+              staticDir: 'static',
+              loading: 'auto',
+              backgroundColor: '#fff',
+              linkImagesToOriginal: true,
+              wrapperStyle: 'padding-bottom: 0.5rem;',
+              sharpMethod: 'fluid',
+              maxWidth: 600,
             },
           },
           {

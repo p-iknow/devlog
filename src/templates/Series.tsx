@@ -123,7 +123,7 @@ export default Series;
 export const Head = ({ pageContext }: Props) => {
   const title = `SERIES: ${pageContext.series}`;
   const description = blogConfig.description;
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   return (
     <>
       <title>{title}</title>

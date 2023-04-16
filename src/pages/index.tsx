@@ -98,7 +98,7 @@ const BlogIndex = ({ data }: Props) => {
 export default BlogIndex;
 
 export const Head = ({ data }: Props) => {
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = blogConfig.title;
   const description = blogConfig.description;
   const url = blogConfig.siteUrl;

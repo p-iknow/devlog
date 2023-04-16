@@ -134,7 +134,7 @@ const TagsPage = ({ data }: Props) => {
 export default TagsPage;
 
 export const Head = ({ data }: Props) => {
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = data.site.siteMetadata.title;
   const description = blogConfig.description;
   const url = blogConfig.siteUrl + 'tags/';

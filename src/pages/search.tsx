@@ -98,7 +98,7 @@ const SearchWrapper = styled.div`
 export default Search;
 
 export const Head = () => {
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = `p-iknow's dev-log search page`;
   const description = `p-iknow's dev-log search page`;
   const url = blogConfig.siteUrl + 'search/';

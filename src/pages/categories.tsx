@@ -136,7 +136,7 @@ const CategoryListWrapper = styled.div`
 export default CategoriesPage;
 
 export const Head = ({ data }: Props) => {
-  const ogImgUrl = `${blogConfig.siteUrl}/og-img.jpeg`;
+  const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = data.site.siteMetadata.title;
   const description = `p-iknow's dev-log category page`;
   const url = blogConfig.siteUrl + 'categories/';

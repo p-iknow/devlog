@@ -18,13 +18,13 @@ const profileImageRoot =
     ? 'http://localhost:8000'
     : blogConfig.siteUrl;
 
-const Profile = styled.div`
+const Profile = styled.image`
   flex: 0 0 auto;
   margin-right: 16px;
   width: 128px;
   height: 128px;
   border-radius: 999px;
-  background-image: url(${profileImageRoot}/profile.jpg);
+  background-image: url(${profileImageRoot}/profile.webp);
   background-size: cover;
   background-position: center;
 `;
