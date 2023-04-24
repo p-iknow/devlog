@@ -24,10 +24,6 @@ const StyledMarkdown = styled.div`
     margin-bottom: 24px;
   }
 
-  & img:first-child {
-    margin-top: 24px;
-  }
-
   & p {
     overflow-x: scroll;
     word-break: break-all;
@@ -37,30 +33,25 @@ const StyledMarkdown = styled.div`
     }
   }
 
-  & h2,
-  & h3,
-  & h4,
-  & h5,
-  & h6 {
-    margin: 11.2px 0 4.8px 0;
+  & p + h2,
+  & p + h3,
+  & P + h4 {
+    margin-top: 2rem;
+    margin-bottom: 0.9rem;
     font-weight: 700;
   }
 
   & h2 {
-    margin-top: 64px;
-    margin-bottom: 24px;
     font-size: 28px;
   }
 
   & h3 {
     margin-top: 48px;
-    margin-bottom: 24px;
     font-size: 22.4px;
   }
 
   & h4 {
     margin-top: 32px;
-    margin-bottom: 24px;
     font-size: 17.6px;
   }
 
@@ -176,11 +167,19 @@ const StyledMarkdown = styled.div`
   }
 
   & img {
-    margin-top: 24px;
     display: block;
     margin-left: auto;
     margin-right: auto;
     max-width: 100%;
+  }
+  & p > img {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  & p > * + img {
+    margin-top: 16px;
+    margin-bottom: 16px;
   }
 
   & hr {
@@ -196,6 +195,10 @@ const StyledMarkdown = styled.div`
   & a:hover {
     background-color: ${props => props.theme.colors.text};
     color: ${props => props.theme.colors.hoveredLinkText};
+  }
+
+  & a:has(> code) {
+    text-decoration: none;
   }
 `;
 
