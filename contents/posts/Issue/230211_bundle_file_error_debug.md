@@ -11,8 +11,7 @@ tags:
   - 'issue'
 description: 'yarn gatsby develop 으로 gatsby 정적 사이트 블로그의 dev server를 실행시켰는데, 계속적으로 Error: getaddrinfo ENOTFOUND localhost 라는 오류가 발생한다. 이를 해결하는 방법을 다룬다.'
 ---
-![issue log](https://imgur.com/h49WNfq.png)
-
+![issue log](../../../static/issue-log.webp)
 ## 배경
 
 현재 웹 프레임웍으로 생산되는 대다수의 코드는 `webpack`, `rollup` 등의 번들러에 의해 번들된 파일로 서빙된다. 번들된 파일에서 에러가 나는 경우 `source map`을 이용해서 파악할 수 있지만, `production` 환경의 경우 `source-map`을 함께 동반하지 않는 경우가 많고, 또 `vendor(library)` 코드의 경우는 하나의 파일에 여러 라이브러리 소스가 엮여 있기 때문에 어떤 라이브러리가 문제가 되는지 파악하기 더 어렵다.  아래 케이스 스터디를 통해 이런 상황에서 어떻게 이슈를 파악해 나가는지 파악해보자.

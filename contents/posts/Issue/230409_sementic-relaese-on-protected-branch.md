@@ -11,7 +11,8 @@ tags:
   - 'issue'
 description: 'sementic-release/git 에서 main 브랜치에 commit을 생성하는 단계에서 에러가 발생한다. 이를 해결하는 방법을 다룬다'
 ---
-![issue log](https://imgur.com/h49WNfq.png)
+
+![issue log](../../../static/issue-log.webp)
 ## 배경
 
 ci 에서 `sementic-release` 를 사용해 버전에 대한 태그를 생성하고 해당 내용을 main branch에 `commit` 하는 step이 있다. 이 step의 결과물로 아래 표시된 커밋이 main branch에 생성된다.

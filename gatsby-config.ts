@@ -77,6 +77,13 @@ const config: GatsbyConfig = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `static`,
+        path: `${__dirname}/static`,
+      },
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         footnotes: true,
@@ -86,10 +93,8 @@ const config: GatsbyConfig = {
             resolve: `gatsby-remark-images`,
             options: {
               maxWidth: 600,
-              wrapperStyle: 'margin-bottom: 16px; margin-top: 16px;',
               quality: 80,
               withWebp: true,
-              loading: 'eager',
             },
           },
           {
@@ -126,9 +131,6 @@ const config: GatsbyConfig = {
             options: {
               strict: `ignore`,
             },
-          },
-          {
-            resolve: 'gatsby-remark-static-images',
           },
         ],
       },
