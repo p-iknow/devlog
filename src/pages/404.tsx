@@ -43,7 +43,7 @@ export const Head = () => {
   const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = `p-iknow's dev-log not found page`;
   const description = title;
-  const url = blogConfig.siteUrl + '404/';
+  const url = blogConfig.siteUrl + '/404/';
   return (
     <>
       <title>{title}</title>

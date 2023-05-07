@@ -167,8 +167,8 @@ export const Head = ({ data }: Props) => {
   const post = data.markdownRemark;
   const { title, tags, img, description } = post.frontmatter;
   const { slug } = post.fields;
-  const ogImgUrl = img;
-  const url = `${blogConfig.siteUrl}${slug}`;
+  const ogImgUrl = img ?? blogConfig.ogImg;
+  const url = `${blogConfig.siteUrl}/${slug}`;
   const metaDescription = description ?? post.excerpt;
   const keywords = tags.join(',');
   return (

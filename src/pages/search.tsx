@@ -101,7 +101,7 @@ export const Head = () => {
   const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = `p-iknow's dev-log search page`;
   const description = `p-iknow's dev-log search page`;
-  const url = blogConfig.siteUrl + 'search/';
+  const url = blogConfig.siteUrl + '/search/';
   return (
     <>
       <title>{title}</title>

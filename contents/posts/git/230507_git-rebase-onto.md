@@ -5,11 +5,12 @@ template: 'post'
 draft: false
 slug: 'git/git-rebase-onto-and-split-pr-into-smaller-units'
 category: 'git'
+img: 'https://p-iknow.netlify.app/git.webp'
 tags:
   - 'git'
   - 'github'
   - 'pull request'
-description: 'git rebase --onto 옵션을 활용하여 PR을 보다 작은 단위로 작성하는 법에 대해 설명한다.'
+description: 'git rebase --onto 옵션을 활용하여 PR을 보다 작은 단위로 작성하는 법에 대해 설명한다. pr에서 이전 커밋 내용 삭제하는 방법을 배울 수 있다.'
 
 ---
 

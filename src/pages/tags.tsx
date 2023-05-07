@@ -137,7 +137,7 @@ export const Head = ({ data }: Props) => {
   const ogImgUrl = `${blogConfig.siteUrl}/og-img.webp`;
   const title = data.site.siteMetadata.title;
   const description = blogConfig.description;
-  const url = blogConfig.siteUrl + 'tags/';
+  const url = blogConfig.siteUrl + '/tags/';
   return (
     <>
       <title>{title}</title>
