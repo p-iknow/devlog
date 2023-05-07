@@ -41,7 +41,9 @@ mockData2 커밋을 완성할 무렵 동료의 리뷰가 끝나서 해당 PR을 
 
 ![image-20230507110454968](https://i.imgur.com/lihbEWF.png)
 
-이제 mockData 만들기가 완성됬다. 목데이터 만들기 작업 브랜치를 피쳐브랜치로 squash merge 하는 PR을 작성했다. 그런데 PR 확인하던중 문제를 발견했다.![image-20230507111557640](https://i.imgur.com/rins6B9.png)
+이제 mockData 만들기가 완성됬다. 목데이터 만들기 작업 브랜치를 피쳐브랜치로 squash merge 하는 PR을 작성했다. 그런데 PR 확인하던중 문제를 발견했다.
+
+![image-20230507111557640](https://i.imgur.com/rins6B9.png)
 
 이전 PR에서 리뷰가 된 내용이 이번 PR에도 포함됬다. 물론 merge가 가능하지만, 이미 리뷰된 코드가 다시 PR, commit(피쳐브랜치관점에서는 commit) 에 포함되면 불필요한 컨텍스트가 생성되고, 리뷰 그리고 추후 히스토리 파악에 어려움이 생긴다.
 
@@ -56,9 +58,10 @@ files changed 에서 불필요한 변경사항이 사라졌다.
 ![image-20230507112820143](https://i.imgur.com/AIFf5TA.png)
 
 다만 여전히 목데이터 작업과 무관한 커밋 history가 남아 있다.
+
 ![image-20230507113523517](https://i.imgur.com/qettv7V.png)
 
- 리뷰어가 별도 커밋 내용을 확인하지 않고 최종적으로 완성된 코드만을 리뷰한다면 피쳐브랜치를 머지하는 것으로 문제가 해결된다. 허나 commit 은 코드를 이해하는데 필요한 중요한 정보다.  아래는 github에서 커밋별 리뷰를 진행하는 예제인데,  코드의 변경과 변경에 대한 이유와 맥락이 커밋 메시지에 드러나가기 때문에 코드의 이해가 편하다.
+ 리뷰어가 별도 커밋 내용을 확인하지 않고 최종적으로 완성된 코드만을 리뷰한다면 피쳐브랜치를 머지하는 것으로 문제가 해결된다. 허나 commit 은 코드를 이해하는데 필요한 중요한 정보다. 아래는 github에서 커밋별 리뷰를 진행하는 예제인데,  코드의 변경과 변경에 대한 이유와 맥락이 커밋 메시지에 드러나가기 때문에 코드의 이해가 편하다.
 
 ![image-20230507113722171](https://i.imgur.com/pM0PVbc.png)
 
@@ -87,15 +90,15 @@ git rebase --onto feat-bank-account-detail 6974c0d^
 성공!! 이제 PR에 원하는 커밋히스토리만 남았다. 이제 `git rebase --onto` 명령어가 어떻게 이런 결과를 만들었는지 살펴보자.
 
 ```bash
-git rebase --onto <newparent> <oldparent> <until>(생략하면 해당 브랜치의 마지막 커밋이 기본값으로 입력됨)
+git rebase --onto <newparent> <oldparent> <until>
 git rebase --onto feat-bank-account-detail 6974c0d^
 
+```
 <newparent>:feat-bank-account-detail => rebase가 될 base commit  hash
 
 <oldparent>: 6974c0d^(mockData1) => rebase를 시작할 commit hash, 여기서^는 parent 라는 의미로 mockData1 의 parent인 4e0c2(PresenterComponent3) 를 의미한다.
 
 <until>: 생략 => 여기에 입력된 commit 까지 rebase 가 된다. 생략시 해당 현재 브랜치의 마지막 commit이 기본값이 된다.
-```
 
 따라서 `4e0c2(PresenterComponent3) ===  6974c0d^(mockData1)`  의 다음 커밋 `6974c0d(mockData1)` 부터  해당 브런치의 마지막 커밋인 `ab12ae(mockData2)` 구간을  `8b330(feat-bank-account-detail branch의 head commit)` 을 base로 하여 rebase하겟다는 뜻이다.  더 간단히 하면 `mockData1 ~ mockData2` 를 때네어  feat-bank-account-detail branch에 rebase 한다는 뜻이다.
 
