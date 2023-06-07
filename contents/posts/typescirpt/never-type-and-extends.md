@@ -1,15 +1,16 @@
 ---
-title: 'typescript extends 키워드를 쓸때 never 타입을 어떻게 다루는가?'
+title: 'typescript는 never를 어떻게 다루고 있는가?'
 date: '2023-06-04T23:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'typescript/handle-never-type-when-use-with-extends-keyword'
+slug: 'typescript/handle-never-type-weired'
 category: 'typescript'
 tags:
   - 'typescript'
-  - 'extends'
+  - 'never'
+  - 'conditional type'
 description:
-  'typescript extends 키워드를 쓸때 never 타입을 어떻게 다루는지에 대한 내용을 설명합니다. extends '
+  'coditional type의 맥락에서 generic에 never가 할당되면 typescript가 never를 어떻게 다루는지에 대해 이슈를 통해 알아봅니다.'
 ---
 
 ![typescript](../../../static/typescript.webp)
