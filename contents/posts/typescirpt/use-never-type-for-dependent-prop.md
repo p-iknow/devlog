@@ -16,7 +16,7 @@ description: '타입스크립트의 인터페이스를 정의할 때 각각의 p
 
 ![typescript](../../../static/typescript.webp)
 
-## 서로 의존적인 필드를 `Interface` 란?
+## 서로 의존적인 필드를 가진 `Interface` 란?
 
 `isDark` 와 `isLight` 이라는 prop을 가진 인터페이스가 있다고 하자.
 
