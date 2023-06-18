@@ -19,11 +19,9 @@ description:
 
 ## 배경
 
-Design system 컴포넌트들의 기본 Props을 아래와 같이 정의했다. 새로 만들 design system은 기본적으로
-는`headless` 이다. 확정된 경우가 아니면 별도의 스타일을 가지지 않고, 컴포넌트의 역할과 기능만 정의한
-다. 필요한 경우 아주 기본적인 스타일을 기본으로 제공하지만, 쉽게 override할 수 있다. 이런 정의는 스
-타일에 대한 유연성을 높이고 동시에 각 컴포넌트의 재사용성을 높인다. 그러나 특정 컴포넌트의 경우 스타
-일의 변화(variant)가 이미 정의되어있고. 사용자에게 이미 지정된 variant 내의 스타일을 쓰도록제한한다.
+Design system 컴포넌트들의 기본 Props을 정의하려 한다. 새로 만들 design system은 `headless` 하게 설계하고자 한다. 확정된 경우가 아니면 별도의 스타일을 가지지 않고, 컴포넌트의 역할과 기능만 정의한
+다. 필요한 경우 아주 기본적인 스타일을 기본으로 제공하지만, 쉽게 override할 수 있어야 한다. `headless` 전략은 스타일에 대한 유연성을 높이고 동시에 각 컴포넌트의 재사용성을 높인다. 그러나 특정 컴포넌트의 경우 스타
+일의 변화(variant)가 이미 정의되어있고. 사용자에게 이미 지정된 variant 내의 스타일을 쓰도록 제한할 필요가 있다.
 
 위 내용을 토대로 디자인 시스템의 타입을 정의해보자. 기본 `Props` 은 다음과 같다.
 
@@ -61,9 +59,7 @@ interface StyledPropsWithVariant<VariantUnion> extends StyledDefaultProps {
 }
 ```
 
-각 서비스에서 사용시에는 위 타입을 각각 쓰지 않고 `StyledProps` 만을 쓰게 만들고 싶었다. 만약 변화가
-일어난다면 변화의 범위를 `StyledProps` 안으로 한정하고 싶었기 때문이다. 그럼 서비스에서는 어떻게
-variant가 있는 타입과 variant가 없는 타입을 구분해서 사용할 수 있을까?
+각 서비스에서 사용시에는 위 타입을 각각 쓰지 않고 `StyledProps` 만을 쓰게 만들고 싶었다. 만약 변화가 일어난다면 변화의 범위를 `StyledProps` 안으로 한정하고 싶었기 때문이다. 그럼 서비스에서는 어떻게 variant가 있는 타입과 variant가 없는 타입을 구분해서 사용할 수 있을까?
 
 ```ts
 export type StyledProps<VariantUnion extends = never> = VariantUnion extends never
@@ -71,12 +67,13 @@ export type StyledProps<VariantUnion extends = never> = VariantUnion extends nev
   : StyledPropsWithVariant<VariantUnion>;
 ```
 
-"`generic` 과 `extends` 키워드를 사용하면 우리의 목표를 달성할 수 있다. " 라고 생각했다. 하지만 결과
-는 예상과는 달랐다.
+"`generic` 과 `extends` 키워드를 사용하면 우리의 목표를 달성할 수 있다." 라고 생각했다. 하지만 결과는 예상과는 달랐다.
 
 ## 이슈
 
-기대는 다음과 같았다. `VariantUnion` 제네릭의 `default type`으로 `never` 를 할당한다.
+나의 기대는 다음과 같았다.
+
+`VariantUnion` 제네릭의 `default type`으로 `never` 를 할당한다.
 
 ```ts type CompoenntWithoutVariant = StyledProps;
 type CompoenntWithoutVariant = StyledProps;
@@ -100,7 +97,7 @@ never extends never
 
 ## extends keyword
 
-원인 파악을 위해 타입정의에 사용된 `extends` 키워드에 대해 알아보자.
+원인 파악을 위해 타입정의에 사용된 `extends` 키워드에 대해 더 알아보자.
 
 ```ts
 SomeType extends OtherType ? TrueType : FalseType;
@@ -111,7 +108,7 @@ SomeType extends OtherType ? TrueType : FalseType;
 
 그렇다면 할당가능(Assignability)은 어떻게 판단할까? SomeType 이 OtherType의 subType이거나 같은 타입
 이면 할당 가능하다. 아래는 각 타입의 `SuperType` 과 `SupType` 을 정리한 이미지이다. `unknown` 은 모
-든 type의 `Supertype` 이기에 모든 타입을 `unkown` type 에 할당할 수 있다. `never` 타입은 모든 타입의
+든 type의 `Supertype` 이다. 따라서 모든 타입을 `unkown` type 에 할당할 수 있다. `never` 타입은 모든 타입의
 `subtype`(bottom type) 이므로 never type 이에외 어떤 타입에도 `never` type에 할당할 수 없다. 그리고
 어떤 타입에도 `never` type을 할당할 수 있다.
 
@@ -136,24 +133,22 @@ type StrArrOrNumArr = ToArray<string | number>;
 // => string[] | number[]
 ```
 
-> Conditional type(SomeType extends
-> OtherType)`에 `generic` type(`<Type>`) 을 적용하고, `generic` 에`union`타입을 할당하는 경우, 타입스크립트는`union`type의 각 요소에개별적으로 조건문을 적용시킨다. 이것을 타입스크립트 맥락에서 `distribution(
-> 배분)` 이라 한다.
+> Conditional type(SomeType extends OtherType)에 `generic` type을 적용하고, `generic` 에 `union`타입을 할당하는 경우, 타입스크립트는 `union` type의 각 요소에 개별적으로 조건문을 적용시킨다. 이것을 타입스크립트 맥락에서 `distribution(배분)` 이라 한다.
 > [(Distribute Conditional Types 참고)](https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types)
 
 그런데 이 내용이 `never` 타입과 무슨 상관인가? . [Ryan Cavanaugh](https://twitter.com/searyanc)은
 [조건부 타입에서 generic 에 never를 할당할 경우 발생하는 현상](https://github.com/microsoft/TypeScript/issues/23182#issuecomment-379094672)에
 대해 아래와 같이 설명했다
 
-> - `never`은 `empty union`이다.
+> `never`은 `empty union`이다.
 >
-> => `neve` behaves as the _empty union_
+> => `never` behaves as the empty union
 >
-> - 타입스크립트는 조건부 타입에 대해 유니언 타입을 할당한다.
+> 타입스크립트는 조건부 타입에 대해 유니언 타입을 할당한다.
 >
 > => so it distributes over the conditional
 >
-> - 할당이 발생하면 할당할 것이 없으므로 조건부 타입(`Conditional Type`)은 `never`로 평가된다.
+> 할당이 발생하면 할당할 것이 없으므로 조건부 타입(`Conditional Type`)은 `never`로 평가된다.
 >
 > => so it distributes over the conditional and produces another empty union (which is just `never`
 > again)
@@ -162,13 +157,14 @@ type StrArrOrNumArr = ToArray<string | number>;
 
 ```typescript
 type IsNumber<T> = T extends number  ? true : false;
-type IsNumberResult1 = IsNumber<1 | 0>
+type IsNumberResult1 = IsNumber<1 | '0'>
        = <1 | '0'> extends number ? true : false;
 			 // distribute 를 array의 map 문법 처럼 표현했다.
        = <1 | '0'>.distribute(t => t extends number ? true : false);
-			 = <1 extends number ? true : false | '0' extens number ? true : false>
+			 = (1 extends number ? true : false) | ('0' extends number ? true : false)
        = <true | false>
        = true | false
+
 // 1 | never === '1'
 // IsNumber<1> === IsNumber<1 | never>
 type IsNumberResult2 = IsNumber<1>
@@ -179,6 +175,7 @@ type IsNumberResult2 = IsNumber<1>
        // never extends number ? true : false = never
        = <true | never>
        = true
+
 // never | never === never
 type IsNumberResult3 = IsNumber<never>
        = <never | never> extends number ? true : false
@@ -222,8 +219,7 @@ type Res = IsNever<never>; // never 🧐
 
 ## `never extends never ? true: false = true`
 
-아마 위 설명을 보면서 타입스크립트 playground에 각 부분을 실행시켜보신 분들은 이해가 되지 않는 부분
-이 있을 것이다.
+아마 위 설명을 보면서 타입스크립트 playground에 각 부분을 실행시켜보신 분들은 이해가 되지 않는 부분이 있을 것이다.
 
 ```ts
 never extends number ? true : false // never
