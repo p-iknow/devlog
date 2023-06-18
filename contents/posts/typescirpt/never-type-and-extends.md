@@ -3,7 +3,8 @@ title: 'typescript는 never를 어떻게 다루고 있는가?'
 date: '2023-06-04T23:46:37.121Z'
 template: 'post'
 draft: false
-slug: 'typescript/handle-never-type-weired'
+slug: 'typescript/handle-never-type-weird
+img: 'https://p-iknow.netlify.app/typescript.webp'
 category: 'typescript'
 tags:
   - 'typescript'
@@ -100,7 +101,7 @@ SomeType extends OtherType ? TrueType : FalseType;
 
 `extends` 왼쪽에 있는 `SomeType` 을 `extends` 오른쪽에 있는 `OtherType`에 할당할 수 있는 경우 이 타입은 `TrueType` 이고, 할당할 수 없는 경우 `FalseType` 이다.
 
-그렇다면 할당가능(Assignability)은 어떻게 판단할까? SomeType 이 OtherType의 subType이거나 같은 타입이면 할당 가능하다. 아래는 각 타입의 `SuperType` 과 `SupType` 을 정리한 이미지이다. `unknown` 은 모든 type의 `Supertype` 이기에 모든 타입을 `unkownt` type 에 할당할 수 있다. `never` 타입은 모든 타입의 `subtype`(bottom type) 이므로 never type 이에외 어떤 타입에도 `never` type에 할당할 수 없다. 그리
+그렇다면 할당가능(Assignability)은 어떻게 판단할까? SomeType 이 OtherType의 subType이거나 같은 타입이면 할당 가능하다. 아래는 각 타입의 `SuperType` 과 `SupType` 을 정리한 이미지이다. `unknown` 은 모든 type의 `Supertype` 이기에 모든 타입을 `unkown` type 에 할당할 수 있다. `never` 타입은 모든 타입의 `subtype`(bottom type) 이므로 never type 이에외 어떤 타입에도 `never` type에 할당할 수 없다. 그리
 고 어떤 타입에도 `never` type을 할당할 수 있다.
 
 ![image-20230604232425357](https://i.imgur.com/Gp5Qge5.png)
