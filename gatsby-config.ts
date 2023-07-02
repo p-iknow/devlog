@@ -152,14 +152,30 @@ const config: GatsbyConfig = {
         `,
         feeds: [
           {
-            serialize: ({ query: { site, allMarkdownRemark } }): any =>
+            serialize: ({
+              query: { site, allMarkdownRemark },
+            }: {
+              query: {
+                site: { siteMetadata: { siteUrl: string } };
+                allMarkdownRemark: {
+                  edges: {
+                    node: {
+                      frontmatter: { date: string };
+                      excerpt: string;
+                      fields: { slug: string };
+                      html: string;
+                    };
+                  }[];
+                };
+              };
+            }): unknown =>
               allMarkdownRemark.edges.map(
                 (edge: {
                   node: {
-                    frontmatter: { date: any };
-                    excerpt: any;
-                    fields: { slug: any };
-                    html: any;
+                    frontmatter: { date: string };
+                    excerpt: string;
+                    fields: { slug: string };
+                    html: string;
                   };
                 }) =>
                   Object.assign({}, edge.node.frontmatter, {
