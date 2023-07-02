@@ -31,13 +31,10 @@ export const ThemeContextProvider = ({ children }: { children: React.ReactNode }
 
 export const useThemeState = () => {
   const theme = useContext(ThemeContext);
-  if (!theme) throw new Error('Cannot find ThemeProvider');
   return theme;
 };
 
 export const useSetTheme = () => {
   const setTheme = useContext(SetThemeContext);
-  if (!setTheme) throw new Error('Cannot find ThemeProvider');
-
   return setTheme;
 };
