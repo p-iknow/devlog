@@ -279,7 +279,7 @@ type Res2 = IsNever<number> // 'false' ✅
 [타입스크립트 소스코드](https://github.com/microsoft/TypeScript/blob/main/tests/cases/conformance/types/conditional/conditionalTypes1.ts#L212)에
 내장되어 있다.
 
-## Summery
+## Summary
 
 - `Conditional type(SomeType extends OtherType)`에 `generic` type(`<Type>`) 을 적용하고, `generic`
   에`union` 타입을 할당하는 경우, 타입스크립트는 `union`type의 각 요소에개별적으로 조건문을 적용시킨

@@ -179,6 +179,6 @@ const ResourceIdFromServer만_쓰는경우 = <CustomImg resourceIdFromServer='..
 
 인터페이스의 union을 통한 prop 정의로 모든 케이스의 요구사항을 만족시켰다. 위와 같이 interface의 union을 사용하는 전략을 `Tagged Union Types (Discriminated Unions)` 이라고 한다.  `Tagged Union Types`  더 자세한 내용은 [링크](https://mariusschulz.com/blog/tagged-union-types-in-typescript)에 접속하여 확인할 수 있다.
 
-## Summery
+## Summary
 
 리엑트의  `Props` 정의를 할 때  각각의 prop이 서로 의존적일 경우 `interface` 의 `union` 과 `never` 타입을 활용하면 원하는 타입 표현을 할 수 있다.
