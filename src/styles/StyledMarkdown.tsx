@@ -25,7 +25,6 @@ const StyledMarkdown = styled.div`
   }
 
   & p {
-    overflow-x: scroll;
     word-break: break-all;
 
     ::-webkit-scrollbar {
