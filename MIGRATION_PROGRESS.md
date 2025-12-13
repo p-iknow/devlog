@@ -8,7 +8,7 @@
 
 | Phase | 설명 | 상태 | 진행률 |
 |-------|------|------|--------|
-| Phase 1 | 프로젝트 초기 설정 | ⬜ 대기 | 0% |
+| Phase 1 | 프로젝트 초기 설정 | ✅ 완료 | 100% |
 | Phase 2 | 기본 설정 파일 구성 | ⬜ 대기 | 0% |
 | Phase 3 | 콘텐츠 마이그레이션 | ⬜ 대기 | 0% |
 | Phase 4 | 레이아웃/컴포넌트 마이그레이션 | ⬜ 대기 | 0% |
@@ -26,28 +26,28 @@
 ### 작업 목록
 | # | 작업 | 상태 | 날짜 | 비고 |
 |---|------|------|------|------|
-| 1.0 | 패키지 매니저 변경 (npm → pnpm) | ⬜ | | |
-| 1.0a | node_modules, package-lock.json 삭제 | ⬜ | | |
-| 1.0b | pnpm install 실행 | ⬜ | | |
-| 1.0c | package.json에 packageManager 필드 추가 | ⬜ | | |
-| 1.1 | Gatsby 관련 패키지 제거 | ⬜ | | |
-| 1.2 | styled-components 관련 패키지 제거 | ⬜ | | |
-| 1.3 | 기타 불필요한 패키지 제거 | ⬜ | | |
-| 1.4 | Astro 설치 (`pnpm add astro`) | ⬜ | | |
-| 1.5 | MDX 통합 설치 (`pnpm astro add mdx`) | ⬜ | | |
-| 1.6 | Sitemap 통합 설치 (`pnpm astro add sitemap`) | ⬜ | | |
-| 1.7 | React 통합 설치 (`pnpm astro add react`) | ⬜ | 선택 |
-| 1.8 | Tailwind CSS v4 설치 (`tailwindcss @tailwindcss/vite`) | ⬜ | | |
-| 1.9 | astro-expressive-code 설치 | ⬜ | | |
-| 1.10 | @tailwindcss/typography, clsx, tailwind-merge 설치 | ⬜ | | |
-| 1.11 | @astrojs/rss 설치 | ⬜ | | |
-| 1.12 | remark-math, rehype-katex, katex 설치 | ⬜ | | |
-| 1.13 | date-fns 설치 | ⬜ | | |
-| 1.14 | 개발 의존성 설치 (prettier, eslint, typescript) | ⬜ | | |
-| 1.15 | Gatsby 설정 파일 제거 (gatsby-config.ts, gatsby-node.js) | ⬜ | | |
-| 1.16 | 기존 src 폴더 백업 (src → src.gatsby-backup) | ⬜ | | |
-| 1.17 | static → public 이름 변경 | ⬜ | | |
-| 1.18 | 새 src 디렉토리 구조 생성 | ⬜ | | |
+| 1.0 | 패키지 매니저 변경 (npm → pnpm) | ✅ | 2024-12-13 | |
+| 1.0a | node_modules, package-lock.json 삭제 | ✅ | 2024-12-13 | |
+| 1.0b | pnpm install 실행 | ✅ | 2024-12-13 | |
+| 1.0c | package.json에 packageManager 필드 추가 | ✅ | 2024-12-13 | pnpm@10.5.2 |
+| 1.1 | Gatsby 관련 패키지 제거 | ✅ | 2024-12-13 | 24개 패키지 제거 |
+| 1.2 | styled-components 관련 패키지 제거 | ✅ | 2024-12-13 | 4개 패키지 제거 |
+| 1.3 | 기타 불필요한 패키지 제거 | ✅ | 2024-12-13 | prism, react-helmet 등 |
+| 1.4 | Astro 설치 (`pnpm add astro`) | ✅ | 2024-12-13 | v5.16.5 |
+| 1.5 | MDX 통합 설치 | ✅ | 2024-12-13 | @astrojs/mdx |
+| 1.6 | Sitemap 통합 설치 | ✅ | 2024-12-13 | @astrojs/sitemap |
+| 1.7 | React 통합 설치 | ✅ | 2024-12-13 | @astrojs/react |
+| 1.8 | Tailwind CSS v4 설치 | ✅ | 2024-12-13 | tailwindcss, @tailwindcss/vite |
+| 1.9 | astro-expressive-code 설치 | ✅ | 2024-12-13 | + @expressive-code/plugin-line-numbers |
+| 1.10 | clsx, tailwind-merge, @shikijs/transformers 설치 | ✅ | 2024-12-13 | |
+| 1.11 | @astrojs/rss 설치 | ✅ | 2024-12-13 | |
+| 1.12 | remark-math, rehype-katex 설치 | ✅ | 2024-12-13 | katex 유지 |
+| 1.13 | date-fns 설치 | ✅ | 2024-12-13 | |
+| 1.14 | 개발 의존성 설치 | ✅ | 2024-12-13 | prettier v3, eslint v9 |
+| 1.15 | Gatsby 설정 파일 제거 | ✅ | 2024-12-13 | gatsby-config, gatsby-node 등 |
+| 1.16 | 기존 src 폴더 백업 | ✅ | 2024-12-13 | src.gatsby-backup |
+| 1.17 | static → public 이름 변경 | ✅ | 2024-12-13 | |
+| 1.18 | 새 src 디렉토리 구조 생성 | ✅ | 2024-12-13 | content, components, layouts, pages, styles |
 
 ---
 
@@ -261,6 +261,7 @@
 |------|----------|
 | 2024-12-13 | 마이그레이션 계획 및 진행 상황 문서 생성 |
 | 2024-12-13 | blog-reference 프로젝트 참고하여 패키지 구성 업데이트 |
+| 2024-12-13 | **Phase 1 완료**: pnpm 마이그레이션, Gatsby 제거, Astro 5.x 설치, 디렉토리 구조 변경 |
 
 ---
 

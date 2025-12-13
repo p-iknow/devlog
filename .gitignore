@@ -4,6 +4,15 @@
 .AppleDouble
 .LSOverride
 
+# Dependencies
 node_modules/
+
+# Astro
+dist/
+.astro/
+
+# Gatsby (legacy)
 .cache/
-public
+
+# Backup
+src.gatsby-backup/
