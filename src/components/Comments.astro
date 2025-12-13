@@ -1,0 +1,61 @@
+---
+import { siteConfig } from "@/config/site";
+---
+
+<div id="comments" class="utterances-container">
+  <script
+    src="https://utteranc.es/client.js"
+    repo={siteConfig.utterances.repo}
+    issue-term={siteConfig.utterances.issueTerm}
+    theme="github-light"
+    crossorigin="anonymous"
+    async
+  ></script>
+</div>
+
+<script>
+  // 테마에 따라 utterances 테마 변경
+  function updateUtterancesTheme() {
+    const theme = document.documentElement.getAttribute("data-theme");
+    const utterancesTheme = theme === "dark" ? "github-dark" : "github-light";
+
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      ".utterances-frame"
+    );
+    if (iframe) {
+      iframe.contentWindow?.postMessage(
+        { type: "set-theme", theme: utterancesTheme },
+        "https://utteranc.es"
+      );
+    }
+  }
+
+  // MutationObserver로 테마 변경 감지
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.attributeName === "data-theme") {
+        updateUtterancesTheme();
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  // 초기 로드 시 테마 설정
+  window.addEventListener("load", () => {
+    setTimeout(updateUtterancesTheme, 1000);
+  });
+</script>
+
+<style>
+  .utterances-container {
+    max-width: 100%;
+  }
+
+  .utterances-container :global(.utterances) {
+    max-width: 100%;
+  }
+</style>

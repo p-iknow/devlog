@@ -1,21 +1,28 @@
 ---
-import "@/styles/global.css";
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostList from "@/components/PostList.astro";
+import { siteConfig } from "@/config/site";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+const sortedPosts = posts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
 ---
 
-<!doctype html>
-<html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>p-iknow's devlog</title>
-    <meta name="description" content="p-iknow's dev blog - Astro migration in progress" />
-  </head>
-  <body class="min-h-screen bg-[var(--color-surface)] text-[var(--color-default)]">
-    <main class="max-w-3xl mx-auto px-4 py-8">
-      <h1 class="text-4xl font-bold mb-4">p-iknow's devlog</h1>
-      <p class="text-lg text-[var(--color-muted)]">
-        Astro migration in progress...
-      </p>
-    </main>
-  </body>
-</html>
+<BaseLayout>
+  <section class="mb-8">
+    <h1 class="mb-2 text-3xl font-bold">{siteConfig.title}</h1>
+    <p class="text-lg text-[var(--color-muted)]">{siteConfig.description}</p>
+  </section>
+
+  <section>
+    <h2 class="mb-6 text-xl font-semibold">
+      Recent Posts
+      <span class="ml-2 text-sm font-normal text-[var(--color-muted)]">
+        ({sortedPosts.length})
+      </span>
+    </h2>
+    <PostList posts={sortedPosts} />
+  </section>
+</BaseLayout>

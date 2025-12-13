@@ -1,0 +1,49 @@
+---
+import { format } from "date-fns";
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ul class="space-y-8">
+  {posts.map((post) => {
+    const { title, description, date, category, tags = [] } = post.data;
+    const formattedDate = format(date, "yyyy-MM-dd");
+
+    return (
+      <li class="group">
+        <a href={`/posts/${post.id}`} class="block hover:no-underline">
+          <article class="rounded-lg border border-transparent p-4 transition-colors hover:border-[var(--color-border)] hover:bg-[var(--color-border)]/20">
+            <div class="mb-2 flex items-center gap-2 text-sm text-[var(--color-muted)]">
+              <time datetime={date.toISOString()}>{formattedDate}</time>
+              {category && (
+                <>
+                  <span>·</span>
+                  <span class="text-[var(--color-primary)]">{category}</span>
+                </>
+              )}
+            </div>
+            <h2 class="mb-2 text-xl font-semibold group-hover:text-[var(--color-primary)] transition-colors">
+              {title}
+            </h2>
+            <p class="mb-3 text-[var(--color-muted)] line-clamp-2">{description}</p>
+            {tags.length > 0 && (
+              <div class="flex flex-wrap gap-2">
+                {tags.slice(0, 3).map((tag) => (
+                  <span class="text-xs text-[var(--color-muted)]">#{tag}</span>
+                ))}
+                {tags.length > 3 && (
+                  <span class="text-xs text-[var(--color-muted)]">+{tags.length - 3}</span>
+                )}
+              </div>
+            )}
+          </article>
+        </a>
+      </li>
+    );
+  })}
+</ul>

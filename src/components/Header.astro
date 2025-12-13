@@ -1,0 +1,28 @@
+---
+import { siteConfig } from "@/config/site";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[var(--color-surface)]/80 backdrop-blur-sm"
+>
+  <div class="mx-auto flex max-w-3xl items-center justify-between px-4 py-4">
+    <a href="/" class="text-xl font-bold hover:no-underline">
+      {siteConfig.title}
+    </a>
+    <nav class="flex items-center gap-4">
+      <a href="/" class="text-sm hover:text-[var(--color-primary)]">Posts</a>
+      <a
+        href="/categories"
+        class="text-sm hover:text-[var(--color-primary)]"
+      >
+        Categories
+      </a>
+      <a href="/tags" class="text-sm hover:text-[var(--color-primary)]">Tags</a>
+      <a href="/series" class="text-sm hover:text-[var(--color-primary)]">
+        Series
+      </a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>

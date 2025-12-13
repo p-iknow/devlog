@@ -12,7 +12,7 @@ description: 'git rebase --onto 옵션을 활용하여 PR을 보다 작은 단�
 
 ---
 
-![git](../../../static/git.webp)
+![git](/git.webp)
 
 ## 배경
 

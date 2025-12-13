@@ -1,0 +1,16 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 - Page Not Found">
+  <div class="flex min-h-[50vh] flex-col items-center justify-center text-center">
+    <h1 class="mb-4 text-6xl font-bold text-[var(--color-muted)]">404</h1>
+    <p class="mb-8 text-xl text-[var(--color-muted)]">Page not found</p>
+    <a
+      href="/"
+      class="rounded-lg bg-[var(--color-primary)] px-6 py-3 text-white transition-colors hover:bg-[var(--color-primary-hover)]"
+    >
+      Go Home
+    </a>
+  </div>
+</BaseLayout>

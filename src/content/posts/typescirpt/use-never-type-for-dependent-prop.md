@@ -12,7 +12,7 @@ tags:
 description: '타입스크립트의 인터페이스를 정의할 때 각각의 prop이 서로 의존적일 경우 `interface` 의 `union` 과 `never` 타입을 활용하면 원하는 타입 표현을 할 수 있다'
 ---
 
-![typescript](../../../static/typescript.webp)
+![typescript](/typescript.webp)
 
 ## 서로 의존적인 필드를 가진 `Interface` 란?
 

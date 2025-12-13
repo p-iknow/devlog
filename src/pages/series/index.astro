@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+
+// 시리즈별 포스트 수 계산
+const seriesMap = new Map<string, number>();
+posts.forEach((post) => {
+  if (post.data.series) {
+    seriesMap.set(post.data.series, (seriesMap.get(post.data.series) || 0) + 1);
+  }
+});
+
+const series = Array.from(seriesMap.entries())
+  .sort((a, b) => b[1] - a[1])
+  .map(([name, count]) => ({ name, count }));
+---
+
+<BaseLayout title="Series" description="Browse posts by series">
+  <h1 class="mb-8 text-3xl font-bold">Series</h1>
+
+  {series.length > 0 ? (
+    <div class="space-y-4">
+      {series.map(({ name, count }) => (
+        <a
+          href={`/series/${encodeURIComponent(name)}`}
+          class="block rounded-lg border border-[var(--color-border)] p-4 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-border)]/20"
+        >
+          <h2 class="text-lg font-semibold">{name}</h2>
+          <p class="mt-1 text-sm text-[var(--color-muted)]">{count} posts</p>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <p class="text-[var(--color-muted)]">No series found.</p>
+  )}
+</BaseLayout>

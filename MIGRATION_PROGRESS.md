@@ -11,8 +11,8 @@
 | Phase 1 | 프로젝트 초기 설정 | ✅ 완료 | 100% |
 | Phase 2 | 기본 설정 파일 구성 | ✅ 완료 | 100% |
 | Phase 3 | 콘텐츠 마이그레이션 | ✅ 완료 | 100% |
-| Phase 4 | 레이아웃/컴포넌트 마이그레이션 | ⬜ 대기 | 0% |
-| Phase 5 | 페이지 마이그레이션 | ⬜ 대기 | 0% |
+| Phase 4 | 레이아웃/컴포넌트 마이그레이션 | ✅ 완료 | 100% |
+| Phase 5 | 페이지 마이그레이션 | ✅ 완료 | 100% |
 | Phase 6 | 기능 마이그레이션 | ⬜ 대기 | 0% |
 | Phase 7 | 배포 설정 | ⬜ 대기 | 0% |
 | Phase 8 | 테스트 및 최적화 | ⬜ 대기 | 0% |
@@ -109,46 +109,47 @@
 ### 레이아웃
 | # | 컴포넌트 | Gatsby 경로 | Astro 경로 | 상태 | 비고 |
 |---|----------|-------------|------------|------|------|
-| 4.1 | BaseLayout | src/components/Layout | src/layouts/BaseLayout.astro | ⬜ | |
-| 4.2 | PostLayout | src/templates/Post.tsx | src/layouts/PostLayout.astro | ⬜ | |
-| 4.3 | SeriesLayout | src/templates/Series.tsx | src/layouts/SeriesLayout.astro | ⬜ | |
+| 4.1 | BaseLayout | src/components/Layout | src/layouts/BaseLayout.astro | ✅ | |
+| 4.2 | PostLayout | src/templates/Post.tsx | src/layouts/PostLayout.astro | ✅ | |
+| 4.3 | SeriesLayout | src/templates/Series.tsx | src/layouts/SeriesLayout.astro | ⏸️ | PostLayout으로 대체 |
 
 ### 공통 컴포넌트
 | # | 컴포넌트 | 상태 | Tailwind 변환 | 비고 |
 |---|----------|------|---------------|------|
-| 4.4 | Header | ⬜ | ⬜ | |
-| 4.5 | Footer | ⬜ | ⬜ | |
-| 4.6 | Bio | ⬜ | ⬜ | |
-| 4.7 | Divider | ⬜ | ⬜ | |
-| 4.8 | Title | ⬜ | ⬜ | |
-| 4.9 | VerticalSpace | ⬜ | ⬜ | |
-| 4.10 | TextField | ⬜ | ⬜ | 검색용 |
-| 4.11 | NoContent | ⬜ | ⬜ | |
+| 4.4 | Header | ✅ | ✅ | |
+| 4.5 | Footer | ✅ | ✅ | |
+| 4.6 | Bio | ⏸️ | - | 향후 추가 |
+| 4.7 | Divider | ⏸️ | - | Tailwind로 대체 |
+| 4.8 | Title | ⏸️ | - | Tailwind로 대체 |
+| 4.9 | VerticalSpace | ⏸️ | - | Tailwind로 대체 |
+| 4.10 | TextField | ⏸️ | - | Phase 6 검색에서 구현 |
+| 4.11 | NoContent | ⏸️ | - | 향후 추가 |
 
 ### 리스트 컴포넌트
 | # | 컴포넌트 | 상태 | Tailwind 변환 | 비고 |
 |---|----------|------|---------------|------|
-| 4.12 | PostList | ⬜ | ⬜ | |
-| 4.13 | CategoryList | ⬜ | ⬜ | |
-| 4.14 | TagList | ⬜ | ⬜ | |
-| 4.15 | SeriesList | ⬜ | ⬜ | |
-| 4.16 | SideCategoryList | ⬜ | ⬜ | |
-| 4.17 | SideTagList | ⬜ | ⬜ | |
+| 4.12 | PostList | ✅ | ✅ | |
+| 4.13 | CategoryList | ⏸️ | - | 페이지에 인라인 구현 |
+| 4.14 | TagList | ⏸️ | - | 페이지에 인라인 구현 |
+| 4.15 | SeriesList | ⏸️ | - | 페이지에 인라인 구현 |
+| 4.16 | SideCategoryList | ⏸️ | - | 향후 추가 |
+| 4.17 | SideTagList | ⏸️ | - | 향후 추가 |
 
 ### Article 컴포넌트
 | # | 컴포넌트 | 상태 | Tailwind 변환 | 비고 |
 |---|----------|------|---------------|------|
-| 4.18 | Article/Header | ⬜ | ⬜ | |
-| 4.19 | Article/Body | ⬜ | ⬜ | prose 클래스 사용 |
-| 4.20 | Article/Body/Toc | ⬜ | ⬜ | 목차 |
-| 4.21 | Article/Footer | ⬜ | ⬜ | |
-| 4.22 | Article/Series | ⬜ | ⬜ | |
+| 4.18 | Article/Header | ✅ | ✅ | PostLayout에 통합 |
+| 4.19 | Article/Body | ✅ | ✅ | prose 클래스 사용 |
+| 4.20 | Article/Body/Toc | ⏸️ | - | Phase 6에서 추가 |
+| 4.21 | Article/Footer | ✅ | ✅ | PostLayout에 통합 |
+| 4.22 | Article/Series | ⏸️ | - | Phase 6에서 추가 |
 
 ### 기타 컴포넌트
 | # | 컴포넌트 | 상태 | 비고 |
 |---|----------|------|------|
-| 4.23 | RevealOnScroll | ⬜ | 애니메이션 |
-| 4.24 | Comments (Utterances) | ⬜ | |
+| 4.23 | RevealOnScroll | ⏸️ | Phase 6에서 추가 |
+| 4.24 | Comments (Utterances) | ✅ | Comments.astro |
+| 4.25 | ThemeToggle | ✅ | 신규 추가 |
 
 ---
 
@@ -157,14 +158,16 @@
 ### 작업 목록
 | # | 페이지 | Gatsby 경로 | Astro 경로 | 상태 | 비고 |
 |---|--------|-------------|------------|------|------|
-| 5.1 | 메인 페이지 | src/pages/index.tsx | src/pages/index.astro | ⬜ | |
-| 5.2 | 포스트 상세 | src/templates/Post.tsx | src/pages/posts/[...slug].astro | ⬜ | |
-| 5.3 | 카테고리 목록 | src/pages/categories.tsx | src/pages/categories.astro | ⬜ | |
-| 5.4 | 태그 목록 | src/pages/tags.tsx | src/pages/tags.astro | ⬜ | |
-| 5.5 | 시리즈 목록 | src/pages/series.tsx | src/pages/series.astro | ⬜ | |
-| 5.6 | 시리즈 상세 | src/templates/Series.tsx | src/pages/series/[slug].astro | ⬜ | |
-| 5.7 | 검색 | src/pages/search.tsx | src/pages/search.astro | ⬜ | |
-| 5.8 | 404 | src/pages/404.tsx | src/pages/404.astro | ⬜ | |
+| 5.1 | 메인 페이지 | src/pages/index.tsx | src/pages/index.astro | ✅ | |
+| 5.2 | 포스트 상세 | src/templates/Post.tsx | src/pages/posts/[...slug].astro | ✅ | |
+| 5.3 | 카테고리 목록 | src/pages/categories.tsx | src/pages/categories/index.astro | ✅ | |
+| 5.4 | 카테고리 상세 | - | src/pages/categories/[category].astro | ✅ | 신규 |
+| 5.5 | 태그 목록 | src/pages/tags.tsx | src/pages/tags/index.astro | ✅ | |
+| 5.6 | 태그 상세 | - | src/pages/tags/[tag].astro | ✅ | 신규 |
+| 5.7 | 시리즈 목록 | src/pages/series.tsx | src/pages/series/index.astro | ✅ | |
+| 5.8 | 시리즈 상세 | src/templates/Series.tsx | src/pages/series/[series].astro | ✅ | |
+| 5.9 | 검색 | src/pages/search.tsx | src/pages/search.astro | ⏸️ | Phase 6 |
+| 5.10 | 404 | src/pages/404.tsx | src/pages/404.astro | ✅ | |
 
 ---
 
@@ -264,6 +267,8 @@
 | 2024-12-13 | **Phase 1 완료**: pnpm 마이그레이션, Gatsby 제거, Astro 5.x 설치, 디렉토리 구조 변경 |
 | 2024-12-13 | **Phase 2 완료**: astro.config.mjs, Content Collections, Tailwind CSS, TypeScript, ESLint 설정 |
 | 2024-12-13 | **Phase 3 완료**: 81개 Markdown 파일 마이그레이션, Frontmatter 자동 변환 스크립트 실행 |
+| 2024-12-13 | **Phase 4 완료**: BaseLayout, PostLayout, Header, Footer, PostList, ThemeToggle, Comments 컴포넌트 생성 |
+| 2024-12-13 | **Phase 5 완료**: 메인, 포스트 상세, 카테고리, 태그, 시리즈, 404 페이지 생성 (157 페이지 빌드 성공) |
 
 ---
 

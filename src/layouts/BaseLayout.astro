@@ -1,0 +1,91 @@
+---
+import "@/styles/global.css";
+import { siteConfig } from "@/config/site";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  ogImage = siteConfig.ogImage,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl);
+const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content={siteConfig.author} />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:site_name" content={siteConfig.title} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={ogImageUrl} />
+
+    <!-- Google Analytics -->
+    <script
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalyticsId}`}
+    ></script>
+    <script define:vars={{ gaId: siteConfig.googleAnalyticsId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", gaId);
+    </script>
+
+    <!-- Theme Script (prevent flash) -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== "undefined") {
+          const stored = localStorage.getItem("theme");
+          if (stored) return stored;
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      })();
+      document.documentElement.setAttribute("data-theme", theme);
+    </script>
+  </head>
+  <body
+    class="min-h-screen bg-[var(--color-surface)] text-[var(--color-default)] transition-colors duration-200"
+  >
+    <div class="flex min-h-screen flex-col">
+      <Header />
+      <main class="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

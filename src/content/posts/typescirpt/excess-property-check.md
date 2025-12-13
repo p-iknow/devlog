@@ -12,7 +12,7 @@ description: ' 타입스크립트는 `excess property check` 를 통해 휴먼�
 
 ---
 
-![typescript](../../../static/typescript.webp)
+![typescript](/typescript.webp)
 
 ## 타입스크립트의 구조적 타이핑(Structural Typing)
 

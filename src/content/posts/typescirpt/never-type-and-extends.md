@@ -13,7 +13,7 @@ description:
   이슈를 통해 알아봅니다.'
 ---
 
-![typescript](../../../static/typescript.webp)
+![typescript](/typescript.webp)
 
 ## 배경
 
