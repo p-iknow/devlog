@@ -49,6 +49,14 @@ const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={ogImageUrl} />
 
+    <!-- RSS Feed -->
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={siteConfig.title}
+      href="/rss.xml"
+    />
+
     <!-- Google Analytics -->
     <script
       async

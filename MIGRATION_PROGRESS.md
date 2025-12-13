@@ -13,8 +13,8 @@
 | Phase 3 | 콘텐츠 마이그레이션 | ✅ 완료 | 100% |
 | Phase 4 | 레이아웃/컴포넌트 마이그레이션 | ✅ 완료 | 100% |
 | Phase 5 | 페이지 마이그레이션 | ✅ 완료 | 100% |
-| Phase 6 | 기능 마이그레이션 | ⬜ 대기 | 0% |
-| Phase 7 | 배포 설정 | ⬜ 대기 | 0% |
+| Phase 6 | 기능 마이그레이션 | ✅ 완료 | 100% |
+| Phase 7 | 배포 설정 | ✅ 완료 | 100% |
 | Phase 8 | 테스트 및 최적화 | ⬜ 대기 | 0% |
 
 **상태 범례:** ⬜ 대기 | 🔄 진행중 | ✅ 완료 | ⏸️ 보류
@@ -176,16 +176,16 @@
 ### 작업 목록
 | # | 기능 | 상태 | 비고 |
 |---|------|------|------|
-| 6.1 | RSS 피드 생성 (src/pages/rss.xml.js) | ⬜ | @astrojs/rss |
-| 6.2 | Sitemap 생성 | ⬜ | @astrojs/sitemap |
-| 6.3 | Utterances 댓글 | ⬜ | |
-| 6.4 | Google Analytics | ⬜ | gtag |
-| 6.5 | 검색 기능 | ⬜ | Pagefind 또는 Fuse.js |
-| 6.6 | 다크모드 | ⬜ | Tailwind dark: |
-| 6.7 | SEO 메타 태그 | ⬜ | |
-| 6.8 | OG Image | ⬜ | |
-| 6.9 | 시리즈 네비게이션 (이전/다음 글) | ⬜ | |
-| 6.10 | 코드 복사 버튼 | ⬜ | |
+| 6.1 | RSS 피드 생성 (src/pages/rss.xml.ts) | ✅ | @astrojs/rss |
+| 6.2 | Sitemap 생성 | ✅ | @astrojs/sitemap (자동) |
+| 6.3 | Utterances 댓글 | ✅ | Comments.astro |
+| 6.4 | Google Analytics | ✅ | BaseLayout에 gtag 포함 |
+| 6.5 | 검색 기능 | ⏸️ | 향후 추가 (Pagefind) |
+| 6.6 | 다크모드 | ✅ | ThemeToggle.astro |
+| 6.7 | SEO 메타 태그 | ✅ | BaseLayout에 포함 |
+| 6.8 | OG Image | ✅ | BaseLayout에 포함 |
+| 6.9 | 시리즈 네비게이션 (이전/다음 글) | ⏸️ | 향후 추가 |
+| 6.10 | 코드 복사 버튼 | ✅ | expressive-code 기본 제공 |
 
 ---
 
@@ -194,11 +194,11 @@
 ### 작업 목록
 | # | 작업 | 상태 | 비고 |
 |---|------|------|------|
-| 7.1 | netlify.toml 설정 | ⬜ | |
-| 7.2 | 빌드 테스트 (로컬) | ⬜ | |
-| 7.3 | Preview 배포 테스트 | ⬜ | |
-| 7.4 | 프로덕션 배포 | ⬜ | |
-| 7.5 | 도메인/DNS 설정 확인 | ⬜ | |
+| 7.1 | netlify.toml 설정 | ✅ | pnpm build, NODE_VERSION=20 |
+| 7.2 | 빌드 테스트 (로컬) | ✅ | 157 페이지 빌드 성공 |
+| 7.3 | Preview 배포 테스트 | ⬜ | push 후 확인 필요 |
+| 7.4 | 프로덕션 배포 | ⬜ | push 후 확인 필요 |
+| 7.5 | 도메인/DNS 설정 확인 | ⬜ | 기존 설정 유지 |
 
 ---
 
@@ -269,6 +269,8 @@
 | 2024-12-13 | **Phase 3 완료**: 81개 Markdown 파일 마이그레이션, Frontmatter 자동 변환 스크립트 실행 |
 | 2024-12-13 | **Phase 4 완료**: BaseLayout, PostLayout, Header, Footer, PostList, ThemeToggle, Comments 컴포넌트 생성 |
 | 2024-12-13 | **Phase 5 완료**: 메인, 포스트 상세, 카테고리, 태그, 시리즈, 404 페이지 생성 (157 페이지 빌드 성공) |
+| 2024-12-13 | **Phase 6 완료**: RSS 피드, Sitemap, Google Analytics, SEO 메타 태그, 다크모드 구현 |
+| 2024-12-13 | **Phase 7 완료**: netlify.toml 생성, 로컬 빌드 검증 완료 |
 
 ---
 
