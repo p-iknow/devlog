@@ -1,0 +1,114 @@
+/* Pretendard 폰트 */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css");
+
+/* KaTeX 스타일 */
+@import "katex/dist/katex.min.css";
+
+@import "tailwindcss";
+
+/* 커스텀 테마 설정 */
+@theme {
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+  /* 라이트 모드 기본 색상 */
+  --color-surface: #ffffff;
+  --color-default: #1a1a1a;
+  --color-muted: #6b7280;
+  --color-border: #e5e7eb;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+}
+
+/* 기본 스타일 */
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-default);
+  line-height: 1.75;
+}
+
+/* 다크 모드 */
+[data-theme="dark"] {
+  --color-surface: #0d1117;
+  --color-default: #f0f6fc;
+  --color-muted: #8b949e;
+  --color-border: #30363d;
+  --color-primary: #58a6ff;
+  --color-primary-hover: #79b8ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-surface: #0d1117;
+    --color-default: #f0f6fc;
+    --color-muted: #8b949e;
+    --color-border: #30363d;
+    --color-primary: #58a6ff;
+    --color-primary-hover: #79b8ff;
+  }
+}
+
+/* 링크 스타일 */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* 선택 스타일 */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-default);
+}
+
+/* 코드 블록 스타일 */
+.expressive-code {
+  margin: 1.5rem 0;
+}
+
+/* KaTeX 스타일 조정 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+}
+
+/* Typography prose 클래스 커스터마이징 */
+.prose {
+  --tw-prose-body: var(--color-default);
+  --tw-prose-headings: var(--color-default);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-code: var(--color-default);
+  --tw-prose-quotes: var(--color-muted);
+  --tw-prose-hr: var(--color-border);
+}

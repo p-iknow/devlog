@@ -9,7 +9,7 @@
 | Phase | 설명 | 상태 | 진행률 |
 |-------|------|------|--------|
 | Phase 1 | 프로젝트 초기 설정 | ✅ 완료 | 100% |
-| Phase 2 | 기본 설정 파일 구성 | ⬜ 대기 | 0% |
+| Phase 2 | 기본 설정 파일 구성 | ✅ 완료 | 100% |
 | Phase 3 | 콘텐츠 마이그레이션 | ⬜ 대기 | 0% |
 | Phase 4 | 레이아웃/컴포넌트 마이그레이션 | ⬜ 대기 | 0% |
 | Phase 5 | 페이지 마이그레이션 | ⬜ 대기 | 0% |
@@ -56,15 +56,15 @@
 ### 작업 목록
 | # | 작업 | 상태 | 날짜 | 비고 |
 |---|------|------|------|------|
-| 2.1 | astro.config.mjs 설정 (Vite + Tailwind v4) | ⬜ | | |
-| 2.2 | astro-expressive-code 설정 | ⬜ | | |
-| 2.3 | Content Collections 스키마 정의 (src/content/config.ts) | ⬜ | | |
-| 2.4 | global.css 설정 (Tailwind v4 + Pretendard + KaTeX) | ⬜ | | |
-| 2.5 | colors.css 설정 (테마 색상) | ⬜ | | |
-| 2.6 | TypeScript 설정 (tsconfig.json) | ⬜ | | |
-| 2.7 | Path alias 설정 (@ → /src) | ⬜ | | |
-| 2.8 | Prettier 설정 (.prettierrc) | ⬜ | | |
-| 2.9 | ESLint 설정 (eslint.config.js) | ⬜ | | |
+| 2.1 | astro.config.mjs 설정 (Vite + Tailwind v4) | ✅ | 2024-12-13 | expressive-code, mdx, sitemap, react |
+| 2.2 | astro-expressive-code 설정 | ✅ | 2024-12-13 | github-light/dark 테마 |
+| 2.3 | Content Collections 스키마 정의 | ✅ | 2024-12-13 | src/content/config.ts |
+| 2.4 | global.css 설정 | ✅ | 2024-12-13 | Tailwind v4 + Pretendard + KaTeX |
+| 2.5 | 테마 색상 설정 | ✅ | 2024-12-13 | global.css에 통합 |
+| 2.6 | TypeScript 설정 | ✅ | 2024-12-13 | astro/tsconfigs/strict 확장 |
+| 2.7 | Path alias 설정 | ✅ | 2024-12-13 | @/* → src/* |
+| 2.8 | Prettier 설정 | ✅ | 2024-12-13 | astro, tailwindcss 플러그인 |
+| 2.9 | ESLint 설정 | ✅ | 2024-12-13 | ESLint v9 flat config |
 
 ---
 
@@ -262,6 +262,7 @@
 | 2024-12-13 | 마이그레이션 계획 및 진행 상황 문서 생성 |
 | 2024-12-13 | blog-reference 프로젝트 참고하여 패키지 구성 업데이트 |
 | 2024-12-13 | **Phase 1 완료**: pnpm 마이그레이션, Gatsby 제거, Astro 5.x 설치, 디렉토리 구조 변경 |
+| 2024-12-13 | **Phase 2 완료**: astro.config.mjs, Content Collections, Tailwind CSS, TypeScript, ESLint 설정 |
 
 ---
 
