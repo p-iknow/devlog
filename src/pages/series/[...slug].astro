@@ -81,9 +81,11 @@ if (type === "post" && data.post.data["dev-only"] && !isDev) {
 
 // 시리즈 글인 경우 렌더링
 let Content: any;
+let headings: { depth: number; slug: string; text: string }[] = [];
 if (type === "post") {
   const rendered = await render(data.post);
   Content = rendered.Content;
+  headings = rendered.headings;
 }
 ---
 
@@ -135,6 +137,7 @@ if (type === "post") {
     update={data.post.data.update}
     tags={data.post.data.tags}
     img={data.post.data.img}
+    headings={headings}
     hidePostNavigation={true}
   >
     {/* 시리즈 네비게이션 - Velog 스타일 */}

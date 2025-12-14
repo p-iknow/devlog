@@ -41,18 +41,26 @@ const series = seriesCollection
   })
   .filter((s) => s.posts.length > 0)
   .sort((a, b) => b.posts.length - a.posts.length);
+
+const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
 ---
 
 <BaseLayout title="Series" description="Browse posts by series">
-  <h1 class="mb-8 text-3xl font-bold">Series</h1>
+  <div class="series-header">
+    <h1 class="mb-8 text-3xl font-bold">Series</h1>
+    <p class="series-summary">
+      <span class="text-accent-highlight">{series.length}</span> series across
+      <span class="text-accent-highlight">{totalPosts}</span> posts
+    </p>
+  </div>
 
   {series.length > 0 ? (
     <div class="space-y-8">
       {series.map(({ slug, title, description, posts: seriesPosts }) => (
         <div class="rounded-xl border border-subtle bg-bg-secondary/30 p-6">
           <div class="mb-4 flex items-center justify-between">
-            <a href={`/series/${slug}`} class="group series-title-link">
-              <h2 class="text-xl font-bold transition-colors group-hover:text-accent">{title}</h2>
+            <a href={`/series/${slug}`} class="link-title">
+              <h2 class="text-xl font-bold">{title}</h2>
             </a>
             <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
               {seriesPosts.length} parts
@@ -91,28 +99,14 @@ const series = seriesCollection
 </BaseLayout>
 
 <style is:global>
-  .series-title-link {
-    position: relative;
-    display: inline-block;
+  .series-header {
+    margin-bottom: 32px;
   }
 
-  .series-title-link h2 {
-    position: relative;
-  }
-
-  .series-title-link h2::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 0;
-    height: 2px;
-    background: var(--color-accent);
-    transition: width 0.3s ease;
-  }
-
-  .series-title-link:hover h2::after {
-    width: 100%;
+  .series-summary {
+    font-size: 15px;
+    color: var(--color-muted);
+    margin-top: -24px;
   }
 
   .series-item,
