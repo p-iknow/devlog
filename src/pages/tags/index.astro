@@ -21,14 +21,16 @@ const tags = Array.from(tagMap.entries())
   <h1 class="mb-8 text-3xl font-bold">Tags</h1>
 
   <div class="flex flex-wrap gap-3">
-    {tags.map(({ name, count }) => (
-      <a
-        href={`/tags/${name.toLowerCase()}`}
-        class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-2 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
-      >
-        <span>#{name}</span>
-        <span class="text-sm opacity-70">{count}</span>
-      </a>
-    ))}
+    {
+      tags.map(({ name, count }) => (
+        <a
+          href={`/tags/${name.toLowerCase()}`}
+          class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-2 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+        >
+          <span>#{name}</span>
+          <span class="text-sm opacity-70">{count}</span>
+        </a>
+      ))
+    }
   </div>
 </BaseLayout>

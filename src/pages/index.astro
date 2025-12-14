@@ -2,27 +2,103 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
-import { siteConfig } from "@/config/site";
+import Bio from "@/components/Bio.astro";
 
-const posts = await getCollection("posts", ({ data }) => !data.draft);
+// algorithm 카테고리 제외
+const posts = await getCollection("posts", ({ data }) =>
+  !data.draft && data.category?.toLowerCase() !== "algorithm"
+);
 const sortedPosts = posts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+// 카테고리 집계
+const categoryMap = new Map<string, number>();
+sortedPosts.forEach(post => {
+  const cat = post.data.category;
+  if (cat) {
+    categoryMap.set(cat, (categoryMap.get(cat) || 0) + 1);
+  }
+});
+const categories = Array.from(categoryMap.entries())
+  .map(([name, count]) => ({ name, count }))
+  .sort((a, b) => b.count - a.count);
 ---
 
 <BaseLayout>
-  <section class="mb-8">
-    <h1 class="mb-2 text-3xl font-bold">{siteConfig.title}</h1>
-    <p class="text-lg text-[var(--color-muted)]">{siteConfig.description}</p>
-  </section>
+  <div class="vertical-space"></div>
+  <Bio />
+  <hr class="divider" />
 
-  <section>
-    <h2 class="mb-6 text-xl font-semibold">
-      Recent Posts
-      <span class="ml-2 text-sm font-normal text-[var(--color-muted)]">
-        ({sortedPosts.length})
-      </span>
-    </h2>
+  <div class="content-wrapper">
+    <aside class="side-category">
+      <div class="side-title">CATEGORY LIST</div>
+      <ul>
+        <li class="category-item">
+          <a href="/categories">all ({sortedPosts.length})</a>
+        </li>
+        {categories.map(cat => (
+          <li class="category-item">
+            <a href={`/categories?q=${cat.name}`}>{cat.name} ({cat.count})</a>
+          </li>
+        ))}
+      </ul>
+    </aside>
     <PostList posts={sortedPosts} />
-  </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .vertical-space {
+    height: 48px;
+  }
+
+  .divider {
+    margin-top: 48px;
+    margin-bottom: 48px;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .content-wrapper {
+    position: relative;
+  }
+
+  .side-category {
+    position: absolute;
+    left: 112%;
+    top: 0;
+    width: 200px;
+    font-size: 16px;
+  }
+
+  @media (max-width: 1300px) {
+    .side-category {
+      display: none;
+    }
+  }
+
+  .side-title {
+    margin-bottom: 25px;
+    font-weight: bold;
+    color: var(--color-secondary);
+  }
+
+  .category-item {
+    margin-bottom: 16px;
+    color: var(--color-tertiary);
+    cursor: pointer;
+    transition: color 0.3s;
+    text-transform: capitalize;
+    list-style: none;
+  }
+
+  .category-item:hover {
+    color: var(--color-default);
+  }
+
+  .category-item a {
+    color: inherit;
+    text-decoration: none;
+  }
+</style>

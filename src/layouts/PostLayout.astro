@@ -3,6 +3,9 @@ import BaseLayout from "./BaseLayout.astro";
 import { siteConfig } from "@/config/site";
 import { format } from "date-fns";
 import Comments from "@/components/Comments.astro";
+import Bio from "@/components/Bio.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
 interface Props {
   title: string;
@@ -13,104 +16,350 @@ interface Props {
   tags?: string[];
   series?: string;
   img?: string;
+  headings?: { depth: number; slug: string; text: string }[];
+  currentSlug?: string;
 }
 
-const { title, description, date, update, category, tags = [], img } = Astro.props;
+const { title, description, date, update, category, tags = [], img, headings = [], currentSlug } = Astro.props;
 
-const formattedDate = format(date, "yyyy-MM-dd");
-const formattedUpdate = update ? format(update, "yyyy-MM-dd") : null;
+const formattedDate = format(date, "MMMM d, yyyy");
+const formattedUpdate = update ? format(update, "MMMM d, yyyy") : null;
 const ogImage = img || siteConfig.ogImage;
+
+// Get all posts for prev/next navigation
+const allPosts = await getCollection("posts", ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const currentIndex = sortedPosts.findIndex((post) => post.id === currentSlug);
+const prevPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+
+const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
 <BaseLayout title={`${title} | ${siteConfig.title}`} description={description} ogImage={ogImage}>
   <article>
-    <header class="mb-8 border-b border-[var(--color-border)] pb-8">
-      {category && (
-        <a
-          href={`/categories/${category.toLowerCase()}`}
-          class="mb-2 inline-block text-sm text-[var(--color-primary)] hover:underline"
-        >
-          {category}
-        </a>
-      )}
-      <h1 class="mb-4 text-3xl font-bold leading-tight md:text-4xl">{title}</h1>
-      <p class="mb-4 text-lg text-[var(--color-muted)]">{description}</p>
-      <div class="flex flex-wrap items-center gap-4 text-sm text-[var(--color-muted)]">
+    <header class="article-header">
+      <h1 class="article-title">{title}</h1>
+      <div class="article-meta">
+        <span class="author">@{siteConfig.author}</span>
+        <span class="separator">·</span>
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        {formattedUpdate && (
-          <span>Updated: {formattedUpdate}</span>
-        )}
       </div>
       {tags.length > 0 && (
-        <div class="mt-4 flex flex-wrap gap-2">
+        <div class="article-tags">
           {tags.map((tag) => (
-            <a
-              href={`/tags/${tag.toLowerCase()}`}
-              class="rounded-full bg-[var(--color-border)] px-3 py-1 text-xs hover:bg-[var(--color-primary)] hover:text-white transition-colors"
-            >
-              #{tag}
+            <a href={`/tags?q=${tag}`} class="tag">
+              {spaceToDash(tag)}
             </a>
           ))}
         </div>
       )}
+      <hr class="header-divider" />
     </header>
 
-    <div class="prose prose-lg max-w-none dark:prose-invert">
-      <slot />
+    <div class="content-wrapper">
+      {headings.length > 0 && (
+        <aside class="toc" id="toc">
+          <ul class="toc-list">
+            {headings.filter(h => h.depth >= 2 && h.depth <= 4).map((heading) => (
+              <li class={`toc-item toc-depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`} data-heading={heading.slug}>{heading.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+      <div class="prose">
+        <slot />
+      </div>
     </div>
 
-    <footer class="mt-12 border-t border-[var(--color-border)] pt-8">
+    <script>
+      function initTocHighlight() {
+        const toc = document.getElementById('toc');
+        if (!toc) return;
+
+        const tocLinks = toc.querySelectorAll('a[data-heading]');
+        const headings = Array.from(tocLinks).map(link => {
+          const id = link.getAttribute('data-heading');
+          return document.getElementById(id);
+        }).filter(Boolean);
+
+        if (headings.length === 0) return;
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                tocLinks.forEach(link => {
+                  link.classList.remove('active');
+                  if (link.getAttribute('data-heading') === id) {
+                    link.classList.add('active');
+                  }
+                });
+              }
+            });
+          },
+          {
+            rootMargin: '-80px 0px -70% 0px',
+            threshold: 0
+          }
+        );
+
+        headings.forEach((heading) => observer.observe(heading));
+      }
+
+      document.addEventListener('DOMContentLoaded', initTocHighlight);
+      document.addEventListener('astro:page-load', initTocHighlight);
+    </script>
+
+    {(prevPost || nextPost) && (
+      <nav class="post-navigation">
+        {prevPost ? (
+          <a href={`/posts/${prevPost.id}`} class="nav-link nav-prev">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            <div class="nav-content">
+              <span class="nav-label">Previous Post</span>
+              <span class="nav-title">{prevPost.data.title}</span>
+            </div>
+          </a>
+        ) : <div />}
+        {nextPost ? (
+          <a href={`/posts/${nextPost.id}`} class="nav-link nav-next">
+            <div class="nav-content">
+              <span class="nav-label">Next Post</span>
+              <span class="nav-title">{nextPost.data.title}</span>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </a>
+        ) : <div />}
+      </nav>
+    )}
+
+    <div class="post-bio">
+      <Bio />
+    </div>
+
+    <hr class="footer-divider" />
+
+    <footer class="article-footer">
       <Comments />
     </footer>
   </article>
 </BaseLayout>
 
-<style is:global>
-  /* Prose 스타일 오버라이드 */
-  .prose {
-    --tw-prose-body: var(--color-default);
-    --tw-prose-headings: var(--color-default);
-    --tw-prose-links: var(--color-primary);
-    --tw-prose-bold: var(--color-default);
-    --tw-prose-code: var(--color-default);
-    --tw-prose-quotes: var(--color-muted);
-    --tw-prose-quote-borders: var(--color-border);
-    --tw-prose-hr: var(--color-border);
+<style>
+  .article-header {
+    margin-bottom: 32px;
   }
 
-  .prose h2 {
-    margin-top: 2rem;
-    margin-bottom: 1rem;
+  .article-title {
+    margin-bottom: 16px;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-default);
   }
 
-  .prose h3 {
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+  @media (min-width: 768px) {
+    .article-title {
+      font-size: 40px;
+    }
   }
 
-  .prose a {
-    text-decoration: underline;
-    text-underline-offset: 2px;
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: var(--color-muted);
   }
 
-  .prose code:not(pre code) {
-    background-color: var(--color-border);
-    padding: 0.2em 0.4em;
-    border-radius: 0.25rem;
-    font-size: 0.875em;
+  .author {
+    color: var(--color-default);
+    font-weight: 500;
   }
 
-  .prose pre {
-    margin: 1.5rem 0;
+  .separator {
+    color: var(--color-muted);
   }
 
-  .prose img {
-    border-radius: 0.5rem;
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
   }
 
-  .prose blockquote {
-    border-left-width: 4px;
-    border-left-color: var(--color-border);
-    font-style: italic;
+  .tag {
+    padding: 6px 14px;
+    font-size: 14px;
+    color: var(--color-tag-text);
+    background-color: var(--color-tag-bg);
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .tag:hover {
+    background-color: var(--color-accent-hover);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .header-divider {
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .content-wrapper {
+    position: relative;
+  }
+
+  .toc {
+    position: fixed;
+    left: calc(50% + 400px);
+    top: 100px;
+    width: 200px;
+    font-size: 14px;
+    max-height: calc(100vh - 150px);
+    overflow-y: auto;
+  }
+
+  @media (max-width: 1200px) {
+    .toc {
+      display: none;
+    }
+  }
+
+  .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-item {
+    margin-bottom: 10px;
+  }
+
+  .toc-item a {
+    color: var(--color-tertiary);
+    text-decoration: none;
+    transition: color 0.2s;
+    line-height: 1.4;
+    display: block;
+  }
+
+  .toc-item a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .toc-item a.active {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .toc-depth-2 {
+    padding-left: 0;
+    font-weight: 500;
+  }
+
+  .toc-depth-3 {
+    padding-left: 12px;
+    font-size: 13px;
+  }
+
+  .toc-depth-4 {
+    padding-left: 24px;
+    font-size: 12px;
+  }
+
+  .post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    max-width: 48%;
+  }
+
+  .nav-link:hover {
+    background-color: var(--color-accent-bg);
+    border: 1px solid var(--color-accent-border);
+  }
+
+  .nav-link svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--color-muted);
+  }
+
+  .nav-prev {
+    margin-right: auto;
+  }
+
+  .nav-next {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .nav-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nav-label {
+    font-size: 12px;
+    color: var(--color-muted);
+  }
+
+  .nav-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-default);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .post-bio {
+    margin-top: 48px;
+    padding: 24px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  .footer-divider {
+    margin: 48px 0 0;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .article-footer {
+    margin-top: 32px;
   }
 </style>
