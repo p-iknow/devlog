@@ -18,7 +18,7 @@
   --color-secondary: #4a5568;
   --color-tertiary: #718096;
   --color-muted: #a0aec0;
-  --color-border: #e2e8f0;
+  --color-subtle: #e2e8f0;
   --color-background: #f7fafc;
   --color-divider: #edf2f7;
   --color-header-bg: rgba(255, 255, 255, 0.9);
@@ -64,7 +64,7 @@ body {
   --color-secondary: #e2e8f0;
   --color-tertiary: #a0aec0;
   --color-muted: #718096;
-  --color-border: #4a5568;
+  --color-subtle: #4a5568;
   --color-background: #2d3748;
   --color-divider: #2d3748;
   --color-header-bg: rgba(26, 32, 44, 0.9);
@@ -98,7 +98,7 @@ body {
     --color-secondary: #e2e8f0;
     --color-tertiary: #a0aec0;
     --color-muted: #718096;
-    --color-border: #4a5568;
+    --color-subtle: #4a5568;
     --color-background: #2d3748;
     --color-divider: #2d3748;
     --color-header-bg: rgba(26, 32, 44, 0.9);
@@ -133,8 +133,12 @@ a {
   transition: all 0.15s ease;
 }
 
+a:visited {
+  color: inherit;
+}
+
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* 선택 스타일 */
@@ -200,7 +204,8 @@ a:hover {
 }
 
 .prose p {
-  word-break: break-all;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .prose h2 {
@@ -222,7 +227,7 @@ a:hover {
 }
 
 .prose h4 {
-  font-size: 17.6px;
+  font-size: 20px;
   font-weight: 700;
   margin-top: 32px;
   margin-bottom: 12px;
@@ -231,7 +236,7 @@ a:hover {
 }
 
 .prose h5 {
-  font-size: 16px;
+  font-size: 19px;
   font-weight: 700;
   margin-top: 24px;
   margin-bottom: 8px;
@@ -240,8 +245,8 @@ a:hover {
 }
 
 .prose h6 {
-  font-size: 14.4px;
-  font-weight: 700;
+  font-size: 18.5px;
+  font-weight: 600;
   margin-top: 24px;
   margin-bottom: 8px;
   color: var(--color-default);
@@ -262,9 +267,24 @@ a:hover {
   margin-top: 8px;
 }
 
-.prose strong {
-  font-weight: 700;
+.prose strong,
+.prose mark {
+  font-weight: 600;
   color: var(--color-default);
+  background: linear-gradient(to top, rgba(66, 153, 225, 0.25) 50%, transparent 50%);
+  padding: 0 2px;
+}
+
+[data-theme="dark"] .prose strong,
+[data-theme="dark"] .prose mark {
+  background: linear-gradient(to top, rgba(99, 179, 237, 0.3) 50%, transparent 50%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose strong,
+  :root:not([data-theme="light"]) .prose mark {
+    background: linear-gradient(to top, rgba(99, 179, 237, 0.3) 50%, transparent 50%);
+  }
 }
 
 .prose em {
@@ -312,7 +332,7 @@ a:hover {
   border-collapse: separate;
   border-spacing: 0;
   width: 100%;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-subtle);
   border-radius: 8px;
   overflow: hidden;
   font-size: 14px;
@@ -331,21 +351,21 @@ a:hover {
   padding: 12px 16px;
   text-align: left;
   color: var(--color-default);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-subtle);
 }
 
 .prose th:not(:last-child) {
-  border-right: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-subtle);
 }
 
 .prose td {
   padding: 10px 16px;
   color: var(--color-secondary);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-subtle);
 }
 
 .prose td:not(:last-child) {
-  border-right: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-subtle);
 }
 
 .prose tr:last-child td {
@@ -398,7 +418,7 @@ a:hover {
   font-size: 0.8em;
   font-family: var(--font-mono);
   white-space: normal;
-  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .prose h2 code:not(pre code) {
@@ -407,6 +427,134 @@ a:hover {
 
 .prose pre code {
   font-size: 14.4px;
+}
+
+/* kbd 스타일 */
+.prose kbd {
+  display: inline-block;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-default);
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-background) 100%);
+  border: 1px solid var(--color-subtle);
+  border-radius: 6px;
+  box-shadow:
+    0 2px 0 var(--color-subtle),
+    inset 0 -1px 0 var(--color-subtle);
+  white-space: nowrap;
+}
+
+.prose kbd kbd {
+  padding: 0;
+  font-size: 1em;
+  background: none;
+  border: none;
+  box-shadow: none;
+}
+
+[data-theme="dark"] .prose kbd {
+  background: linear-gradient(180deg, var(--color-background) 0%, var(--color-surface) 100%);
+  border-color: var(--color-muted);
+  box-shadow:
+    0 2px 0 rgba(0, 0, 0, 0.4),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose kbd {
+    background: linear-gradient(180deg, var(--color-background) 0%, var(--color-surface) 100%);
+    border-color: var(--color-muted);
+    box-shadow:
+      0 2px 0 rgba(0, 0, 0, 0.4),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* abbr 툴팁 스타일 */
+.prose abbr[title] {
+  position: relative;
+  text-decoration: none;
+  border-bottom: 1.5px dotted var(--color-accent);
+  color: var(--color-accent);
+  cursor: help;
+  font-weight: 500;
+}
+
+.prose abbr[title]::after {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  padding: 8px 12px;
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+  border: 1px solid var(--color-subtle);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  white-space: nowrap;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.prose abbr[title]::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 2px);
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--color-background);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  z-index: 100;
+}
+
+.prose abbr[title]:hover::after,
+.prose abbr[title]:hover::before,
+.prose abbr[title]:focus::after,
+.prose abbr[title]:focus::before,
+.prose abbr[title].active::after,
+.prose abbr[title].active::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) scale(1);
+}
+
+.prose abbr[title]:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+[data-theme="dark"] .prose abbr[title]::after {
+  background-color: var(--color-subtle);
+  border-color: var(--color-muted);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .prose abbr[title]::before {
+  border-top-color: var(--color-subtle);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose abbr[title]::after {
+    background-color: var(--color-subtle);
+    border-color: var(--color-muted);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  :root:not([data-theme="light"]) .prose abbr[title]::before {
+    border-top-color: var(--color-subtle);
+  }
 }
 
 /* 이미지 스타일 */
@@ -425,7 +573,7 @@ a:hover {
 /* hr 스타일 */
 .prose hr {
   border: none;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-subtle);
   margin: 32px 0;
 }
 
@@ -450,7 +598,7 @@ a:hover {
 /* Callout 스타일 (@r4ai/remark-callout) */
 .prose [data-callout] {
   --callout-bg: var(--color-background);
-  --callout-border: var(--color-border);
+  --callout-border: var(--color-subtle);
   --callout-icon-bg: var(--color-muted);
   margin: 28px 0;
   padding: 0;
