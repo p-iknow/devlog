@@ -1,10 +1,13 @@
 # Gatsby to Astro Migration Plan
 
-이 문서는 현재 Gatsby 5 + styled-components 기반 블로그를 Astro + Tailwind CSS로 마이그레이션하는 계획을 담고 있습니다.
+> ✅ **마이그레이션 완료** (2024-12-13)
+>
+> 이 문서는 Gatsby → Astro 마이그레이션 계획을 담고 있습니다. 마이그레이션이 성공적으로 완료되었습니다.
+> 현재 상태는 [MIGRATION_PROGRESS.md](./MIGRATION_PROGRESS.md)를 참고하세요.
 
 ## 개요
 
-### 현재 스택
+### 이전 스택 (Gatsby)
 - **Framework**: Gatsby 5
 - **Styling**: styled-components v6
 - **Content**: Markdown (gatsby-transformer-remark)
@@ -13,11 +16,11 @@
 - **Comments**: Utterances
 - **Hosting**: Netlify
 
-### 목표 스택
+### 현재 스택 (Astro) ✅
 - **Framework**: Astro 5.x
 - **Styling**: Tailwind CSS v4 (@tailwindcss/vite)
 - **Content**: Astro Content Collections
-- **Syntax Highlighting**: astro-expressive-code (Shiki 기반, 더 많은 기능)
+- **Syntax Highlighting**: astro-expressive-code (Shiki 기반)
 - **Math**: KaTeX (remark-math + rehype-katex)
 - **Comments**: Utterances
 - **Hosting**: Netlify

@@ -4,41 +4,62 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a personal developer blog built with Gatsby 5 and TypeScript, hosted on Netlify. The blog uses Markdown files for content with Prism.js for syntax highlighting and KaTeX for math equations.
+This is a personal developer blog built with **Astro 5** and TypeScript, hosted on Netlify. The blog uses Markdown files for content with astro-expressive-code (Shiki-based) for syntax highlighting and KaTeX for math equations.
 
 ## Commands
 
 ```bash
-npm run develop    # Start development server at http://localhost:8000
-npm run build      # Build for production
-npm run serve      # Serve production build locally
-npm run clean      # Clear Gatsby cache and public folder
-npm run lint:fix   # Fix ESLint issues
+pnpm dev           # Start development server at http://localhost:3000
+pnpm build         # Build for production (output: dist/)
+pnpm preview       # Preview production build at http://localhost:5000
+pnpm type-check    # Run astro check and tsc --noEmit
+pnpm format        # Format code with Prettier
+pnpm lint          # Lint and fix with ESLint
 ```
 
 ## Architecture
 
 ### Content Structure
-- Blog posts are Markdown files in `contents/posts/` organized by category subdirectories
-- Posts require frontmatter with: `title`, `date`, `template: "post"`, `draft`, `description`, `category`, `tags`
-- Optional frontmatter: `slug` (custom URL), `series` (group related posts), `img` (OG image)
+- Blog posts are Markdown files in `src/content/posts/` organized by category subdirectories
+- Posts use Astro Content Collections with schema validation
+- Required frontmatter: `title`, `date`, `description`
+- Optional frontmatter: `draft`, `category`, `tags`, `series`, `img` (OG image), `update`
 
 ### Key Files
-- `blog-config.ts` - Site metadata, social links, utterances comments config, analytics
-- `gatsby-config.ts` - Gatsby plugins configuration
-- `gatsby-node.js` - Page creation logic for posts and series pages, slug generation
+- `astro.config.ts` - Astro configuration (integrations, markdown plugins, Vite settings)
+- `src/content/config.ts` - Content Collections schema definition
+- `src/styles/global.css` - Global styles with Tailwind CSS v4
 
 ### Source Code (`src/`)
-- `pages/` - Static pages (index, categories, tags, series, search, 404)
-- `templates/` - `Post.tsx` and `Series.tsx` for dynamic page generation
-- `components/` - React components using styled-components
-- `styles/` - Global styles, theme, code highlighting, markdown styling
-- `context/` - React context providers
-- `hooks/` - Custom React hooks
-- `gatsby/node/` - Gatsby Node API helpers (unused, main logic in root `gatsby-node.js`)
+- `pages/` - Astro pages and dynamic routes
+  - `index.astro` - Main page with post list
+  - `posts/[...slug].astro` - Dynamic post pages
+  - `categories/`, `tags/`, `series/` - Category/tag/series listing and detail pages
+  - `search.astro` - Search page
+  - `rss.xml.ts` - RSS feed generation
+- `layouts/` - Page layouts
+  - `BaseLayout.astro` - Base HTML structure, head, analytics
+  - `PostLayout.astro` - Blog post layout with prose styling
+- `components/` - Astro components
+  - `Header.astro`, `Footer.astro` - Site header and footer
+  - `PostList.astro` - Post listing component
+  - `Bio.astro` - Author bio
+  - `Comments.astro` - Utterances comments
+  - `ThemeToggle.astro` - Dark/light mode toggle
+- `content/` - Content Collections
+  - `config.ts` - Schema definition
+  - `posts/` - Blog post Markdown files
+- `styles/` - Global CSS
 
 ### Path Aliases
-TypeScript configured with `baseUrl: "./src"` - imports resolve from `src/` directory.
+TypeScript configured with `@/*` → `src/*` path alias.
 
 ### Styling
-Uses styled-components v6 with a theme system defined in `src/styles/theme.ts`.
+Uses **Tailwind CSS v4** with `@tailwindcss/vite` plugin. Typography handled by Tailwind `prose` classes.
+
+### Integrations
+- `@astrojs/mdx` - MDX support (`.mdx` files work alongside `.md`)
+- `@astrojs/sitemap` - Automatic sitemap generation
+- `astro-expressive-code` - Code highlighting with line numbers, copy button
+- `remark-math` + `rehype-katex` - Math equation rendering
+- `@r4ai/remark-callout` - Callout/admonition support

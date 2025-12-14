@@ -1,54 +1,96 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
+# p-iknow's devlog
 
-## 🚀 Quick start
+개인 개발 블로그입니다.
 
-1.  **Create a Gatsby site.**
+**Live Site:** https://p-iknow.netlify.app
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+## Tech Stack
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+- **Framework**: [Astro 5](https://astro.build/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Content**: Astro Content Collections (Markdown)
+- **Code Highlighting**: [astro-expressive-code](https://expressive-code.com/) (Shiki 기반)
+- **Math**: KaTeX (remark-math + rehype-katex)
+- **Comments**: [Utterances](https://utteranc.es/)
+- **Hosting**: [Netlify](https://www.netlify.com/)
 
-2.  **Start developing.**
+## Getting Started
 
-    Navigate into your new site’s directory and start it up.
+### Prerequisites
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+- Node.js 20+
+- pnpm
 
-3.  **Open the code and start customizing!**
+### Installation
 
-    Your site is now running at http://localhost:8000!
+```bash
+# Clone the repository
+git clone https://github.com/p-iknow/devlog.git
+cd devlog
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+# Install dependencies
+pnpm install
 
-4.  **Learn more**
+# Start development server
+pnpm dev
+```
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+### Commands
 
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+| Command | Description |
+|---------|-------------|
+| `pnpm dev` | Start dev server at `http://localhost:3000` |
+| `pnpm build` | Build for production |
+| `pnpm preview` | Preview production build at `http://localhost:5000` |
+| `pnpm type-check` | Run type checking |
+| `pnpm format` | Format code with Prettier |
+| `pnpm lint` | Lint code with ESLint |
 
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## Project Structure
 
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+```
+devlog/
+├── src/
+│   ├── content/
+│   │   ├── config.ts        # Content Collections schema
+│   │   └── posts/           # Blog posts (Markdown)
+│   ├── components/          # Astro components
+│   ├── layouts/             # Page layouts
+│   ├── pages/               # Routes
+│   └── styles/              # Global CSS
+├── public/                  # Static assets
+├── astro.config.ts          # Astro configuration
+└── package.json
+```
 
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+## Writing Posts
 
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
+Blog posts are written in Markdown and stored in `src/content/posts/`.
 
-## 🚀 Quick start (Gatsby Cloud)
+### Frontmatter
 
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
+```yaml
+---
+title: "Post Title"
+description: "Post description"
+date: 2024-01-01
+category: "category-name"
+tags: ["tag1", "tag2"]
+draft: false
+---
+```
 
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+| Field | Required | Description |
+|-------|----------|-------------|
+| `title` | Yes | Post title |
+| `description` | Yes | Post description |
+| `date` | Yes | Publication date |
+| `category` | No | Category name |
+| `tags` | No | Array of tags |
+| `draft` | No | Set `true` to hide from production |
+| `series` | No | Series name for grouping posts |
+| `img` | No | OG image path |
+
+## License
+
+MIT
