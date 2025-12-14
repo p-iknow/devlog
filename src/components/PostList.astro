@@ -28,110 +28,21 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     return (
       <>
         <div class="post-item">
-          <a href={resolveHref(post)} class="post-title">{title}</a>
+          <a href={resolveHref(post)} class="link-title post-title">{title}</a>
           <p class="post-date">{formattedDate}</p>
           <p class="post-excerpt">{description}</p>
           {tags.length > 0 && (
             <div class="post-tags">
               {tags.map((tag) => (
-                <a href={`/tags/${tag}`} class="tag">
-                  <span class="hash">#</span>{spaceToDash(tag)}
+                <a href={`/tags/${tag}`} class="post-tag">
+                  <span class="post-tag-hash">#</span>{spaceToDash(tag)}
                 </a>
               ))}
             </div>
           )}
         </div>
-        {!isLast && <hr class="divider" />}
+        {!isLast && <hr class="post-divider" />}
       </>
     );
   })}
 </div>
-
-<style>
-  .post-list {
-    /* wrapper */
-  }
-
-  @media (max-width: 768px) {
-    .post-list {
-      padding: 0 10px;
-    }
-  }
-
-  .post-item {
-    position: relative;
-    top: 0;
-    transition: all 0.5s;
-  }
-
-  @media (max-width: 768px) {
-    .post-item {
-      padding: 0 5px;
-    }
-  }
-
-  .post-title {
-    display: block;
-    margin-bottom: 24px;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: var(--color-default);
-    word-break: break-all;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .post-title:hover {
-    color: var(--color-accent-hover);
-  }
-
-  .post-date {
-    margin-bottom: 16px;
-    font-size: 14.4px;
-    color: var(--color-tertiary);
-  }
-
-  .post-excerpt {
-    margin-bottom: 32px;
-    line-height: 1.7;
-    font-size: 16px;
-    color: var(--color-secondary);
-    word-break: break-all;
-  }
-
-  .post-tags {
-    margin-bottom: 16px;
-    word-break: break-all;
-  }
-
-  .tag {
-    display: inline-block;
-    padding: 9.6px 11.2px;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border-radius: 50px;
-    background-color: var(--color-tag-bg);
-    color: var(--color-tag-text);
-    text-decoration: none;
-    font-size: 14.4px;
-    transition: all 0.2s;
-  }
-
-  .tag:hover {
-    background-color: var(--color-accent-hover);
-    color: #ffffff;
-    text-decoration: none;
-  }
-
-  .hash {
-    margin-right: 2px;
-  }
-
-  .divider {
-    margin-top: 48px;
-    margin-bottom: 32px;
-    border: none;
-    border-bottom: 1px solid var(--color-divider);
-  }
-</style>

@@ -22,7 +22,7 @@ interface Props {
 
 const { title, description, date, tags = [], img, headings = [], currentSlug, hidePostNavigation = false } = Astro.props;
 
-const formattedDate = format(date, "MMMM d, yyyy");
+const formattedDate = format(date, "yyyy-MM-dd");
 const ogImage = img || siteConfig.ogImage;
 
 // Get all posts for prev/next navigation
@@ -47,8 +47,8 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       {tags.length > 0 && (
         <div class="article-tags">
           {tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="tag">
-              <span class="hash">#</span>{spaceToDash(tag)}
+            <a href={`/tags/${tag}`} class="post-tag">
+              <span class="post-tag-hash">#</span>{spaceToDash(tag)}
             </a>
           ))}
         </div>
@@ -227,26 +227,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 24px;
-  }
-
-  .tag {
-    padding: 6px 14px;
-    font-size: 14px;
-    color: var(--color-tag-text);
-    background-color: var(--color-tag-bg);
-    border-radius: 50px;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .tag:hover {
-    background-color: var(--color-accent-hover);
-    color: #ffffff;
-    text-decoration: none;
-  }
-
-  .hash {
-    margin-right: 2px;
   }
 
   .header-divider {
