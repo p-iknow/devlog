@@ -2,7 +2,7 @@
 title: '마크다운 한글 스타일 가이드'
 date: '2025-05-25'
 draft: false
-category: 'template'
+series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'guide'
@@ -42,7 +42,31 @@ h1은 blog 제목에 들어가기 때문에 배제했습니다.
 
 ### 출력 (Output)
 
-![blog placeholder](/blog-placeholder-about.jpg)
+![blog placeholder](/typescript.webp)
+
+## 콜아웃 (Callouts)
+
+콜아웃은 중요한 정보를 강조하는 데 사용됩니다. `@r4ai/remark-callout` 플러그인을 통해 Obsidian 스타일의 콜아웃을 지원합니다.
+
+### 문법
+
+```markdown
+> [!note] 제목
+> 콜아웃 내용을 여기에 작성합니다.
+```
+
+### 출력
+
+> [!note] 참고
+> 이것은 노트 콜아웃 예시입니다. 중요한 정보나 추가 설명을 강조할 때 사용합니다.
+
+> [!tip] 팁
+> 유용한 팁이나 권장 사항을 공유할 때 사용합니다.
+
+> [!warning] 경고
+> 주의가 필요한 내용을 알릴 때 사용합니다.
+
+더 다양한 콜아웃 스타일(`info`, `question`, `caution`, `bug` 등)은 [마크다운 콜아웃 스타일 가이드](/series/markdown-guide/markdown-callout-guide.ko)를 참고하세요.
 
 ## 인용구 (Blockquotes)
 
@@ -187,6 +211,31 @@ h1은 blog 제목에 들어가기 때문에 배제했습니다.
 - 유제품
   - 우유
   - 치즈
+
+## 수학 공식 (KaTeX)
+
+이 블로그는 KaTeX를 사용한 수학 공식을 지원합니다. 인라인 수식과 블록 수식 모두 작성할 수 있습니다.
+
+### 문법
+
+```markdown
+인라인: $E = mc^2$
+
+블록:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+```
+
+### 출력
+
+인라인: $E = mc^2$
+
+$$
+\int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi}
+$$
+
+더 다양한 수학 문법(그리스 문자, 행렬, 적분, 극한 등)은 [마크다운 KaTeX 수식 가이드](/series/markdown-guide/markdown-katex-guide.ko)를 참고하세요.
 
 ## 기타 요소 — abbr, sub, sup, kbd, mark
 

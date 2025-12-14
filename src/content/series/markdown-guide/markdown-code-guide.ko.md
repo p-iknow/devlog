@@ -1,8 +1,8 @@
 ---
 title: '마크다운 코드 스타일 가이드'
-date: '2025-05-25'
+date: '2025-05-26'
 draft: false
-category: 'template'
+series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'code'

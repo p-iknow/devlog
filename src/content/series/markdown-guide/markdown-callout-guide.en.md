@@ -1,8 +1,8 @@
 ---
 title: 'Markdown Callout Style Guide'
-date: '2025-05-25'
+date: '2025-05-27'
 draft: false
-category: 'template'
+series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'callout'
