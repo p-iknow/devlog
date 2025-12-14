@@ -24,10 +24,10 @@ const categories = Array.from(categoryMap.entries())
     {categories.map(({ name, count }) => (
       <a
         href={`/categories/${name.toLowerCase()}`}
-        class="flex items-center justify-between rounded-lg border border-[var(--color-border)] p-4 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-border)]/20"
+        class="flex items-center justify-between rounded-lg border border-subtle p-4 transition-colors hover:border-primary hover:bg-subtle/20"
       >
         <span class="font-medium">{name}</span>
-        <span class="rounded-full bg-[var(--color-border)] px-3 py-1 text-sm">
+        <span class="rounded-full bg-subtle px-3 py-1 text-sm">
           {count}
         </span>
       </a>

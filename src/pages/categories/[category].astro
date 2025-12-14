@@ -34,12 +34,12 @@ const { category, posts } = Astro.props;
   <div class="mb-8">
     <a
       href="/categories"
-      class="mb-4 inline-block text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+      class="mb-4 inline-block text-sm text-muted hover:text-primary"
     >
       &larr; All Categories
     </a>
     <h1 class="text-3xl font-bold capitalize">{category}</h1>
-    <p class="mt-2 text-[var(--color-muted)]">{posts.length} posts</p>
+    <p class="mt-2 text-muted">{posts.length} posts</p>
   </div>
 
   <PostList posts={posts} />
