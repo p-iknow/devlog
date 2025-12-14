@@ -1,39 +1,139 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { filterPosts } from "@/utils/posts";
 
-const posts = await getCollection("posts", filterPosts);
+const isDev = import.meta.env.DEV;
 
-// 시리즈별 포스트 수 계산
-const seriesMap = new Map<string, number>();
-posts.forEach((post) => {
-  if (post.data.series) {
-    seriesMap.set(post.data.series, (seriesMap.get(post.data.series) || 0) + 1);
-  }
+// 시리즈 메타정보와 글 가져오기
+const seriesCollection = await getCollection("series");
+const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
+  if (post.data.draft) return false;
+  if (post.data["dev-only"] && !isDev) return false;
+  return true;
 });
 
-const series = Array.from(seriesMap.entries())
-  .sort((a, b) => b[1] - a[1])
-  .map(([name, count]) => ({ name, count }));
+// 시리즈 id에서 폴더명 추출 (예: "시리즈-테스트/_index" -> "시리즈-테스트")
+const getSeriesSlug = (id: string) => id.replace(/\/_index$/, "");
+
+// 시리즈 글 id에서 폴더명 추출 (예: "시리즈-테스트/01-시작하기" -> "시리즈-테스트")
+const getPostSeriesSlug = (id: string) => id.split("/")[0];
+
+// 시리즈별 포스트 그룹화
+const seriesMap = new Map<string, typeof seriesPostsCollection>();
+seriesPostsCollection.forEach((post) => {
+  const seriesSlug = getPostSeriesSlug(post.id);
+  const posts = seriesMap.get(seriesSlug) || [];
+  posts.push(post);
+  seriesMap.set(seriesSlug, posts);
+});
+
+// 시리즈 목록 생성 (글 개수 순 정렬)
+const series = seriesCollection
+  .map((s) => {
+    const slug = getSeriesSlug(s.id);
+    const posts = seriesMap.get(slug) || [];
+    return {
+      slug,
+      title: s.data.title,
+      description: s.data.description,
+      posts: posts.sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)),
+    };
+  })
+  .filter((s) => s.posts.length > 0)
+  .sort((a, b) => b.posts.length - a.posts.length);
 ---
 
 <BaseLayout title="Series" description="Browse posts by series">
   <h1 class="mb-8 text-3xl font-bold">Series</h1>
 
   {series.length > 0 ? (
-    <div class="space-y-4">
-      {series.map(({ name, count }) => (
-        <a
-          href={`/series/${encodeURIComponent(name)}`}
-          class="block rounded-lg border border-[var(--color-border)] p-4 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-border)]/20"
-        >
-          <h2 class="text-lg font-semibold">{name}</h2>
-          <p class="mt-1 text-sm text-[var(--color-muted)]">{count} posts</p>
-        </a>
+    <div class="space-y-8">
+      {series.map(({ slug, title, description, posts: seriesPosts }) => (
+        <div class="rounded-xl border border-subtle bg-bg-secondary/30 p-6">
+          <div class="mb-4 flex items-center justify-between">
+            <a href={`/series/${slug}`} class="group series-title-link">
+              <h2 class="text-xl font-bold transition-colors group-hover:text-accent">{title}</h2>
+            </a>
+            <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+              {seriesPosts.length} parts
+            </span>
+          </div>
+          {description && (
+            <p class="mb-4 text-sm text-muted">{description}</p>
+          )}
+
+          <div class="series-timeline relative ml-6 pl-6">
+            {seriesPosts.map((post, index) => (
+              <a
+                href={`/series/${post.id}`}
+                class="group series-item relative mb-3 block no-underline last:mb-0"
+              >
+                <span class="series-number absolute -left-6 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-subtle text-xs font-medium transition-colors group-hover:bg-accent group-hover:text-white">
+                  {index + 1}
+                </span>
+                <div class="series-content rounded-lg px-3 py-2 transition-colors group-hover:bg-subtle/30">
+                  <span class="series-title font-medium transition-colors group-hover:text-accent">
+                    {post.data.title}
+                  </span>
+                  <span class="ml-2 text-sm text-muted">
+                    {post.data.date.toLocaleDateString("ko-KR", { year: "numeric", month: "short", day: "numeric" })}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
       ))}
     </div>
   ) : (
-    <p class="text-[var(--color-muted)]">No series found.</p>
+    <p class="text-muted">No series found.</p>
   )}
 </BaseLayout>
+
+<style is:global>
+  .series-title-link {
+    position: relative;
+    display: inline-block;
+  }
+
+  .series-title-link h2 {
+    position: relative;
+  }
+
+  .series-title-link h2::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: var(--color-accent);
+    transition: width 0.3s ease;
+  }
+
+  .series-title-link:hover h2::after {
+    width: 100%;
+  }
+
+  .series-item,
+  .series-item:hover,
+  .series-title {
+    text-decoration: none !important;
+  }
+
+  /* Timeline line connecting circles */
+  .series-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    width: 2px;
+    height: calc(100% + 12px);
+    background-color: var(--color-subtle);
+    z-index: 0;
+  }
+
+  .series-number {
+    z-index: 1;
+  }
+</style>

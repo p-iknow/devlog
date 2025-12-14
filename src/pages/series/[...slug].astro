@@ -1,0 +1,335 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostLayout from "@/layouts/PostLayout.astro";
+
+const isDev = import.meta.env.DEV;
+
+export async function getStaticPaths() {
+  const seriesCollection = await getCollection("series");
+  const seriesPostsCollection = await getCollection("seriesPosts");
+
+  const paths: Array<{
+    params: { slug: string };
+    props: { type: "series" | "post"; data: any };
+  }> = [];
+
+  // 시리즈 id에서 폴더명 추출
+  const getSeriesSlug = (id: string) => id.replace(/\/_index$/, "");
+
+  // 시리즈 글 id에서 폴더명 추출
+  const getPostSeriesSlug = (id: string) => id.split("/")[0];
+
+  // 시리즈별 글 그룹화
+  const seriesPostsMap = new Map<string, typeof seriesPostsCollection>();
+  seriesPostsCollection.forEach((post) => {
+    const seriesSlug = getPostSeriesSlug(post.id);
+    const posts = seriesPostsMap.get(seriesSlug) || [];
+    posts.push(post);
+    seriesPostsMap.set(seriesSlug, posts);
+  });
+
+  // 시리즈 상세 페이지 경로 생성
+  seriesCollection.forEach((series) => {
+    const slug = getSeriesSlug(series.id);
+    const posts = (seriesPostsMap.get(slug) || []).sort(
+      (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+    );
+
+    paths.push({
+      params: { slug },
+      props: {
+        type: "series",
+        data: {
+          series,
+          posts,
+        },
+      },
+    });
+  });
+
+  // 시리즈 글 상세 페이지 경로 생성
+  seriesPostsCollection.forEach((post) => {
+    const seriesSlug = getPostSeriesSlug(post.id);
+    const series = seriesCollection.find((s) => getSeriesSlug(s.id) === seriesSlug);
+    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort(
+      (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)
+    );
+
+    paths.push({
+      params: { slug: post.id },
+      props: {
+        type: "post",
+        data: {
+          post,
+          series,
+          allPosts,
+        },
+      },
+    });
+  });
+
+  return paths;
+}
+
+const { type, data } = Astro.props;
+
+// dev-only 글 필터링
+if (type === "post" && data.post.data["dev-only"] && !isDev) {
+  return Astro.redirect("/404");
+}
+
+// 시리즈 글인 경우 렌더링
+let Content: any;
+if (type === "post") {
+  const rendered = await render(data.post);
+  Content = rendered.Content;
+}
+---
+
+{type === "series" ? (
+  <BaseLayout title={`${data.series.data.title} | Series`} description={data.series.data.description}>
+    <div class="mb-8">
+      <a
+        href="/series"
+        class="mb-4 inline-block text-sm text-muted hover:text-primary"
+      >
+        &larr; All Series
+      </a>
+      <h1 class="text-3xl font-bold">{data.series.data.title}</h1>
+      <p class="mt-2 text-muted">{data.series.data.description}</p>
+      <p class="mt-2 text-sm text-muted">{data.posts.length} posts in this series</p>
+    </div>
+
+    <div class="space-y-4">
+      {data.posts
+        .filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))
+        .map((post: any, index: number) => (
+          <a
+            href={`/series/${post.id}`}
+            class="group block rounded-lg border border-subtle p-4 transition-colors hover:border-accent hover:bg-bg-secondary/30"
+          >
+            <div class="flex items-start gap-4">
+              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">
+                {index + 1}
+              </span>
+              <div>
+                <h2 class="font-semibold transition-colors group-hover:text-accent">
+                  {post.data.title}
+                </h2>
+                <p class="mt-1 text-sm text-muted">{post.data.description}</p>
+                <p class="mt-2 text-xs text-muted">
+                  {post.data.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })}
+                </p>
+              </div>
+            </div>
+          </a>
+        ))}
+    </div>
+  </BaseLayout>
+) : (
+  <PostLayout
+    title={data.post.data.title}
+    description={data.post.data.description}
+    date={data.post.data.date}
+    update={data.post.data.update}
+    tags={data.post.data.tags}
+    img={data.post.data.img}
+    hidePostNavigation={true}
+  >
+    {/* 시리즈 네비게이션 - Velog 스타일 */}
+    {(() => {
+      const filteredPosts = data.allPosts.filter((p: any) => !p.data.draft && (!p.data["dev-only"] || isDev));
+      const currentIndex = filteredPosts.findIndex((p: any) => p.id === data.post.id);
+      const totalPosts = filteredPosts.length;
+      const prevPost = currentIndex > 0 ? filteredPosts[currentIndex - 1] : null;
+      const nextPost = currentIndex < totalPosts - 1 ? filteredPosts[currentIndex + 1] : null;
+
+      return (
+        <div class="series-nav relative mb-8 rounded-lg bg-background">
+          {/* 시리즈 북마크 아이콘 */}
+          <div class="absolute right-4 top-0">
+            <svg width="24" height="36" fill="currentColor" viewBox="0 0 32 48" class="text-accent">
+              <path fill="currentColor" d="M32 0H0v48h.163l16-16L32 47.836V0z"></path>
+            </svg>
+          </div>
+
+          {/* 시리즈 제목 */}
+          <div class="p-4 pb-0 pr-12">
+            <a
+              href={`/series/${data.post.id.split("/")[0]}`}
+              class="series-title-link text-lg font-bold text-default hover:text-accent transition-colors"
+            >
+              {data.series?.data.title}
+            </a>
+          </div>
+
+          {/* 펼쳐지는 목록 - 제목 아래에 표시 */}
+          <div id="series-list" class="series-list-container">
+            <div class="max-h-64 overflow-y-auto px-4 py-2">
+              {filteredPosts.map((p: any, i: number) => (
+                <a
+                  href={`/series/${p.id}`}
+                  class={`series-list-item block rounded px-3 py-2 text-sm transition-colors ${
+                    p.id === data.post.id
+                      ? "current bg-accent/10 text-accent font-medium"
+                      : "text-default hover:bg-subtle/30 hover:text-accent"
+                  }`}
+                >
+                  {i + 1}. {p.data.title}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* 하단 컨트롤 영역 */}
+          <div class="flex items-center justify-between px-4 py-3">
+            {/* 목록 보기 토글 */}
+            <button
+              id="series-toggle"
+              class="flex items-center gap-1 text-sm text-muted hover:text-default transition-colors"
+              type="button"
+            >
+              <span id="toggle-arrow" class="inline-block transition-transform duration-200" style="transform: rotate(180deg)">&#9660;</span>
+              <span>목록 보기</span>
+            </button>
+
+            {/* 페이지네이션 */}
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-muted">{currentIndex + 1}/{totalPosts}</span>
+              <div class="flex items-center gap-1">
+                {prevPost ? (
+                  <a
+                    href={`/series/${prevPost.id}`}
+                    class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
+                    aria-label="이전 글"
+                  >
+                    &#10094;
+                  </a>
+                ) : (
+                  <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10094;</span>
+                )}
+                {nextPost ? (
+                  <a
+                    href={`/series/${nextPost.id}`}
+                    class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
+                    aria-label="다음 글"
+                  >
+                    &#10095;
+                  </a>
+                ) : (
+                  <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10095;</span>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    })()}
+
+    <style is:global>
+      .series-list-container {
+        display: grid;
+        grid-template-rows: 1fr;
+        transition: grid-template-rows 0.3s ease-out;
+      }
+      .series-list-container.collapsed {
+        grid-template-rows: 0fr;
+      }
+      .series-list-container > div {
+        overflow: hidden;
+      }
+      .series-title-link,
+      .series-title-link:hover,
+      .series-title-link:link,
+      .series-title-link:visited {
+        text-decoration: none !important;
+      }
+      .series-list-item,
+      .series-list-item:link,
+      .series-list-item:visited,
+      .series-list-item:hover {
+        text-decoration: none !important;
+      }
+      .series-list-item {
+        color: var(--color-secondary) !important;
+      }
+      .series-list-item:hover {
+        color: var(--color-accent) !important;
+        background-color: rgba(0, 0, 0, 0.03) !important;
+      }
+      [data-theme="dark"] .series-list-item:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+      }
+      .series-list-item.current,
+      .series-list-item.current:hover {
+        color: var(--color-accent) !important;
+        background: transparent !important;
+        cursor: default;
+        pointer-events: none;
+      }
+      .series-nav-btn,
+      .series-nav-btn:hover,
+      .series-nav-btn:link,
+      .series-nav-btn:visited {
+        text-decoration: none !important;
+      }
+      .series-post-nav,
+      .series-post-nav:hover,
+      .series-post-nav:link,
+      .series-post-nav:visited {
+        text-decoration: none !important;
+      }
+    </style>
+
+    <script>
+      document.getElementById('series-toggle')?.addEventListener('click', () => {
+        const list = document.getElementById('series-list');
+        const arrow = document.getElementById('toggle-arrow');
+        if (list && arrow) {
+          list.classList.toggle('collapsed');
+          arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
+        }
+      });
+    </script>
+
+    <Content />
+
+    {/* 이전/다음 글 네비게이션 */}
+    {(() => {
+      const filteredPosts = data.allPosts.filter((p: any) => !p.data.draft && (!p.data["dev-only"] || isDev));
+      const currentIndex = filteredPosts.findIndex((p: any) => p.id === data.post.id);
+      const prevPost = currentIndex > 0 ? filteredPosts[currentIndex - 1] : null;
+      const nextPost = currentIndex < filteredPosts.length - 1 ? filteredPosts[currentIndex + 1] : null;
+
+      return (
+        <div class="mt-12 grid gap-4 sm:grid-cols-2">
+          {prevPost ? (
+            <a
+              href={`/series/${prevPost.id}`}
+              class="series-post-nav group rounded-lg border border-subtle p-4 transition-colors hover:border-accent"
+            >
+              <div class="text-sm text-muted">&larr; 이전 글</div>
+              <div class="mt-1 font-medium transition-colors group-hover:text-accent">
+                {prevPost.data.title}
+              </div>
+            </a>
+          ) : (
+            <div />
+          )}
+          {nextPost && (
+            <a
+              href={`/series/${nextPost.id}`}
+              class="series-post-nav group rounded-lg border border-subtle p-4 text-right transition-colors hover:border-accent"
+            >
+              <div class="text-sm text-muted">다음 글 &rarr;</div>
+              <div class="mt-1 font-medium transition-colors group-hover:text-accent">
+                {nextPost.data.title}
+              </div>
+            </a>
+          )}
+        </div>
+      );
+    })()}
+  </PostLayout>
+)}
