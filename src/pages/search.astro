@@ -1,0 +1,294 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { format } from "date-fns";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+const sortedPosts = posts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// Prepare posts data for client-side search
+const searchablePosts = sortedPosts.map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  description: post.data.description || "",
+  date: format(post.data.date, "yyyy-MM-dd"),
+  tags: post.data.tags || [],
+  body: post.body || "",
+}));
+
+const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
+---
+
+<BaseLayout title="Search" description="Search posts">
+  <div class="search-container">
+    <div class="search-header">
+      <h1 class="search-title">Search</h1>
+      <p class="search-count">
+        There are <span id="post-count">{searchablePosts.length}</span> posts.
+      </p>
+    </div>
+
+    <div class="search-input-wrapper">
+      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
+        <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
+      </svg>
+      <input
+        type="text"
+        id="search-input"
+        placeholder="Search posts by title or content..."
+        autocomplete="off"
+      />
+    </div>
+
+    <div id="search-results" class="post-list">
+      {sortedPosts.map((post, index) => {
+        const { title, description, date, tags = [] } = post.data;
+        const formattedDate = format(date, "yyyy-MM-dd");
+        const isLast = index === sortedPosts.length - 1;
+
+        return (
+          <>
+            <div class="post-item" data-post-id={post.id}>
+              <h2 class="post-title">
+                <a href={`/posts/${post.id}`}>{title}</a>
+              </h2>
+              <p class="post-date">{formattedDate}</p>
+              <p class="post-excerpt">{description}</p>
+              {tags.length > 0 && (
+                <div class="post-tags">
+                  {tags.map((tag) => (
+                    <a href={`/tags?q=${tag}`} class="tag">
+                      <span class="hash">#</span>{spaceToDash(tag)}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+            {!isLast && <hr class="divider" />}
+          </>
+        );
+      })}
+    </div>
+
+    <div id="no-results" class="no-results" style="display: none;">
+      No posts found matching your search.
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ searchablePosts }}>
+  const posts = searchablePosts;
+  const searchInput = document.getElementById('search-input');
+  const searchResults = document.getElementById('search-results');
+  const noResults = document.getElementById('no-results');
+  const postCount = document.getElementById('post-count');
+  const postItems = document.querySelectorAll('.post-item');
+  const dividers = document.querySelectorAll('.divider');
+
+  function filterPosts(query) {
+    const lowerQuery = query.toLowerCase().trim();
+    let visibleCount = 0;
+    let lastVisibleIndex = -1;
+
+    postItems.forEach((item, index) => {
+      const postId = item.getAttribute('data-post-id');
+      const post = posts.find(p => p.id === postId);
+
+      if (!post) return;
+
+      const matchesTitle = post.title.toLowerCase().includes(lowerQuery);
+      const matchesDescription = post.description.toLowerCase().includes(lowerQuery);
+      const matchesBody = post.body.toLowerCase().includes(lowerQuery);
+      const matchesTags = post.tags.some(tag => tag.toLowerCase().includes(lowerQuery));
+
+      const isVisible = lowerQuery === '' || matchesTitle || matchesDescription || matchesBody || matchesTags;
+
+      item.style.display = isVisible ? 'block' : 'none';
+
+      // Handle dividers
+      if (dividers[index]) {
+        dividers[index].style.display = 'none';
+      }
+
+      if (isVisible) {
+        if (lastVisibleIndex >= 0 && dividers[lastVisibleIndex]) {
+          dividers[lastVisibleIndex].style.display = 'block';
+        }
+        lastVisibleIndex = index;
+        visibleCount++;
+      }
+    });
+
+    postCount.textContent = visibleCount;
+    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+  }
+
+  searchInput.addEventListener('input', (e) => {
+    filterPosts(e.target.value);
+  });
+
+  // Handle URL query parameter
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q');
+  if (initialQuery) {
+    searchInput.value = initialQuery;
+    filterPosts(initialQuery);
+  }
+</script>
+
+<style>
+  .search-container {
+    margin-top: 48px;
+  }
+
+  .search-header {
+    margin-bottom: 32px;
+  }
+
+  .search-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-default);
+  }
+
+  .search-count {
+    font-size: 16px;
+    color: var(--color-muted);
+  }
+
+  .search-input-wrapper {
+    position: relative;
+    margin-bottom: 48px;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    color: var(--color-muted);
+  }
+
+  #search-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    font-size: 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--color-background);
+    color: var(--color-default);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  #search-input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-accent-bg);
+  }
+
+  #search-input::placeholder {
+    color: var(--color-muted);
+  }
+
+  .post-list {
+    /* wrapper */
+  }
+
+  @media (max-width: 768px) {
+    .search-container {
+      padding: 0 10px;
+    }
+  }
+
+  .post-item {
+    position: relative;
+    top: 0;
+    transition: all 0.5s;
+  }
+
+  @media (max-width: 768px) {
+    .post-item {
+      padding: 0 5px;
+    }
+  }
+
+  .post-title {
+    margin-bottom: 24px;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-default);
+    word-break: break-all;
+  }
+
+  .post-title a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+
+  .post-title a:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .post-date {
+    margin-bottom: 16px;
+    font-size: 14.4px;
+    color: var(--color-tertiary);
+  }
+
+  .post-excerpt {
+    margin-bottom: 32px;
+    line-height: 1.7;
+    font-size: 16px;
+    color: var(--color-secondary);
+    word-break: break-all;
+  }
+
+  .post-tags {
+    margin-bottom: 16px;
+    word-break: break-all;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 9.6px 11.2px;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    border-radius: 50px;
+    background-color: var(--color-tag-bg);
+    color: var(--color-tag-text);
+    text-decoration: none;
+    font-size: 14.4px;
+    transition: all 0.2s;
+  }
+
+  .tag:hover {
+    background-color: var(--color-accent-hover);
+    color: #ffffff;
+    text-decoration: none;
+  }
+
+  .hash {
+    margin-right: 2px;
+  }
+
+  .divider {
+    margin-top: 48px;
+    margin-bottom: 32px;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 48px 0;
+    color: var(--color-muted);
+    font-size: 18px;
+  }
+</style>

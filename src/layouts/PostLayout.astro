@@ -49,7 +49,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
         <div class="article-tags">
           {tags.map((tag) => (
             <a href={`/tags?q=${tag}`} class="tag">
-              {spaceToDash(tag)}
+              <span class="hash">#</span>{spaceToDash(tag)}
             </a>
           ))}
         </div>
@@ -212,6 +212,10 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     background-color: var(--color-accent-hover);
     color: #ffffff;
     text-decoration: none;
+  }
+
+  .hash {
+    margin-right: 2px;
   }
 
   .header-divider {
