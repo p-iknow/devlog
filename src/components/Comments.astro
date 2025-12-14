@@ -3,14 +3,14 @@ import { siteConfig } from "@/config/site";
 ---
 
 <div id="comments" class="utterances-container">
-  <script
+  <Fragment set:html={`<script
     src="https://utteranc.es/client.js"
-    repo={siteConfig.utterances.repo}
-    issue-term={siteConfig.utterances.issueTerm}
+    repo="${siteConfig.utterances.repo}"
+    issue-term="${siteConfig.utterances.issueTerm}"
     theme="github-light"
     crossorigin="anonymous"
     async
-  ></script>
+  ></script>`} />
 </div>
 
 <script>
