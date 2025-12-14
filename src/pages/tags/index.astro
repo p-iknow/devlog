@@ -26,7 +26,7 @@ const tags = Array.from(tagMap.entries())
       tags.map(({ name, count }) => (
         <a
           href={`/tags/${name.toLowerCase()}`}
-          class="inline-flex items-center gap-2 rounded-full border border-[var(--color-border)] px-4 py-2 transition-colors hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white"
+          class="inline-flex items-center gap-2 rounded-full border border-subtle px-4 py-2 transition-colors hover:border-primary hover:bg-primary hover:text-white"
         >
           <span>#{name}</span>
           <span class="text-sm opacity-70">{count}</span>

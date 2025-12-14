@@ -1,15 +1,29 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { format } from "date-fns";
-import { filterPosts, sortPostsByDate } from "@/utils/posts";
+import { filterPosts, filterSeriesPosts } from "@/utils/posts";
+
+type PostEntry = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
 
 const posts = await getCollection("posts", filterPosts);
-const sortedPosts = sortPostsByDate(posts);
+const seriesPosts = await getCollection("seriesPosts", filterSeriesPosts);
+
+// 두 컬렉션을 합쳐서 날짜순 정렬
+const allPosts: PostEntry[] = [...posts, ...seriesPosts]
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// 포스트 타입에 따른 href 생성
+const getPostHref = (post: PostEntry) => {
+  return post.collection === "seriesPosts"
+    ? `/series/${post.id}`
+    : `/posts/${post.id}`;
+};
 
 // Prepare posts data for client-side search
-const searchablePosts = sortedPosts.map((post) => ({
+const searchablePosts = allPosts.map((post) => ({
   id: post.id,
+  collection: post.collection,
   title: post.data.title,
   description: post.data.description || "",
   date: format(post.data.date, "yyyy-MM-dd"),
@@ -42,23 +56,23 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     </div>
 
     <div id="search-results" class="post-list">
-      {sortedPosts.map((post, index) => {
+      {allPosts.map((post, index) => {
         const { title, description, date, tags = [] } = post.data;
         const formattedDate = format(date, "yyyy-MM-dd");
-        const isLast = index === sortedPosts.length - 1;
+        const isLast = index === allPosts.length - 1;
 
         return (
           <>
-            <div class="post-item" data-post-id={post.id}>
+            <div class="post-item" data-post-id={post.id} data-collection={post.collection}>
               <h2 class="post-title">
-                <a href={`/posts/${post.id}`}>{title}</a>
+                <a href={getPostHref(post)}>{title}</a>
               </h2>
               <p class="post-date">{formattedDate}</p>
               <p class="post-excerpt">{description}</p>
               {tags.length > 0 && (
                 <div class="post-tags">
                   {tags.map((tag) => (
-                    <a href={`/tags?q=${tag}`} class="tag">
+                    <a href={`/tags/${tag}`} class="tag">
                       <span class="hash">#</span>{spaceToDash(tag)}
                     </a>
                   ))}
@@ -80,7 +94,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 <script define:vars={{ searchablePosts }}>
   const posts = searchablePosts;
   const searchInput = document.getElementById('search-input');
-  const searchResults = document.getElementById('search-results');
   const noResults = document.getElementById('no-results');
   const postCount = document.getElementById('post-count');
   const postItems = document.querySelectorAll('.post-item');
@@ -93,7 +106,8 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 
     postItems.forEach((item, index) => {
       const postId = item.getAttribute('data-post-id');
-      const post = posts.find(p => p.id === postId);
+      const postCollection = item.getAttribute('data-collection');
+      const post = posts.find(p => p.id === postId && p.collection === postCollection);
 
       if (!post) return;
 
@@ -177,7 +191,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     width: 100%;
     padding: 16px 16px 16px 48px;
     font-size: 16px;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-subtle);
     border-radius: 8px;
     background-color: var(--color-background);
     color: var(--color-default);

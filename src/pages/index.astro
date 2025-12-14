@@ -1,16 +1,41 @@
 ---
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
 import Bio from "@/components/Bio.astro";
-import { filterPosts, sortPostsByDate } from "@/utils/posts";
+import { filterPosts } from "@/utils/posts";
 
-// algorithm 카테고리 제외
+const isDev = import.meta.env.DEV;
+
+// 일반 포스트 (algorithm 카테고리 제외)
 const posts = await getCollection("posts", (post) =>
   filterPosts(post) && post.data.category?.toLowerCase() !== "algorithm"
 );
-const sortedPosts = sortPostsByDate(posts);
 
+// 시리즈 포스트
+const seriesPosts = await getCollection("seriesPosts", (post) => {
+  if (post.data.draft) return false;
+  if (post.data["dev-only"] && !isDev) return false;
+  return true;
+});
+
+// 두 Collection 합치기
+type AnyPost = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
+const allPosts: AnyPost[] = [...posts, ...seriesPosts];
+
+// 날짜순 정렬 (내림차순)
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// href 생성 함수 - collection 타입에 따라 다른 경로 반환
+const getHref = (post: AnyPost) => {
+  if (post.collection === "seriesPosts") {
+    return `/series/${post.id}`;
+  }
+  return `/posts/${post.id}`;
+};
 ---
 
 <BaseLayout>
@@ -18,7 +43,7 @@ const sortedPosts = sortPostsByDate(posts);
   <Bio />
   <hr class="divider" />
 
-  <PostList posts={sortedPosts} />
+  <PostList posts={sortedPosts} getHref={getHref} />
 </BaseLayout>
 
 <style>

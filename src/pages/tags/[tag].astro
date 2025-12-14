@@ -1,46 +1,82 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
-import { filterPosts } from "@/utils/posts";
+import { filterPosts, filterSeriesPosts } from "@/utils/posts";
+
+type PostEntry = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
 
 export async function getStaticPaths() {
   const posts = await getCollection("posts", filterPosts);
+  const seriesPosts = await getCollection("seriesPosts", filterSeriesPosts);
 
+  // 모든 태그 수집
   const tags = new Set<string>();
   posts.forEach((post) => {
-    post.data.tags?.forEach((tag) => {
-      tags.add(tag.toLowerCase());
-    });
+    post.data.tags?.forEach((tag) => tags.add(tag.toLowerCase()));
+  });
+  seriesPosts.forEach((post) => {
+    post.data.tags?.forEach((tag) => tags.add(tag.toLowerCase()));
   });
 
-  return Array.from(tags).map((tag) => ({
-    params: { tag },
-    props: {
-      tag,
-      posts: posts
-        .filter((post) =>
-          post.data.tags?.some((t) => t.toLowerCase() === tag)
-        )
-        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
-    },
-  }));
+  return Array.from(tags).map((tag) => {
+    // posts에서 해당 태그를 가진 포스트들
+    const matchingPosts = posts.filter((post) =>
+      post.data.tags?.some((t) => t.toLowerCase() === tag)
+    );
+    // seriesPosts에서 해당 태그를 가진 포스트들
+    const matchingSeriesPosts = seriesPosts.filter((post) =>
+      post.data.tags?.some((t) => t.toLowerCase() === tag)
+    );
+
+    // 합쳐서 날짜순 정렬
+    const allPosts: PostEntry[] = [...matchingPosts, ...matchingSeriesPosts]
+      .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+    return {
+      params: { tag },
+      props: { tag, posts: allPosts },
+    };
+  });
 }
 
 const { tag, posts } = Astro.props;
+
+// 포스트 타입에 따른 href 생성
+const getPostHref = (post: PostEntry) => {
+  return post.collection === "seriesPosts"
+    ? `/series/${post.id}`
+    : `/posts/${post.id}`;
+};
 ---
+
+<style>
+  .back-link {
+    transition: color 0.2s ease;
+  }
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+  .back-link .arrow {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+  .back-link:hover .arrow {
+    transform: translateX(-4px);
+  }
+</style>
 
 <BaseLayout title={`#${tag} | Tags`} description={`Posts tagged with #${tag}`}>
   <div class="mb-8">
     <a
       href="/tags"
-      class="mb-4 inline-block text-sm text-[var(--color-muted)] hover:text-[var(--color-primary)]"
+      class="back-link mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors"
     >
-      &larr; All Tags
+      <span class="arrow">&larr;</span> All Tags
     </a>
-    <h1 class="text-3xl font-bold">#{tag}</h1>
-    <p class="mt-2 text-[var(--color-muted)]">{posts.length} posts</p>
+    <h1 class="text-3xl font-bold"># {tag}</h1>
+    <p class="mt-2 text-muted">{posts.length} posts</p>
   </div>
 
-  <PostList posts={posts} />
+  <PostList posts={posts} getHref={getPostHref} />
 </BaseLayout>
