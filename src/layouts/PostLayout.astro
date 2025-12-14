@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import Comments from "@/components/Comments.astro";
 import Bio from "@/components/Bio.astro";
 import { getCollection } from "astro:content";
-import type { CollectionEntry } from "astro:content";
 
 interface Props {
   title: string;
@@ -18,12 +17,12 @@ interface Props {
   img?: string;
   headings?: { depth: number; slug: string; text: string }[];
   currentSlug?: string;
+  hidePostNavigation?: boolean;
 }
 
-const { title, description, date, update, category, tags = [], img, headings = [], currentSlug } = Astro.props;
+const { title, description, date, tags = [], img, headings = [], currentSlug, hidePostNavigation = false } = Astro.props;
 
 const formattedDate = format(date, "MMMM d, yyyy");
-const formattedUpdate = update ? format(update, "MMMM d, yyyy") : null;
 const ogImage = img || siteConfig.ogImage;
 
 // Get all posts for prev/next navigation
@@ -48,7 +47,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       {tags.length > 0 && (
         <div class="article-tags">
           {tags.map((tag) => (
-            <a href={`/tags?q=${tag}`} class="tag">
+            <a href={`/tags/${tag}`} class="tag">
               <span class="hash">#</span>{spaceToDash(tag)}
             </a>
           ))}
@@ -80,12 +79,12 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
         if (!toc) return;
 
         const tocLinks = toc.querySelectorAll('a[data-heading]');
-        const headings = Array.from(tocLinks).map(link => {
+        const headingElements = Array.from(tocLinks).map(link => {
           const id = link.getAttribute('data-heading');
-          return document.getElementById(id);
-        }).filter(Boolean);
+          return id ? document.getElementById(id) : null;
+        }).filter((h): h is HTMLElement => h !== null);
 
-        if (headings.length === 0) return;
+        if (headingElements.length === 0) return;
 
         const observer = new IntersectionObserver(
           (entries) => {
@@ -96,6 +95,12 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
                   link.classList.remove('active');
                   if (link.getAttribute('data-heading') === id) {
                     link.classList.add('active');
+                    // Scroll TOC to show active item
+                    const tocRect = toc.getBoundingClientRect();
+                    const linkRect = link.getBoundingClientRect();
+                    if (linkRect.top < tocRect.top || linkRect.bottom > tocRect.bottom) {
+                      link.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                    }
                   }
                 });
               }
@@ -107,14 +112,40 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
           }
         );
 
-        headings.forEach((heading) => observer.observe(heading));
+        headingElements.forEach((heading) => observer.observe(heading));
       }
 
       document.addEventListener('DOMContentLoaded', initTocHighlight);
       document.addEventListener('astro:page-load', initTocHighlight);
     </script>
 
-    {(prevPost || nextPost) && (
+    <script>
+      function initAbbrTooltip() {
+        const abbrs = document.querySelectorAll('.prose abbr[title]');
+
+        abbrs.forEach(abbr => {
+          abbr.setAttribute('tabindex', '0');
+
+          abbr.addEventListener('click', (e) => {
+            e.preventDefault();
+            abbrs.forEach(a => a !== abbr && a.classList.remove('active'));
+            abbr.classList.toggle('active');
+          });
+        });
+
+        document.addEventListener('click', (e) => {
+          const target = e.target as Element | null;
+          if (!target?.closest('.prose abbr[title]')) {
+            abbrs.forEach(abbr => abbr.classList.remove('active'));
+          }
+        });
+      }
+
+      document.addEventListener('DOMContentLoaded', initAbbrTooltip);
+      document.addEventListener('astro:page-load', initAbbrTooltip);
+    </script>
+
+    {!hidePostNavigation && (prevPost || nextPost) && (
       <nav class="post-navigation">
         {prevPost ? (
           <a href={`/posts/${prevPost.id}`} class="nav-link nav-prev">
@@ -122,7 +153,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
             <div class="nav-content">
-              <span class="nav-label">Previous Post</span>
+              <span class="nav-label">Prev</span>
               <span class="nav-title">{prevPost.data.title}</span>
             </div>
           </a>
@@ -130,7 +161,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
         {nextPost ? (
           <a href={`/posts/${nextPost.id}`} class="nav-link nav-next">
             <div class="nav-content">
-              <span class="nav-label">Next Post</span>
+              <span class="nav-label">Next</span>
               <span class="nav-title">{nextPost.data.title}</span>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -236,6 +267,35 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     font-size: 14px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    padding-left: 24px;
+    border-left: 1px solid var(--color-subtle);
+  }
+
+  .toc::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .toc::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 3px;
+  }
+
+  .toc:hover {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: var(--color-muted) transparent;
+  }
+
+  .toc:hover::-webkit-scrollbar-thumb {
+    background: var(--color-muted);
+  }
+
+  .toc:hover::-webkit-scrollbar-thumb:hover {
+    background: var(--color-tertiary);
   }
 
   @media (max-width: 1200px) {
@@ -257,9 +317,23 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
   .toc-item a {
     color: var(--color-tertiary);
     text-decoration: none;
-    transition: color 0.2s;
+    transition: all 0.2s;
     line-height: 1.4;
     display: block;
+    position: relative;
+    margin-left: -25px;
+    padding-left: 25px;
+  }
+
+  .toc-item a::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: transparent;
+    transition: background 0.2s;
   }
 
   .toc-item a:hover {
@@ -271,19 +345,32 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     font-weight: 600;
   }
 
+  .toc-item a.active::before {
+    background: var(--color-accent);
+  }
+
   .toc-depth-2 {
-    padding-left: 0;
     font-weight: 500;
   }
 
+  .toc-depth-2 a {
+    padding-left: 25px;
+  }
+
   .toc-depth-3 {
-    padding-left: 12px;
     font-size: 13px;
   }
 
+  .toc-depth-3 a {
+    padding-left: 37px;
+  }
+
   .toc-depth-4 {
-    padding-left: 24px;
     font-size: 12px;
+  }
+
+  .toc-depth-4 a {
+    padding-left: 49px;
   }
 
   .post-navigation {
@@ -299,7 +386,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     gap: 12px;
     padding: 16px 20px;
     background-color: var(--color-background);
-    border: 1px solid var(--color-border);
     border-radius: 8px;
     text-decoration: none;
     transition: all 0.2s;
@@ -308,7 +394,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 
   .nav-link:hover {
     background-color: var(--color-accent-bg);
-    border: 1px solid var(--color-accent-border);
   }
 
   .nav-link svg {
@@ -353,7 +438,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     margin-top: 48px;
     padding: 24px;
     background-color: var(--color-background);
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-subtle);
     border-radius: 12px;
   }
 
