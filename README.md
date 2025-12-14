@@ -80,16 +80,18 @@ draft: false
 ---
 ```
 
-| Field | Required | Description |
-|-------|----------|-------------|
-| `title` | Yes | Post title |
-| `description` | Yes | Post description |
-| `date` | Yes | Publication date |
-| `category` | No | Category name |
-| `tags` | No | Array of tags |
-| `draft` | No | Set `true` to hide from production |
-| `series` | No | Series name for grouping posts |
-| `img` | No | OG image path |
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `title` | Yes | - | Post title |
+| `description` | Yes | - | Post description |
+| `date` | Yes | - | Publication date |
+| `draft` | No | `false` | Set `true` to hide from all environments |
+| `dev-only` | No | `false` | Set `true` to show only in dev (hidden in production) |
+| `category` | No | - | Category name |
+| `tags` | No | `[]` | Array of tags |
+| `series` | No | - | Series name for grouping posts |
+| `img` | No | - | OG image path |
+| `update` | No | - | Last updated date |
 
 ## License
 

@@ -2,11 +2,10 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { format } from "date-fns";
+import { filterPosts, sortPostsByDate } from "@/utils/posts";
 
-const posts = await getCollection("posts", ({ data }) => !data.draft);
-const sortedPosts = posts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const posts = await getCollection("posts", filterPosts);
+const sortedPosts = sortPostsByDate(posts);
 
 // Prepare posts data for client-side search
 const searchablePosts = sortedPosts.map((post) => ({

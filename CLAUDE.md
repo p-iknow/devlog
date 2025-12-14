@@ -23,7 +23,14 @@ pnpm lint          # Lint and fix with ESLint
 - Blog posts are Markdown files in `src/content/posts/` organized by category subdirectories
 - Posts use Astro Content Collections with schema validation
 - Required frontmatter: `title`, `date`, `description`
-- Optional frontmatter: `draft`, `category`, `tags`, `series`, `img` (OG image), `update`
+- Optional frontmatter:
+  - `draft` (default: `false`) - `true`면 모든 환경에서 숨김
+  - `dev-only` (default: `false`) - `true`면 dev 환경에서만 보임 (style guide 등 테스트용)
+  - `category` (default: `undefined`)
+  - `tags` (default: `[]`)
+  - `series` (default: `undefined`)
+  - `img` (default: `undefined`) - OG image 경로
+  - `update` (default: `undefined`) - 수정일
 
 ### Key Files
 - `astro.config.ts` - Astro configuration (integrations, markdown plugins, Vite settings)

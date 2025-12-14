@@ -2,9 +2,10 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
+import { filterPosts } from "@/utils/posts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("posts", ({ data }) => !data.draft);
+  const posts = await getCollection("posts", filterPosts);
 
   const seriesSet = new Set<string>();
   posts.forEach((post) => {

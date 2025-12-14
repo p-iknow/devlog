@@ -3,14 +3,13 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
 import Bio from "@/components/Bio.astro";
+import { filterPosts, sortPostsByDate } from "@/utils/posts";
 
 // algorithm 카테고리 제외
-const posts = await getCollection("posts", ({ data }) =>
-  !data.draft && data.category?.toLowerCase() !== "algorithm"
+const posts = await getCollection("posts", (post) =>
+  filterPosts(post) && post.data.category?.toLowerCase() !== "algorithm"
 );
-const sortedPosts = posts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+const sortedPosts = sortPostsByDate(posts);
 
 ---
 

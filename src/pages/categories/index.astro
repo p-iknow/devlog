@@ -1,8 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { filterPosts } from "@/utils/posts";
 
-const posts = await getCollection("posts", ({ data }) => !data.draft);
+const posts = await getCollection("posts", filterPosts);
 
 // 카테고리별 포스트 수 계산
 const categoryMap = new Map<string, number>();
