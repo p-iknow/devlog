@@ -1,6 +1,8 @@
 ---
 title: '마크다운 KaTeX 수식 가이드'
+slug: 'markdown-katex-guide'
 date: '2025-05-28'
+part: 4
 draft: false
 series: 'markdown-guide'
 tags:
@@ -8,6 +10,7 @@ tags:
   - 'katex'
   - 'math'
 description: 'KaTeX를 사용하여 마크다운에서 수학 공식을 작성하는 방법에 대한 종합 가이드입니다.'
+lang: ko
 ---
 
 이 블로그는 KaTeX를 사용한 수학 공식을 지원합니다. 인라인 수식과 블록 수식 모두 작성할 수 있습니다.

@@ -1,12 +1,15 @@
 ---
 title: 'Markdown Callout Style Guide'
-date: '2025-05-27'
+slug: 'markdown-callout-guide'
+date: '2025-05-26'
+part: 2
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'callout'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
+lang: en
 ---
 
 ### Note

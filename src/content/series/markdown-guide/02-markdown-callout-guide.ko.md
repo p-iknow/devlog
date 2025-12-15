@@ -1,12 +1,15 @@
 ---
 title: '마크다운 콜아웃 스타일 가이드'
-date: '2025-05-27'
+slug: 'markdown-callout-guide'
+date: '2025-05-26'
+part: 2
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'callout'
 description: 'Astro에서 마크다운 콘텐츠를 작성할 때 사용할 수 있는 기본 마크다운 문법 샘플입니다.'
+lang: ko
 ---
 
 ### Note

@@ -1,12 +1,15 @@
 ---
 title: 'Markdown Style Guide'
+slug: 'markdown-style-guide'
 date: '2025-05-25'
+part: 1
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'guide'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
+lang: en
 ---
 
 Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.

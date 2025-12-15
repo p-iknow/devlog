@@ -1,12 +1,15 @@
 ---
 title: '마크다운 코드 스타일 가이드'
-date: '2025-05-26'
+slug: 'markdown-code-guide'
+date: '2025-05-27'
+part: 3
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'code'
 description: 'Astro에서 Markdown 콘텐츠를 작성할 때 사용할 수 있는 기본적인 Markdown 문법의 예시입니다.'
+lang: ko
 ---
 
 ### 코드 에디터 프레임

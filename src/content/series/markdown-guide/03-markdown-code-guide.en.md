@@ -1,12 +1,15 @@
 ---
 title: 'Markdown Code Style Guide'
-date: '2025-05-26'
+slug: 'markdown-code-guide'
+date: '2025-05-27'
+part: 3
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'code'
 description: 'Here is a sample of some basic Markdown syntax that can be used when writing Markdown content in Astro.'
+lang: en
 ---
 
 ### Code editor frames

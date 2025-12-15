@@ -1,12 +1,15 @@
 ---
 title: '마크다운 한글 스타일 가이드'
+slug: 'markdown-style-guide'
 date: '2025-05-25'
+part: 1
 draft: false
 series: 'markdown-guide'
 tags:
   - 'markdown'
   - 'guide'
 description: '한글 가이드로 테스트하기'
+lang: ko
 ---
 
 Astro에서 마크다운 콘텐츠를 작성할 때 사용할 수 있는 기본 마크다운 문법 예시입니다.

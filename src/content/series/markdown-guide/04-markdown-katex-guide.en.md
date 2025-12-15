@@ -1,6 +1,8 @@
 ---
 title: 'Markdown KaTeX Math Guide'
+slug: 'markdown-katex-guide'
 date: '2025-05-28'
+part: 4
 draft: false
 series: 'markdown-guide'
 tags:
@@ -8,6 +10,7 @@ tags:
   - 'katex'
   - 'math'
 description: 'A comprehensive guide to writing mathematical equations using KaTeX in Markdown.'
+lang: en
 ---
 
 This blog supports mathematical equations using KaTeX. You can write both inline and block equations.
