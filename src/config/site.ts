@@ -1,5 +1,6 @@
 export const siteConfig = {
-  title: "Log of Pragmatism",
+  title: "p.log",
+  subtitle: "Pragmatic Log",
   description: "많은 것을 이해하고 싶습니다. 더 이해하기 위해 노력합니다.",
   author: "p-iknow 🎹",
   siteUrl: "https://p-iknow.netlify.app",

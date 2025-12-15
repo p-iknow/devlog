@@ -70,3 +70,4 @@ Uses **Tailwind CSS v4** with `@tailwindcss/vite` plugin. Typography handled by 
 - `astro-expressive-code` - Code highlighting with line numbers, copy button
 - `remark-math` + `rehype-katex` - Math equation rendering
 - `@r4ai/remark-callout` - Callout/admonition support
+- 개발서버가 켜져있다면 기존에 켜져있는 것을 끄고 새로 켜줘

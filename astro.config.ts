@@ -16,6 +16,11 @@ import remarkCallout from "@r4ai/remark-callout";
 export default defineConfig({
   site: "https://p-iknow.netlify.app",
 
+  i18n: {
+    locales: ["en", "ko"],
+    defaultLocale: "en",
+  },
+
   vite: {
     resolve: { alias: { "@": "/src" } },
     plugins: [tailwindcss()],
