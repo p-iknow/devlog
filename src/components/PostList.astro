@@ -1,9 +1,14 @@
 ---
 import { format } from "date-fns";
 import type { CollectionEntry } from "astro:content";
+import type { PostWithLang, SeriesPostWithLang } from "@/utils/posts";
 
-// 통합 포스트 타입 (posts 또는 seriesPosts)
-type PostEntry = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
+// 통합 포스트 타입 (posts 또는 seriesPosts, lang 포함 여부 무관)
+type PostEntry =
+  | CollectionEntry<"posts">
+  | CollectionEntry<"seriesPosts">
+  | PostWithLang
+  | SeriesPostWithLang;
 
 interface Props {
   posts: PostEntry[];
@@ -17,6 +22,17 @@ const defaultGetHref = (post: PostEntry) => `/posts/${post.id}`;
 const resolveHref = getHref || defaultGetHref;
 
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
+
+// 시리즈 포스트에서 시리즈 slug 추출
+const getSeriesSlug = (post: PostEntry) => {
+  if (post.collection === "seriesPosts") {
+    return post.id.split("/")[0];
+  }
+  return null;
+};
+
+// 저자
+const author = "@p-iknow";
 ---
 
 <div class="post-list">
@@ -24,13 +40,23 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     const { title, description, date, tags = [] } = post.data;
     const formattedDate = format(date, "yyyy-MM-dd");
     const isLast = index === posts.length - 1;
+    const seriesSlug = getSeriesSlug(post);
 
     return (
       <>
         <div class="post-item">
-          <a href={resolveHref(post)} class="link-title post-title">{title}</a>
-          <p class="post-date">{formattedDate}</p>
+          {seriesSlug && (
+            <div class="series-badge-wrapper">
+              <a href={`/series/${seriesSlug}`} class="series-badge">
+                <span>🗂️</span><span>{seriesSlug}</span>
+              </a>
+            </div>
+          )}
+          <a href={resolveHref(post)} class="link-title post-title">
+            {seriesSlug && post.data.part ? `${post.data.part}. ${title}` : title}
+          </a>
           <p class="post-excerpt">{description}</p>
+          <span class="post-date">{formattedDate} · {author}</span>
           {tags.length > 0 && (
             <div class="post-tags">
               {tags.map((tag) => (
@@ -46,3 +72,51 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     );
   })}
 </div>
+
+<style>
+  .series-badge-wrapper {
+    margin-bottom: 6px;
+  }
+
+  .post-excerpt {
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+
+  .post-date {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+    margin-top: 10px;
+    margin-bottom: 12px;
+  }
+
+  .series-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.1);
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+
+  .series-badge:hover {
+    background-color: rgba(37, 99, 235, 0.2);
+    text-decoration: none;
+  }
+
+  :global([data-theme="dark"]) .series-badge {
+    color: #60a5fa;
+    background-color: rgba(96, 165, 250, 0.15);
+  }
+
+  :global([data-theme="dark"]) .series-badge:hover {
+    background-color: rgba(96, 165, 250, 0.25);
+  }
+
+</style>

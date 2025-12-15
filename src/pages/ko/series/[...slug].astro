@@ -2,10 +2,10 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostLayout from "@/layouts/PostLayout.astro";
-import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
+import { KoLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
 import { getSeriesPostUrl, getSeriesUrl, stripLangFromId } from "@/utils/posts";
 
-const lang = EnLocale;
+const lang = KoLocale;
 const isDev = import.meta.env.DEV;
 
 // 포스트에서 lang 추출
@@ -33,11 +33,11 @@ export async function getStaticPaths() {
     return id.replace(/\.(en|ko)$/, "");
   };
 
-  const seriesCollection = await getCollection("series", (s) => getPostLang(s) === "en");
+  const seriesCollection = await getCollection("series", (s) => getPostLang(s) === "ko");
   const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
     if (post.data.draft) return false;
     if (post.data["dev-only"] && !isDev) return false;
-    return getPostLang(post) === "en";
+    return getPostLang(post) === "ko";
   });
 
   const paths: Array<{
@@ -45,7 +45,7 @@ export async function getStaticPaths() {
     props: { type: "series" | "post"; data: any };
   }> = [];
 
-  // 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_index.en" -> "markdown-guide")
+  // 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_index.ko" -> "markdown-guide")
   const getSeriesSlug = (id: string) => id.replace(/\/_index.*$/, "");
 
   // 시리즈 글 id에서 폴더명 추출
@@ -107,7 +107,7 @@ const { type, data } = Astro.props;
 
 // dev-only 글 필터링
 if (type === "post" && data.post.data["dev-only"] && !isDev) {
-  return Astro.redirect("/404");
+  return Astro.redirect("/ko/404");
 }
 
 // 시리즈 글인 경우 렌더링
@@ -121,17 +121,17 @@ if (type === "post") {
 ---
 
 {type === "series" ? (
-  <BaseLayout title={`${data.series.data.title} | Series`} description={data.series.data.description} lang={lang}>
+  <BaseLayout title={`${data.series.data.title} | 시리즈`} description={data.series.data.description} lang={lang}>
     <div class="mb-8">
       <a
-        href="/series"
+        href="/ko/series"
         class="mb-4 inline-block text-sm text-muted hover:text-primary"
       >
-        &larr; All Series
+        &larr; 전체 시리즈
       </a>
       <h1 class="text-3xl font-bold">{data.series.data.title}</h1>
       <p class="mt-2 text-muted">{data.series.data.description}</p>
-      <p class="mt-2 text-sm text-muted">{data.posts.length} posts in this series</p>
+      <p class="mt-2 text-sm text-muted">{data.posts.length}편의 글</p>
     </div>
 
     <div class="space-y-4">
@@ -152,7 +152,7 @@ if (type === "post") {
                 </h2>
                 <p class="mt-1 text-sm text-muted">{post.data.description}</p>
                 <p class="mt-2 text-xs text-muted">
-                  {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
+                  {post.data.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })}
                 </p>
               </div>
             </div>
@@ -226,7 +226,7 @@ if (type === "post") {
               type="button"
             >
               <span id="toggle-arrow" class="inline-block transition-transform duration-200" style="transform: rotate(180deg)">&#9660;</span>
-              <span>Show list</span>
+              <span>목록 보기</span>
             </button>
 
             {/* 페이지네이션 */}
@@ -237,7 +237,7 @@ if (type === "post") {
                   <a
                     href={getSeriesPostUrl(prevPost.id, lang)}
                     class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                    aria-label="Previous post"
+                    aria-label="이전 글"
                   >
                     &#10094;
                   </a>
@@ -248,7 +248,7 @@ if (type === "post") {
                   <a
                     href={getSeriesPostUrl(nextPost.id, lang)}
                     class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                    aria-label="Next post"
+                    aria-label="다음 글"
                   >
                     &#10095;
                   </a>
@@ -344,7 +344,7 @@ if (type === "post") {
               href={getSeriesPostUrl(prevPost.id, lang)}
               class="series-post-nav group rounded-lg border border-subtle p-4 transition-colors hover:border-accent"
             >
-              <div class="text-sm text-muted">&larr; Previous</div>
+              <div class="text-sm text-muted">&larr; 이전 글</div>
               <div class="mt-1 font-medium transition-colors group-hover:text-accent">
                 {prevPost.data.title}
               </div>
@@ -357,7 +357,7 @@ if (type === "post") {
               href={getSeriesPostUrl(nextPost.id, lang)}
               class="series-post-nav group rounded-lg border border-subtle p-4 text-right transition-colors hover:border-accent"
             >
-              <div class="text-sm text-muted">Next &rarr;</div>
+              <div class="text-sm text-muted">다음 글 &rarr;</div>
               <div class="mt-1 font-medium transition-colors group-hover:text-accent">
                 {nextPost.data.title}
               </div>

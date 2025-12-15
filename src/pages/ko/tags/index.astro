@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { EnLocale } from "@/config/locale";
+import { KoLocale } from "@/config/locale";
 import { getPostsByLang, getSeriesPostsByLang } from "@/utils/posts";
 
-const lang = EnLocale;
+const lang = KoLocale;
 
 const posts = await getPostsByLang({ lang });
 const seriesPosts = await getSeriesPostsByLang({ lang });
@@ -35,13 +35,13 @@ const getTagLevel = (count: number) => {
 const totalPosts = posts.length + seriesPosts.length;
 ---
 
-<BaseLayout title="Tags" description="Browse posts by tag" lang={lang}>
+<BaseLayout title="태그" description="태그별 글 보기" lang={lang}>
   <div class="tags-page">
     <header class="tags-header">
-      <h1 class="mb-8 text-3xl font-bold">Tags</h1>
+      <h1 class="mb-8 text-3xl font-bold">태그</h1>
       <p class="tags-summary">
-        <span class="text-accent-highlight">{tags.length}</span> tags across
-        <span class="text-accent-highlight">{totalPosts}</span> posts
+        <span class="text-accent-highlight">{tags.length}</span>개의 태그,
+        <span class="text-accent-highlight">{totalPosts}</span>개의 글
       </p>
     </header>
 
@@ -50,7 +50,7 @@ const totalPosts = posts.length + seriesPosts.length;
         const level = getTagLevel(count);
         return (
           <a
-            href={`/tags/${name.toLowerCase()}`}
+            href={`/ko/tags/${name.toLowerCase()}`}
             class={`tag-item tag-level-${level}`}
             style={`--delay: ${index * 0.02}s`}
           >

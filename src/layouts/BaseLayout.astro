@@ -1,6 +1,12 @@
 ---
 import "@/styles/global.css";
 import { siteConfig } from "@/config/site";
+import {
+  type Locale,
+  defaultLocale,
+  LOCALE,
+  getLangPath,
+} from "@/config/locale";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 
@@ -8,25 +14,50 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  lang?: Locale;
 }
 
 const {
   title = siteConfig.title,
   description = siteConfig.description,
   ogImage = siteConfig.ogImage,
+  lang = defaultLocale,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl);
 const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
+
+// hreflang alternate URLs 생성
+const currentPath = Astro.url.pathname;
+const getAlternatePath = (targetLang: Locale) => {
+  // 현재 언어 prefix 제거
+  let basePath = currentPath;
+  if (currentPath.startsWith("/ko/")) {
+    basePath = currentPath.replace("/ko", "");
+  } else if (currentPath.startsWith("/ko")) {
+    basePath = currentPath.replace("/ko", "") || "/";
+  }
+
+  // 대상 언어 prefix 추가
+  return targetLang === defaultLocale ? basePath : `/ko${basePath}`;
+};
+
+const enUrl = new URL(getAlternatePath("en"), siteConfig.siteUrl);
+const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="canonical" href={canonicalUrl} />
+
+    <!-- hreflang for SEO -->
+    <link rel="alternate" href={enUrl} hreflang="en" />
+    <link rel="alternate" href={koUrl} hreflang="ko" />
+    <link rel="alternate" href={enUrl} hreflang="x-default" />
 
     <!-- Primary Meta Tags -->
     <title>{title}</title>
@@ -41,6 +72,7 @@ const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:site_name" content={siteConfig.title} />
+    <meta property="og:locale" content={LOCALE[lang]} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -89,8 +121,8 @@ const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
     class="min-h-screen bg-surface text-default transition-colors duration-200"
   >
     <div class="flex min-h-screen flex-col pt-10">
-      <Header />
-      <main class="mx-auto w-full max-w-3xl flex-1 px-4 py-8">
+      <Header lang={lang} />
+      <main class="mx-auto w-full max-w-[1024px] flex-1 px-4 py-8">
         <slot />
       </main>
       <Footer />

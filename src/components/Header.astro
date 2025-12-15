@@ -1,19 +1,47 @@
 ---
 import { siteConfig } from "@/config/site";
+import {
+  type Locale,
+  defaultLocale,
+  getLangPath,
+} from "@/config/locale";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = defaultLocale } = Astro.props;
+const langPath = getLangPath(lang);
+
 const pathname = Astro.url.pathname;
-const isActive = (path: string) => pathname === path;
+const isActive = (path: string) => pathname === path || pathname === `${langPath}${path}`;
+
+// 언어 전환 URL 생성
+const getAlternateUrl = () => {
+  const currentPath = pathname;
+  if (lang === "ko") {
+    // 한국어 -> 영어: /ko prefix 제거
+    return currentPath.replace(/^\/ko/, "") || "/";
+  } else {
+    // 영어 -> 한국어: /ko prefix 추가
+    return `/ko${currentPath}`;
+  }
+};
+const alternateUrl = getAlternateUrl();
+const alternateLang = lang === "ko" ? "EN" : "KO";
 ---
 
 <header class="header">
   <div class="header-inner">
-    <a href="/" class="blog-title">
+    <a href={`${langPath}/`} class="blog-title">
       <span class="blog-title-text">{siteConfig.title}</span>
+      <span class="blog-subtitle-separator">/</span>
+      <span class="blog-subtitle">{siteConfig.subtitle}</span>
       <img src="/p-stack-log.svg" alt={siteConfig.title} class="blog-title-logo" />
     </a>
     <nav class="menu">
-      <a href="/" class:list={["nav-item", { active: isActive("/") }]} title="Home">
+      <a href={`${langPath}/`} class:list={["nav-item", { active: isActive("/") }]} title="Home">
         <span class="nav-text">Home</span>
         <span class="nav-icon-mobile">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" fill="currentColor">
@@ -21,7 +49,7 @@ const isActive = (path: string) => pathname === path;
           </svg>
         </span>
       </a>
-      <a href="/tags" class:list={["nav-item", { active: isActive("/tags") }]} title="Tags">
+      <a href={`${langPath}/tags`} class:list={["nav-item", { active: isActive("/tags") }]} title="Tags">
         <span class="nav-text">Tag</span>
         <span class="nav-icon-mobile">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="currentColor">
@@ -29,7 +57,7 @@ const isActive = (path: string) => pathname === path;
           </svg>
         </span>
       </a>
-      <a href="/series" class:list={["nav-item", { active: isActive("/series") }]} title="Series">
+      <a href={`${langPath}/series`} class:list={["nav-item", { active: isActive("/series") }]} title="Series">
         <span class="nav-text">Series</span>
         <span class="nav-icon-mobile">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
@@ -37,10 +65,13 @@ const isActive = (path: string) => pathname === path;
           </svg>
         </span>
       </a>
-      <a href="/search" class:list={["nav-icon", { active: isActive("/search") }]} title="Search">
+      <a href={`${langPath}/search`} class:list={["nav-icon", { active: isActive("/search") }]} title="Search">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
           <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
         </svg>
+      </a>
+      <a href={alternateUrl} class="lang-toggle" title={`Switch to ${alternateLang}`}>
+        {alternateLang}
       </a>
       <ThemeToggle />
     </nav>
@@ -64,7 +95,7 @@ const isActive = (path: string) => pathname === path;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1024px;
     margin: 0 auto;
     padding: 0 20px;
   }
@@ -89,14 +120,35 @@ const isActive = (path: string) => pathname === path;
   }
 
   .blog-title-text {
-    letter-spacing: -1px;
-    font-family: 'Source Code Pro', var(--font-sans);
+    letter-spacing: -0.5px;
+    font-family: 'Source Code Pro', var(--font-mono);
     font-weight: 700;
-    font-size: 24px;
-    background: linear-gradient(90deg, #0050FF, #017BFA, #01A5F4, #00C4EF);
+    font-size: 22px;
+    background: linear-gradient(135deg, #0066FF 0%, #00D4FF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .blog-subtitle-separator {
+    margin: 0 8px;
+    font-size: 18px;
+    font-weight: 300;
+    color: #0066FF;
+    opacity: 0.3;
+  }
+
+  .blog-subtitle {
+    font-size: 13px;
+    font-weight: 500;
+    color: #0088DD;
+    letter-spacing: 0.3px;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+  }
+
+  .blog-title:hover .blog-subtitle {
+    opacity: 1;
   }
 
   .blog-title-logo {
@@ -107,6 +159,14 @@ const isActive = (path: string) => pathname === path;
 
   @media (max-width: 768px) {
     .blog-title-text {
+      display: none;
+    }
+
+    .blog-subtitle-separator {
+      display: none;
+    }
+
+    .blog-subtitle {
       display: none;
     }
 
@@ -191,6 +251,26 @@ const isActive = (path: string) => pathname === path;
 
   .nav-icon-last {
     margin-right: 0;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-muted);
+    border: 1px solid var(--color-muted);
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+
+  .lang-toggle:hover {
+    color: var(--color-accent-hover);
+    border-color: var(--color-accent-hover);
+    text-decoration: none;
   }
 
   /* Mobile scroll hide */

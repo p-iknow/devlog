@@ -4,7 +4,15 @@ import { siteConfig } from "@/config/site";
 import { format } from "date-fns";
 import Comments from "@/components/Comments.astro";
 import Bio from "@/components/Bio.astro";
-import { getCollection } from "astro:content";
+import {
+  type Locale,
+  defaultLocale,
+  getLangPath,
+} from "@/config/locale";
+import {
+  getPostsByLang,
+  type PostWithLang,
+} from "@/utils/posts";
 
 interface Props {
   title: string;
@@ -18,24 +26,35 @@ interface Props {
   headings?: { depth: number; slug: string; text: string }[];
   currentSlug?: string;
   hidePostNavigation?: boolean;
+  lang?: Locale;
 }
 
-const { title, description, date, tags = [], img, headings = [], currentSlug, hidePostNavigation = false } = Astro.props;
+const {
+  title,
+  description,
+  date,
+  tags = [],
+  img,
+  headings = [],
+  currentSlug,
+  hidePostNavigation = false,
+  lang = defaultLocale,
+} = Astro.props;
 
+const langPath = getLangPath(lang);
 const formattedDate = format(date, "yyyy-MM-dd");
 const ogImage = img || siteConfig.ogImage;
 
-// Get all posts for prev/next navigation
-const allPosts = await getCollection("posts", ({ data }) => !data.draft);
-const sortedPosts = allPosts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const currentIndex = sortedPosts.findIndex((post) => post.id === currentSlug);
-const prevPost = currentIndex < sortedPosts.length - 1 ? sortedPosts[currentIndex + 1] : null;
-const nextPost = currentIndex > 0 ? sortedPosts[currentIndex - 1] : null;
+// Get posts for this language for prev/next navigation
+const allPosts = await getPostsByLang({ lang });
+const currentIndex = allPosts.findIndex((post) => post.id === currentSlug);
+const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
+const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
-<BaseLayout title={`${title} | ${siteConfig.title}`} description={description} ogImage={ogImage}>
+<BaseLayout title={`${title} | ${siteConfig.title}`} description={description} ogImage={ogImage} lang={lang}>
   <article>
     <header class="article-header">
       <h1 class="article-title">{title}</h1>
@@ -47,7 +66,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       {tags.length > 0 && (
         <div class="article-tags">
           {tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="post-tag">
+            <a href={`${langPath}/tags/${tag}`} class="post-tag">
               <span class="post-tag-hash">#</span>{spaceToDash(tag)}
             </a>
           ))}
@@ -57,6 +76,11 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     </header>
 
     <div class="content-wrapper">
+      <div class="article-content">
+        <div class="prose">
+          <slot />
+        </div>
+      </div>
       {headings.length > 0 && (
         <aside class="toc" id="toc">
           <ul class="toc-list">
@@ -68,9 +92,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
           </ul>
         </aside>
       )}
-      <div class="prose">
-        <slot />
-      </div>
     </div>
 
     <script>
@@ -148,7 +169,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     {!hidePostNavigation && (prevPost || nextPost) && (
       <nav class="post-navigation">
         {prevPost ? (
-          <a href={`/posts/${prevPost.id}`} class="nav-link nav-prev">
+          <a href={`${langPath}/posts/${prevPost.id}`} class="nav-link nav-prev">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
@@ -159,7 +180,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
           </a>
         ) : <div />}
         {nextPost ? (
-          <a href={`/posts/${nextPost.id}`} class="nav-link nav-next">
+          <a href={`${langPath}/posts/${nextPost.id}`} class="nav-link nav-next">
             <div class="nav-content">
               <span class="nav-label">Next</span>
               <span class="nav-title">{nextPost.data.title}</span>
@@ -236,20 +257,28 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
   }
 
   .content-wrapper {
-    position: relative;
+    display: flex;
+    gap: 48px;
+  }
+
+  .article-content {
+    flex: 1;
+    min-width: 0;
+    max-width: 776px;
   }
 
   .toc {
-    position: fixed;
-    left: calc(50% + 400px);
+    position: sticky;
     top: 100px;
     width: 200px;
+    flex-shrink: 0;
     font-size: 14px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
     scrollbar-width: none; /* Firefox */
     padding-left: 24px;
     border-left: 1px solid var(--color-subtle);
+    align-self: flex-start;
   }
 
   .toc::-webkit-scrollbar {
@@ -278,7 +307,15 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     background: var(--color-tertiary);
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1024px) {
+    .content-wrapper {
+      display: block;
+    }
+
+    .article-content {
+      max-width: none;
+    }
+
     .toc {
       display: none;
     }

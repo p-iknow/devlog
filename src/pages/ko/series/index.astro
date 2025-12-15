@@ -1,10 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
+import { KoLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
 import { getSeriesPostUrl, getSeriesUrl } from "@/utils/posts";
 
-const lang = EnLocale;
+const lang = KoLocale;
 const isDev = import.meta.env.DEV;
 
 // 포스트에서 lang 추출
@@ -16,7 +16,7 @@ const getPostLang = (post: { data: { lang?: string } }): Locale => {
   return defaultLocale;
 };
 
-// 시리즈 메타정보와 글 가져오기 (영어만)
+// 시리즈 메타정보와 글 가져오기 (한국어만)
 const seriesCollection = await getCollection("series", (s) => getPostLang(s) === lang);
 const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
   if (post.data.draft) return false;
@@ -24,7 +24,7 @@ const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
   return getPostLang(post) === lang;
 });
 
-// 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_indexen" -> "markdown-guide")
+// 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_indexko" -> "markdown-guide")
 const getSeriesSlug = (id: string) => id.replace(/\/_index.*$/, "");
 
 // 시리즈 글 id에서 폴더명 추출 (예: "시리즈-테스트/01-시작하기" -> "시리즈-테스트")
@@ -57,12 +57,12 @@ const series = seriesCollection
 const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
 ---
 
-<BaseLayout title="Series" description="Browse posts by series" lang={lang}>
+<BaseLayout title="시리즈" description="시리즈별 포스트 모아보기" lang={lang}>
   <div class="series-header">
-    <h1 class="mb-8 text-3xl font-bold">Series</h1>
+    <h1 class="mb-8 text-3xl font-bold">시리즈</h1>
     <p class="series-summary">
-      <span class="text-accent-highlight">{series.length}</span> series across
-      <span class="text-accent-highlight">{totalPosts}</span> posts
+      <span class="text-accent-highlight">{series.length}</span>개 시리즈,
+      <span class="text-accent-highlight">{totalPosts}</span>개 포스트
     </p>
   </div>
 
@@ -75,7 +75,7 @@ const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
               <h2 class="text-xl font-bold">{title}</h2>
             </a>
             <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
-              {seriesPosts.length} parts
+              {seriesPosts.length}편
             </span>
           </div>
           {description && (
@@ -96,7 +96,7 @@ const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
                     {post.data.title}
                   </span>
                   <span class="ml-2 text-sm text-muted">
-                    {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    {post.data.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })}
                   </span>
                 </div>
               </a>
@@ -106,7 +106,7 @@ const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
       ))}
     </div>
   ) : (
-    <p class="text-muted">No series found.</p>
+    <p class="text-muted">시리즈가 없습니다.</p>
   )}
 </BaseLayout>
 

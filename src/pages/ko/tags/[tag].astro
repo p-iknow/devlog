@@ -1,23 +1,23 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
-import { EnLocale } from "@/config/locale";
+import { KoLocale } from "@/config/locale";
 import {
   getPostUrl,
   type PostWithLang,
   type SeriesPostWithLang,
 } from "@/utils/posts";
 
-const lang = EnLocale;
+const lang = KoLocale;
 
 type PostEntry = PostWithLang | SeriesPostWithLang;
 
 export async function getStaticPaths() {
   const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
-  const { EnLocale } = await import("@/config/locale");
+  const { KoLocale } = await import("@/config/locale");
 
-  const posts = await getPostsByLang({ lang: EnLocale });
-  const seriesPosts = await getSeriesPostsByLang({ lang: EnLocale });
+  const posts = await getPostsByLang({ lang: KoLocale });
+  const seriesPosts = await getSeriesPostsByLang({ lang: KoLocale });
 
   // 모든 태그 수집
   const tags = new Set<string>();
@@ -71,16 +71,16 @@ const getPostHref = (post: PostEntry) => getPostUrl(post, lang);
   }
 </style>
 
-<BaseLayout title={`#${tag} | Tags`} description={`Posts tagged with #${tag}`} lang={lang}>
+<BaseLayout title={`#${tag} | 태그`} description={`#${tag} 태그가 달린 글`} lang={lang}>
   <div class="mb-8">
     <a
-      href="/tags"
+      href="/ko/tags"
       class="back-link mb-4 inline-flex items-center gap-1 text-sm text-muted hover:text-accent transition-colors"
     >
-      <span class="arrow">&larr;</span> All Tags
+      <span class="arrow">&larr;</span> 모든 태그
     </a>
     <h1 class="text-3xl font-bold"># {tag}</h1>
-    <p class="mt-2 text-muted">{posts.length} posts</p>
+    <p class="mt-2 text-muted">{posts.length}개의 글</p>
   </div>
 
   <PostList posts={posts} getHref={getPostHref as any} />

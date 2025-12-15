@@ -1,15 +1,15 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { format } from "date-fns";
-import { filterPosts, filterSeriesPosts, getPostUrl } from "@/utils/posts";
-import { EnLocale } from "@/config/locale";
+import { KoLocale } from "@/config/locale";
+import { getPostsByLang, getSeriesPostsByLang, getPostUrl, type PostWithLang, type SeriesPostWithLang } from "@/utils/posts";
 
-type PostEntry = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
+const lang = KoLocale;
 
-const lang = EnLocale;
-const posts = await getCollection("posts", filterPosts);
-const seriesPosts = await getCollection("seriesPosts", filterSeriesPosts);
+type PostEntry = PostWithLang | SeriesPostWithLang;
+
+const posts = await getPostsByLang({ lang });
+const seriesPosts = await getSeriesPostsByLang({ lang });
 
 // 두 컬렉션을 합쳐서 날짜순 정렬
 const allPosts: PostEntry[] = [...posts, ...seriesPosts]
@@ -29,12 +29,12 @@ const searchablePosts = allPosts.map((post) => ({
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
-<BaseLayout title="Search" description="Search posts">
+<BaseLayout title="검색" description="글 검색" lang={lang}>
   <div class="search-container">
     <div class="search-header">
-      <h1 class="mb-8 text-3xl font-bold">Search</h1>
+      <h1 class="mb-8 text-3xl font-bold">검색</h1>
       <p class="search-count">
-        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span> posts
+        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span>개의 글
       </p>
     </div>
 
@@ -45,7 +45,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       <input
         type="text"
         id="search-input"
-        placeholder="Search posts by title or content..."
+        placeholder="제목이나 내용으로 검색..."
         autocomplete="off"
       />
     </div>
@@ -65,7 +65,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
               {tags.length > 0 && (
                 <div class="post-tags">
                   {tags.map((tag) => (
-                    <a href={`/tags/${tag}`} class="post-tag">
+                    <a href={`/ko/tags/${tag}`} class="post-tag">
                       <span class="post-tag-hash">#</span>{spaceToDash(tag)}
                     </a>
                   ))}
@@ -79,7 +79,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     </div>
 
     <div id="no-results" class="no-results" style="display: none;">
-      No posts found matching your search.
+      검색 결과가 없습니다.
     </div>
   </div>
 </BaseLayout>

@@ -1,16 +1,16 @@
 ---
 import { render } from "astro:content";
 import PostLayout from "@/layouts/PostLayout.astro";
-import { EnLocale } from "@/config/locale";
+import { KoLocale } from "@/config/locale";
 import { getPostSlug } from "@/utils/posts";
 
-const lang = EnLocale;
+const lang = KoLocale;
 
 export async function getStaticPaths() {
   const { getPostsByLang, getPostSlug } = await import("@/utils/posts");
-  const { EnLocale } = await import("@/config/locale");
+  const { KoLocale } = await import("@/config/locale");
 
-  const posts = await getPostsByLang({ lang: EnLocale });
+  const posts = await getPostsByLang({ lang: KoLocale });
   return posts.map((post) => ({
     params: { slug: getPostSlug(post) },
     props: { post },
