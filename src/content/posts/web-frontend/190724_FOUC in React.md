@@ -8,6 +8,8 @@ tags:
   - 'webpack'
   - 'javascript'
 description: 'webpack 을 통해 번들링한 React 활용 TODO 어플을 로드했다.  CSS 가 미적용 된 상태로 DOM 컨텐츠가 로드되는 이슈가 있다. 알고보니 CSS Loader 의 sourceMap 옵션 을 켜둔 것이 원인이었다. 해당 옵션을 끄면 이슈가 해결된다. '
+lang: ko
+slug: fouc-in-react
 ---
 
 ## TLDR

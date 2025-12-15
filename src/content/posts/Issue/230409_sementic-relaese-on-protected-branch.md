@@ -8,6 +8,8 @@ tags:
   - 'sementic-release'
   - 'issue'
 description: 'sementic-release/git 에서 main 브랜치에 commit을 생성하는 단계에서 에러가 발생한다. 이를 해결하는 방법을 다룬다'
+lang: ko
+slug: semantic-release-on-protected-branch
 ---
 
 ![issue log](/issue-log.webp)

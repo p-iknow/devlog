@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - Arr Similar를 풀었다'
+lang: ko
+slug: arr-similar
 ---
 
 ## Problem

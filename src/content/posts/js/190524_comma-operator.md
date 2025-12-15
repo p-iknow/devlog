@@ -6,6 +6,8 @@ category: 'javascript'
 tags:
   - 'javascript'
 description: '"," 가 operator 였다는 사실을 알았는가?, 타인의 코드에서 볼 수 있는 comma operator에 대해 알아보자'
+lang: ko
+slug: comma-operator
 ---
 ## 들어가며
 

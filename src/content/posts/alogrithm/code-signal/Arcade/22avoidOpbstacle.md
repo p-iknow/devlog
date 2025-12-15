@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - avoidObstacles를 풀었다'
+lang: ko
+slug: avoid-obstacles
 ---
 
 ## Problem

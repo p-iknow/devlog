@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - areEquallystrong를 풀었다'
+lang: ko
+slug: are-equally-strong
 ---
 
 ## Problem

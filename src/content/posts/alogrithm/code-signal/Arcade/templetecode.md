@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - variableName를 풀었다'
+lang: ko
+slug: template-code
 ---
 
 ## Problem

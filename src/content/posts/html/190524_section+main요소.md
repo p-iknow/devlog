@@ -9,6 +9,8 @@ tags:
   - '웹표준'
   - '웹접근성'
 description: 'html 태그 중 가장 헷갈리는 section 요소를 다룬다.'
+lang: ko
+slug: section-main-element
 ---
 
 ## 루트 섹션(Root Section) 요소

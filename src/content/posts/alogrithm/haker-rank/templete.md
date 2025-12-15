@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'HakerRank - StairCase를 풀었다'
+lang: ko
+slug: template
 ---
 
 ## Problem

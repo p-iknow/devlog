@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'programmers'
 description: 'JS 로 programmers 의 "네트워크"를 풀었다.'
+lang: ko
+slug: network
 ---
 
 ## Problem

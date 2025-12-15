@@ -9,7 +9,8 @@ tags:
   - 'react'
 
 description: 'next.js 를 router.query 사용할 때 불필요한 타입체크가 필요한 경우가 많다. 이때 불필요한 타입 체크 구문을 쓰지 않고 편하게 queryParam과 pathParam을 이용하는 법에 대해 알아본다.'
-
+lang: ko
+slug: router-query-type-narrowing
 ---
 ![next-js-logo](/next-js.webp)
 

@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - Array Change를 풀었다'
+lang: ko
+slug: array-change
 ---
 
 ## Problem

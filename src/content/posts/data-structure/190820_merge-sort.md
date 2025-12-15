@@ -8,6 +8,8 @@ tags:
   - 'ADT'
   - 'sorting'
 description: '병합 정렬(merge sort)의 핵심은 분할과 정복이다. 정렬할 배열을 원소가 하나뿐인 배열 단위로 나뉠 때까지 분할하고, 반대로 이렇게 분할된 배열을 점점 더 큰 배열로 병합하면서 정렬을 완성한다. 분할/정복이라는 접근 방식은 재귀 호출을 통해 구현된다.'
+lang: ko
+slug: merge-sort
 ---
 
 ## 병합 정렬(merge sort)?

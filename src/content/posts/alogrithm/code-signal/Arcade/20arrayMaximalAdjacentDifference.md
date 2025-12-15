@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - Array Maximal Adjacent Difference를 풀었다'
+lang: ko
+slug: array-maximal-adjacent-difference
 ---
 
 ## Problem

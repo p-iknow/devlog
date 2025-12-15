@@ -8,6 +8,8 @@ tags:
   - 'Webpack'
   - 'react'
 description: '리엑트 앱에 코드스플리팅을 적용한 경험에 대해 다룬다. 이와 관련된 웹펙 설정과 리엑트 코드에 대해 다룬다.'
+lang: ko
+slug: react-code-splitting
 ---
 
 ## TLDR

@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - reverseInParentheses를 풀었다'
+lang: ko
+slug: reverse-in-parentheses
 ---
 
 ## Problem

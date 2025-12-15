@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - isIPv4Address를 풀었다'
+lang: ko
+slug: is-ipv4-address
 ---
 
 ## Problem

@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - alternatingSums를 풀었다'
+lang: ko
+slug: alternating-sum
 ---
 
 ## Problem

@@ -11,6 +11,8 @@ tags:
 description:
   'coditional type의 맥락에서 generic에 never가 할당되면 typescript가 never를 어떻게 다루는지에 대해
   이슈를 통해 알아봅니다.'
+lang: ko
+slug: never-type-and-extends
 ---
 
 ![typescript](/typescript.webp)

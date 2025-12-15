@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - Add Border를 풀었다'
+lang: ko
+slug: add-border
 ---
 
 ## Problem

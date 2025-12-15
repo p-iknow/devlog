@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - palindromeRearranging를 풀었다'
+lang: ko
+slug: palindrome-rearranging
 ---
 
 ## Problem

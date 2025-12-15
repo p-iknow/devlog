@@ -7,6 +7,8 @@ tags:
   - 'speech-bubble'
   - 'css'
 description: '디자인 요구 사항 중 speech bubble ui가 있어서 이를 CSS 로 어떻게 구현하는지 원리를 파악해보았다. css 속성 중 :after, :before, position: absolute가 활용된다 '
+lang: ko
+slug: speech-bubble
 ---
 
 ## TLDR

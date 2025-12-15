@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'CodeSignal - 24MineSweeper를 풀었다'
+lang: ko
+slug: mine-sweeper
 ---
 
 ## Problem

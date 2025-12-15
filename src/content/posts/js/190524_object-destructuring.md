@@ -7,6 +7,8 @@ tags:
   - 'javascript'
 description: 'es6 이후로 js 에서도 함수의 인자에 어떤 type이 들어가는 표시할 수 있는 방법이 생겼다. 바로 object destructuring 이다.
 오늘은 해당 키워드에 대해 알아보자'
+lang: ko
+slug: object-destructuring
 ---
 
 ## 들어가며

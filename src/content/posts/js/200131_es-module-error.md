@@ -6,6 +6,8 @@ category: 'javascript'
 tags:
   - 'javascript'
 description: '브라우저에서 지원하는 ESModule을 사용할 때 .js 확장자를 같이 기입하지 않아 발생하는 이슈에 대해 다뤘습니다.'
+lang: ko
+slug: es-module-error
 ---
 
 ## 이슈 

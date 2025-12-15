@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'HakerRank - Day 7: Regular Expressions I 를 풀었다'
+lang: ko
+slug: day7-regular-expressions-1
 ---
 
 ## Problem

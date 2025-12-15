@@ -7,6 +7,8 @@ tags:
   - '자료구조'
   - 'ADT'
 description: '자바스크립트로 linked list 를 구현해보자'
+lang: ko
+slug: linked-list
 ---
 
 

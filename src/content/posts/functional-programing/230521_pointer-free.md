@@ -6,7 +6,8 @@ category: 'functional programming'
 tags:
   - 'functional programming'
 description: '함수형 프로그래밍의 맥락에서 "point free"가 어떤 맥락으로 사용되는지 알아본다.'
-
+lang: ko
+slug: point-free
 ---
 
 ## 배경

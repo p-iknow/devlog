@@ -6,6 +6,8 @@ category: 'javascript'
 tags:
   - 'javascript'
 description: 'Array.apply(null, Array(n)) 용법에 대해 알아보았다.'
+lang: ko
+slug: make-empty-array
 ---
 
 ## TLDR 

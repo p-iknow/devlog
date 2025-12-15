@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'programmers'
 description: 'JS 로 leetcoded 의 "minimum-size-subarray-sum"를 풀었다.'
+lang: ko
+slug: minimum-size-subarray-sum
 ---
 
 ## Problem

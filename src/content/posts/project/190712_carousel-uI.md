@@ -11,6 +11,8 @@ tags:
   - 'javascript'
 
 description: 'Vanila JS로 carousel 라이브러리를 만든다. 코드의 재사용을 고려하여 객체를 설계했고 설계과정에서 obbserver 패턴을 적용했다.'
+lang: ko
+slug: carousel-ui
 ---
 
 ## TLDR

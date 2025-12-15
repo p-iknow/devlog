@@ -7,8 +7,8 @@ tags:
   - 'algorithm'
   - 'programmers'
 description: 'JS 로 programmers 의 문자열 내 p와 y의 개수"를 풀었다.'
-
-
+lang: ko
+slug: count-p-and-y
 ---
 
 ## Problem

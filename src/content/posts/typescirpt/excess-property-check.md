@@ -9,7 +9,8 @@ tags:
   - 'Structural Typing'
   - 'excess property check'
 description: ' 타입스크립트는 `excess property check` 를 통해 휴먼에러가 발생가능한 순간에  잘못된 프로퍼티 이름이나 오타로 인한 버그를 방지할 수 있다.'
-
+lang: ko
+slug: excess-property-check
 ---
 
 ![typescript](/typescript.webp)

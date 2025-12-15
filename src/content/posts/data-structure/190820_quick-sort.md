@@ -9,6 +9,8 @@ tags:
   - 'sorting'
 description: '퀵 정렬(quick sort)은 가장 애용되는 정렬 알고리즘이다. 복잡도는 O(n long n)이고, 복잡도가 동일한 여타 정렬 알고리즘보다 성능이 낮다. 병합 정렬과 마찬가지로 분할/정복 방식으로 접근한다(그러나 병합 정렬 과는 달리, 원소를 하나 가진 배열까지 잘게 쪼개지 않는다.) 이 [링크](https://visualgo.net/ko/sorting)를 통해 퀵 정렬이 어떻게 작동하는지 참고할 수 있다.
 '
+lang: ko
+slug: quick-sort
 ---
 
 ## 퀵 정렬(quick sort)?

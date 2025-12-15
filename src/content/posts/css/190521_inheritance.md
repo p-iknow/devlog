@@ -7,6 +7,8 @@ tags:
   - 'inheritance'
   - 'css'
 description: 'CSS 상속의 개념, CSS 상속이 되는 속성과 안되는 속성의 특징, CSS 상속을 하지 않는 요소들'
+lang: ko
+slug: inheritance
 ---
 
 ## TL:DR

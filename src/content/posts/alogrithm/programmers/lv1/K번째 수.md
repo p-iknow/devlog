@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'programmers'
 description: 'JS 로 programmers 의 "완주하지 못한 선수"를 풀었다.'
+lang: ko
+slug: kth-number
 ---
 
 ## Problem

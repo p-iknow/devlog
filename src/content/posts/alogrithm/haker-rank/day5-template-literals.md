@@ -7,7 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'HakerRank - Day 5: Template Literals 를 풀었다'
-
+lang: ko
+slug: day5-template-literals
 ---
 
 ## Problem

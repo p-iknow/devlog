@@ -10,6 +10,8 @@ tags:
   - 'javascript'
   - 'event'
 description: '검색창에 단어를 입력하면 검색 자동완성 이벤트가 발동해 검색어 목록을 보여준다. 리스팅 된 검색어로 검색을 하기 위해 클릭을 했는데 click 이벤트가 발동하지 않는다. 어떻게 된걸까? mouse event와 blur 이벤트의 순서에 대해 이해하면 원인을 알 수 있다. mousedown, mouseup, click & blur 이벤트 순서에 대해 알아보자.'
+lang: ko
+slug: mouse-blur-event-order
 ---
 
 ## 이슈 

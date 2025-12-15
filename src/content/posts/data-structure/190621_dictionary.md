@@ -7,6 +7,8 @@ tags:
   - '자료구조'
   - 'ADT'
 description: '자바스크립트 Dictionary 자료형을 직접 구현했다'
+lang: ko
+slug: dictionary
 ---
 
 ## 들어가며 

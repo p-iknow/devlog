@@ -7,6 +7,8 @@ tags:
   - 'algorithm'
   - 'code-signal'
 description: 'HakerRank - Mini Max Sum를 풀었다'
+lang: ko
+slug: mini-max-sum
 ---
 
 ## Problem
