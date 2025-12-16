@@ -1,0 +1,61 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostList from "@/components/PostList.astro";
+import { KoLocale } from "@/config/locale";
+import {
+  getPostsByLang,
+  filterPosts,
+  getPostUrl,
+  type PostWithLang,
+} from "@/utils/posts";
+
+const lang = KoLocale;
+
+export async function getStaticPaths() {
+  const { getPostsByLang, filterPosts } = await import("@/utils/posts");
+  const { KoLocale } = await import("@/config/locale");
+
+  const posts = await getPostsByLang({
+    lang: KoLocale,
+    filter: filterPosts,
+  });
+
+  const categories = new Set<string>();
+  posts.forEach((post) => {
+    if (post.data.category) {
+      categories.add(post.data.category.toLowerCase());
+    }
+  });
+
+  return Array.from(categories).map((category) => ({
+    params: { category },
+    props: {
+      category,
+      posts: posts
+        .filter(
+          (post) => post.data.category?.toLowerCase() === category
+        )
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+
+const getHref = (post: PostWithLang) => getPostUrl(post, lang);
+---
+
+<BaseLayout title={`${category} | Categories`} description={`${category} 카테고리의 글`} lang={lang}>
+  <div class="mb-8">
+    <a
+      href="/ko/categories"
+      class="mb-4 inline-block text-sm text-muted hover:text-primary"
+    >
+      &larr; 모든 카테고리
+    </a>
+    <h1 class="text-3xl font-bold capitalize">{category}</h1>
+    <p class="mt-2 text-muted">{posts.length}개의 글</p>
+  </div>
+
+  <PostList posts={posts} getHref={getHref} />
+</BaseLayout>
