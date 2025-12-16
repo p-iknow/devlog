@@ -5,6 +5,7 @@ date: '2025-05-25'
 part: 1
 draft: false
 series: 'markdown-guide'
+category: 'guide'
 tags:
   - 'markdown'
   - 'guide'

@@ -5,6 +5,7 @@ date: '2025-05-26'
 part: 2
 draft: false
 series: 'markdown-guide'
+category: 'guide'
 tags:
   - 'markdown'
   - 'callout'

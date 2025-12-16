@@ -5,6 +5,7 @@ date: '2025-05-28'
 part: 4
 draft: false
 series: 'markdown-guide'
+category: 'guide'
 tags:
   - 'markdown'
   - 'katex'
