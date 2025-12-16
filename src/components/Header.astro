@@ -18,18 +18,18 @@ const pathname = Astro.url.pathname;
 const isActive = (path: string) => pathname === path || pathname === `${langPath}${path}`;
 
 // 언어 전환 URL 생성
-const getAlternateUrl = () => {
+const getAlternateUrl = (targetLang: Locale) => {
   const currentPath = pathname;
-  if (lang === "ko") {
+  if (targetLang === "en") {
     // 한국어 -> 영어: /ko prefix 제거
     return currentPath.replace(/^\/ko/, "") || "/";
   } else {
     // 영어 -> 한국어: /ko prefix 추가
-    return `/ko${currentPath}`;
+    return `/ko${currentPath.replace(/^\/ko/, "")}`;
   }
 };
-const alternateUrl = getAlternateUrl();
-const alternateLang = lang === "ko" ? "EN" : "KO";
+const koUrl = getAlternateUrl("ko");
+const enUrl = getAlternateUrl("en");
 ---
 
 <header class="header">
@@ -70,10 +70,38 @@ const alternateLang = lang === "ko" ? "EN" : "KO";
           <path d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"/>
         </svg>
       </a>
-      <a href={alternateUrl} class="lang-toggle" title={`Switch to ${alternateLang}`}>
-        {alternateLang}
-      </a>
       <ThemeToggle />
+      <div class="lang-select">
+        <button class="lang-current" aria-haspopup="listbox" aria-expanded="false">
+          <span class="lang-flag">{lang === "ko" ? "🇰🇷" : "🇺🇸"}</span>
+          <span class="lang-text">{lang === "ko" ? "KO" : "EN"}</span>
+          <svg class="lang-arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <div class="lang-dropdown" role="listbox">
+          <a
+            href={koUrl}
+            class:list={["lang-option", { active: lang === "ko" }]}
+            role="option"
+            aria-selected={lang === "ko"}
+          >
+            <span class="lang-flag">🇰🇷</span>
+            <span class="lang-text">한국어</span>
+            {lang === "ko" && <span class="lang-check">✓</span>}
+          </a>
+          <a
+            href={enUrl}
+            class:list={["lang-option", { active: lang === "en" }]}
+            role="option"
+            aria-selected={lang === "en"}
+          >
+            <span class="lang-flag">🇺🇸</span>
+            <span class="lang-text">English</span>
+            {lang === "en" && <span class="lang-check">✓</span>}
+          </a>
+        </div>
+      </div>
     </nav>
   </div>
 </header>
@@ -253,24 +281,146 @@ const alternateLang = lang === "ko" ? "EN" : "KO";
     margin-right: 0;
   }
 
-  .lang-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 15px;
-    padding: 4px 8px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--color-muted);
-    border: 1px solid var(--color-muted);
-    border-radius: 4px;
-    transition: all 0.3s;
+  .lang-select {
+    position: relative;
   }
 
-  .lang-toggle:hover {
+  .lang-current {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 2px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-muted);
+    font-size: 15px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .lang-current:hover {
     color: var(--color-accent-hover);
-    border-color: var(--color-accent-hover);
+  }
+
+  .lang-select.open .lang-current {
+    color: var(--color-accent);
+  }
+
+  .lang-current .lang-flag {
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .lang-current .lang-text {
+    font-family: inherit;
+    letter-spacing: 0;
+  }
+
+  .lang-arrow {
+    width: 12px;
+    height: 12px;
+    transition: transform 0.2s ease;
+    opacity: 0.6;
+  }
+
+  .lang-select.open .lang-arrow {
+    transform: rotate(180deg);
+    opacity: 0.8;
+  }
+
+  .lang-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 140px;
+    padding: 6px;
+    background: var(--color-bg);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 12px;
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.08),
+      0 2px 8px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.96);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+  }
+
+  :global(.dark) .lang-dropdown {
+    background: var(--color-bg-secondary, #1e293b);
+    border-color: rgba(96, 165, 250, 0.2);
+    box-shadow:
+      0 4px 20px rgba(0, 0, 0, 0.3),
+      0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .lang-select.open .lang-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .lang-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    color: var(--color-muted);
     text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+
+  .lang-option:hover {
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .lang-option.active {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
+    color: #3b82f6;
+  }
+
+  :global(.dark) .lang-option.active {
+    color: #60a5fa;
+  }
+
+  .lang-option .lang-flag {
+    font-size: 16px;
+    line-height: 1;
+  }
+
+  .lang-option .lang-text {
+    flex: 1;
+  }
+
+  .lang-check {
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  :global(.dark) .lang-check {
+    color: #60a5fa;
+  }
+
+  @media (max-width: 768px) {
+    .lang-current .lang-text {
+      display: none;
+    }
+
+    .lang-current {
+      padding: 6px 8px;
+    }
+
+    .lang-dropdown {
+      min-width: 130px;
+    }
   }
 
   /* Mobile scroll hide */
@@ -286,6 +436,7 @@ const alternateLang = lang === "ko" ? "EN" : "KO";
 </style>
 
 <script>
+  // Mobile header hide on scroll
   let lastScrollY = window.scrollY;
   const header = document.querySelector('.header');
   const isMobile = () => window.innerWidth <= 768;
@@ -299,13 +450,36 @@ const alternateLang = lang === "ko" ? "EN" : "KO";
     const currentScrollY = window.scrollY;
 
     if (currentScrollY > lastScrollY && currentScrollY > 60) {
-      // Scrolling down
       header?.classList.add('header-hidden');
     } else {
-      // Scrolling up
       header?.classList.remove('header-hidden');
     }
 
     lastScrollY = currentScrollY;
+  });
+
+  // Language dropdown
+  const langSelect = document.querySelector('.lang-select');
+  const langButton = document.querySelector('.lang-current');
+
+  langButton?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    langSelect?.classList.toggle('open');
+    const isOpen = langSelect?.classList.contains('open');
+    langButton?.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!langSelect?.contains(e.target as Node)) {
+      langSelect?.classList.remove('open');
+      langButton?.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      langSelect?.classList.remove('open');
+      langButton?.setAttribute('aria-expanded', 'false');
+    }
   });
 </script>
