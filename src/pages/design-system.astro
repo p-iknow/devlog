@@ -1,0 +1,837 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { siteConfig } from "@/config/site";
+
+const title = "Design System";
+const description = "Interactive design token visualization for the blog theme";
+---
+
+<BaseLayout title={`${title} | ${siteConfig.title}`} description={description}>
+  <div class="design-system">
+    <header class="ds-header">
+      <h1>Design System</h1>
+      <p>블로그에서 사용하는 디자인 토큰을 시각화하고 테스트할 수 있습니다.</p>
+      <p class="ds-architecture">
+        <strong>컬러 시스템:</strong> Tailwind 기본 팔레트 + Chakra UI Override
+      </p>
+    </header>
+
+    <!-- Color System Architecture -->
+    <section class="ds-section">
+      <h2>컬러 시스템 아키텍처</h2>
+      <p class="section-description">
+        2단계 컬러 시스템: Primitive Colors (기본 팔레트) → Semantic Tokens (의미론적 역할)
+      </p>
+
+      <div class="architecture-grid">
+        <div class="architecture-item">
+          <h3>1단계: Primitive Colors</h3>
+          <ul>
+            <li><strong>Tailwind 기본 팔레트</strong>: blue, sky, emerald, amber, violet, red, rose 등</li>
+            <li><strong>Chakra UI Override</strong>: gray, blue (Tailwind와 다른 톤)</li>
+            <li><strong>Brand Colors</strong>: 로고 그라디언트, 브랜드 고유 색상</li>
+          </ul>
+        </div>
+        <div class="architecture-item">
+          <h3>2단계: Semantic Tokens</h3>
+          <ul>
+            <li><strong>Surface/Background</strong>: 페이지 배경, 카드 배경</li>
+            <li><strong>Text Hierarchy</strong>: default, secondary, tertiary, muted, subtle</li>
+            <li><strong>Accent Colors</strong>: 주요 강조색, 링크, 버튼</li>
+            <li><strong>Component Colors</strong>: header, tag, table, blockquote 등</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Primitive Colors: Chakra UI -->
+    <section class="ds-section">
+      <h2>Primitive Colors: Chakra UI Palette</h2>
+      <p class="section-description">Tailwind와 다른 Chakra UI 컬러 (Override)</p>
+
+      <div class="token-category">
+        <h3>Chakra Gray Scale</h3>
+        <div class="token-grid">
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-50);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-50</div>
+              <div class="token-value">#f7fafc</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-100);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-100</div>
+              <div class="token-value">#edf2f7</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-200);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-200</div>
+              <div class="token-value">#e2e8f0</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-300);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-300</div>
+              <div class="token-value">#cbd5e0</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-400);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-400</div>
+              <div class="token-value">#a0aec0</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-500);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-500</div>
+              <div class="token-value">#718096</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-600);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-600</div>
+              <div class="token-value">#4a5568</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-700);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-700</div>
+              <div class="token-value">#2d3748</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-800);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-800</div>
+              <div class="token-value">#1a202c</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-gray-900);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-gray-900</div>
+              <div class="token-value">#171923</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="token-category">
+        <h3>Chakra Blue Scale</h3>
+        <div class="token-grid">
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-50);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-50</div>
+              <div class="token-value">#ebf8ff</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-100);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-100</div>
+              <div class="token-value">#bee3f8</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-200);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-200</div>
+              <div class="token-value">#90cdf4</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-300);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-300</div>
+              <div class="token-value">#63b3ed</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-400);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-400</div>
+              <div class="token-value">#4299e1</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-500);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-500</div>
+              <div class="token-value">#3182ce</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-600);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-600</div>
+              <div class="token-value">#2c5282</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--chakra-blue-700);"></div>
+            <div class="token-info">
+              <div class="token-name">--chakra-blue-700</div>
+              <div class="token-value">#2b6cb0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Colors -->
+    <section class="ds-section">
+      <h2>Brand Colors</h2>
+      <p class="section-description">브랜드 고유 색상 (로고, 헤더 등)</p>
+
+      <div class="gradient-grid">
+        <div class="gradient-item">
+          <div class="gradient-swatch gradient-large" style="background: linear-gradient(135deg, var(--brand-gradient-start) 0%, var(--brand-gradient-end) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Brand Gradient</span>
+            <code class="gradient-value">--brand-gradient-start → --brand-gradient-end</code>
+            <span class="gradient-usage">#0066FF → #00D4FF</span>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background-color: var(--brand-accent);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Brand Accent</span>
+            <code class="gradient-value">--brand-accent</code>
+            <span class="gradient-usage">#0088DD (서브타이틀)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Semantic Tokens -->
+    <section class="ds-section">
+      <h2>Semantic Tokens</h2>
+      <p class="section-description">의미론적 역할로 정의된 컬러 (Primitive Colors 참조)</p>
+
+      <div class="token-category">
+        <h3>Surface & Background</h3>
+        <div class="token-grid">
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-surface);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-surface</div>
+              <div class="token-value" id="value-surface"></div>
+              <div class="token-ref">→ var(--color-white)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-background);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-background</div>
+              <div class="token-value" id="value-background"></div>
+              <div class="token-ref">→ var(--chakra-gray-50)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="token-category">
+        <h3>Text Hierarchy</h3>
+        <div class="token-grid">
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-default);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-default</div>
+              <div class="token-value" id="value-default"></div>
+              <div class="token-ref">→ var(--chakra-gray-800)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-secondary);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-secondary</div>
+              <div class="token-value" id="value-secondary"></div>
+              <div class="token-ref">→ var(--chakra-gray-600)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-tertiary);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-tertiary</div>
+              <div class="token-value" id="value-tertiary"></div>
+              <div class="token-ref">→ var(--chakra-gray-500)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-muted);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-muted</div>
+              <div class="token-value" id="value-muted"></div>
+              <div class="token-ref">→ var(--chakra-gray-400)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-subtle);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-subtle</div>
+              <div class="token-value" id="value-subtle"></div>
+              <div class="token-ref">→ var(--chakra-gray-200)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="token-category">
+        <h3>Accent Colors (Chakra Blue)</h3>
+        <div class="token-grid">
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent</div>
+              <div class="token-value" id="value-accent"></div>
+              <div class="token-ref">→ var(--chakra-blue-400)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent-hover);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent-hover</div>
+              <div class="token-value" id="value-accent-hover"></div>
+              <div class="token-ref">→ var(--chakra-blue-500)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent-light);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent-light</div>
+              <div class="token-value" id="value-accent-light"></div>
+              <div class="token-ref">→ var(--chakra-blue-300)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent-lighter);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent-lighter</div>
+              <div class="token-value" id="value-accent-lighter"></div>
+              <div class="token-ref">→ var(--chakra-blue-200)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent-bg);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent-bg</div>
+              <div class="token-value" id="value-accent-bg"></div>
+              <div class="token-ref">→ var(--chakra-blue-50)</div>
+            </div>
+          </div>
+          <div class="token-item">
+            <div class="color-swatch" style="background-color: var(--color-accent-border);"></div>
+            <div class="token-info">
+              <div class="token-name">--color-accent-border</div>
+              <div class="token-value" id="value-accent-border"></div>
+              <div class="token-ref">→ var(--chakra-blue-200)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tailwind Colors Usage -->
+    <section class="ds-section">
+      <h2>Tailwind Colors (Callout & Tags)</h2>
+      <p class="section-description">Tailwind 기본 팔레트를 사용하는 컴포넌트</p>
+
+      <div class="callout-grid">
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Note (Blue)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-blue-500);"></div>
+              <code>Icon: var(--color-blue-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-blue-600);"></div>
+              <code>Title: var(--color-blue-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Info (Sky)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-sky-500);"></div>
+              <code>Icon: var(--color-sky-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-sky-600);"></div>
+              <code>Title: var(--color-sky-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Tip (Emerald)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-emerald-500);"></div>
+              <code>Icon: var(--color-emerald-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-emerald-600);"></div>
+              <code>Title: var(--color-emerald-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Warning (Amber)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-amber-500);"></div>
+              <code>Icon: var(--color-amber-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-amber-600);"></div>
+              <code>Title: var(--color-amber-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Question (Violet)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-violet-500);"></div>
+              <code>Icon: var(--color-violet-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-violet-600);"></div>
+              <code>Title: var(--color-violet-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Caution (Red)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-red-500);"></div>
+              <code>Icon: var(--color-red-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-red-600);"></div>
+              <code>Title: var(--color-red-600)</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout-demo-item">
+          <h4 class="callout-type-name">Bug (Rose)</h4>
+          <div class="callout-colors">
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-rose-500);"></div>
+              <code>Icon: var(--color-rose-500)</code>
+            </div>
+            <div class="callout-color-item">
+              <div class="color-swatch" style="background-color: var(--color-rose-600);"></div>
+              <code>Title: var(--color-rose-600)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tag Gradients -->
+    <section class="ds-section">
+      <h2>Tag Gradient System (Tailwind)</h2>
+      <p class="section-description">태그에 사용되는 6가지 그라디언트 (Tailwind 컬러 사용)</p>
+
+      <div class="gradient-grid">
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-blue-500) 0%, var(--color-blue-400) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Blue</span>
+            <code class="gradient-value">blue-500 → blue-400</code>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-indigo-500) 0%, var(--color-indigo-400) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Indigo</span>
+            <code class="gradient-value">indigo-500 → indigo-400</code>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-sky-500) 0%, var(--color-sky-400) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Sky</span>
+            <code class="gradient-value">sky-500 → sky-400</code>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-violet-500) 0%, var(--color-violet-400) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Violet</span>
+            <code class="gradient-value">violet-500 → violet-400</code>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-cyan-500) 0%, var(--color-cyan-400) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Cyan</span>
+            <code class="gradient-value">cyan-500 → cyan-400</code>
+          </div>
+        </div>
+        <div class="gradient-item">
+          <div class="gradient-swatch" style="background: linear-gradient(135deg, var(--color-blue-600) 0%, var(--color-blue-500) 100%);"></div>
+          <div class="gradient-info">
+            <span class="gradient-name">Deep Blue</span>
+            <code class="gradient-value">blue-600 → blue-500</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Component Preview -->
+    <section class="ds-section">
+      <h2>Component Examples</h2>
+
+      <div class="component-preview">
+        <h3>Tags with Gradients</h3>
+        <div class="preview-group">
+          <span class="post-tag"><span class="post-tag-hash">#</span>typescript</span>
+          <span class="post-tag"><span class="post-tag-hash">#</span>react</span>
+          <span class="post-tag"><span class="post-tag-hash">#</span>astro</span>
+          <span class="post-tag"><span class="post-tag-hash">#</span>design</span>
+          <span class="post-tag"><span class="post-tag-hash">#</span>tailwind</span>
+          <span class="post-tag"><span class="post-tag-hash">#</span>css</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</BaseLayout>
+
+<style>
+  .design-system {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px;
+  }
+
+  .ds-header {
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--color-divider);
+  }
+
+  .ds-header h1 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--color-default);
+  }
+
+  .ds-header p {
+    font-size: 16px;
+    color: var(--color-secondary);
+  }
+
+  .ds-architecture {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background-color: var(--color-accent-bg);
+    border-left: 3px solid var(--color-accent);
+    border-radius: 6px;
+  }
+
+  .ds-section {
+    margin-bottom: 64px;
+  }
+
+  .ds-section > h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--color-default);
+  }
+
+  .section-description {
+    margin-bottom: 24px;
+    font-size: 16px;
+    color: var(--color-secondary);
+  }
+
+  .architecture-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+  }
+
+  .architecture-item {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-subtle);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  .architecture-item h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-default);
+  }
+
+  .architecture-item ul {
+    list-style: disc;
+    padding-left: 24px;
+  }
+
+  .architecture-item li {
+    margin-bottom: 8px;
+    color: var(--color-secondary);
+    line-height: 1.6;
+  }
+
+  .token-category {
+    margin-bottom: 32px;
+  }
+
+  .token-category h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-secondary);
+  }
+
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .token-item {
+    display: flex;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-subtle);
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .token-item:hover {
+    border-color: var(--color-accent);
+    box-shadow: 0 2px 8px rgba(66, 153, 225, 0.1);
+  }
+
+  .color-swatch {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    border: 2px solid var(--color-subtle);
+    flex-shrink: 0;
+  }
+
+  .token-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .token-name {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-default);
+  }
+
+  .token-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-tertiary);
+  }
+
+  .token-ref {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-accent);
+    font-style: italic;
+  }
+
+  .gradient-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .gradient-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-subtle);
+    border-radius: 8px;
+  }
+
+  .gradient-swatch {
+    height: 80px;
+    border-radius: 6px;
+    border: 1px solid var(--color-subtle);
+  }
+
+  .gradient-large {
+    height: 120px;
+  }
+
+  .gradient-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .gradient-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--color-default);
+  }
+
+  .gradient-value {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-tertiary);
+    background-color: var(--color-surface);
+    padding: 4px 6px;
+    border-radius: 4px;
+  }
+
+  .gradient-usage {
+    font-size: 12px;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+
+  .callout-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .callout-demo-item {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-subtle);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .callout-type-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--color-default);
+  }
+
+  .callout-colors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .callout-color-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .callout-color-item .color-swatch {
+    width: 40px;
+    height: 40px;
+  }
+
+  .callout-color-item code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-secondary);
+    background-color: var(--color-surface);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+
+  .component-preview {
+    margin-bottom: 32px;
+  }
+
+  .component-preview h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--color-secondary);
+  }
+
+  .preview-group {
+    padding: 24px;
+    background-color: var(--color-background);
+    border: 1px solid var(--color-subtle);
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .token-grid,
+    .gradient-grid,
+    .callout-grid,
+    .architecture-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function initDesignSystem() {
+    // Get computed styles
+    function getTokenValue(tokenName: string): string {
+      return getComputedStyle(document.documentElement)
+        .getPropertyValue(tokenName)
+        .trim();
+    }
+
+    // Update token values
+    const surfaceEl = document.getElementById('value-surface');
+    const backgroundEl = document.getElementById('value-background');
+    const defaultEl = document.getElementById('value-default');
+    const secondaryEl = document.getElementById('value-secondary');
+    const tertiaryEl = document.getElementById('value-tertiary');
+    const mutedEl = document.getElementById('value-muted');
+    const subtleEl = document.getElementById('value-subtle');
+    const accentEl = document.getElementById('value-accent');
+    const accentHoverEl = document.getElementById('value-accent-hover');
+    const accentLightEl = document.getElementById('value-accent-light');
+    const accentLighterEl = document.getElementById('value-accent-lighter');
+    const accentBgEl = document.getElementById('value-accent-bg');
+    const accentBorderEl = document.getElementById('value-accent-border');
+
+    if (surfaceEl) surfaceEl.textContent = getTokenValue('--color-surface');
+    if (backgroundEl) backgroundEl.textContent = getTokenValue('--color-background');
+    if (defaultEl) defaultEl.textContent = getTokenValue('--color-default');
+    if (secondaryEl) secondaryEl.textContent = getTokenValue('--color-secondary');
+    if (tertiaryEl) tertiaryEl.textContent = getTokenValue('--color-tertiary');
+    if (mutedEl) mutedEl.textContent = getTokenValue('--color-muted');
+    if (subtleEl) subtleEl.textContent = getTokenValue('--color-subtle');
+    if (accentEl) accentEl.textContent = getTokenValue('--color-accent');
+    if (accentHoverEl) accentHoverEl.textContent = getTokenValue('--color-accent-hover');
+    if (accentLightEl) accentLightEl.textContent = getTokenValue('--color-accent-light');
+    if (accentLighterEl) accentLighterEl.textContent = getTokenValue('--color-accent-lighter');
+    if (accentBgEl) accentBgEl.textContent = getTokenValue('--color-accent-bg');
+    if (accentBorderEl) accentBorderEl.textContent = getTokenValue('--color-accent-border');
+  }
+
+  document.addEventListener('DOMContentLoaded', initDesignSystem);
+  document.addEventListener('astro:page-load', initDesignSystem);
+</script>
