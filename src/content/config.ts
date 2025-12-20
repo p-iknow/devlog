@@ -58,6 +58,8 @@ const seriesPosts = defineCollection({
     update: z.coerce.date().optional(),
     draft: z.boolean().default(false),
     "dev-only": z.boolean().default(false),
+    series: z.string(), // 시리즈 slug (예: 'markdown-guide')
+    category: z.string().optional(),
     tags: z.array(z.string()).default([]),
     part: z.number().optional(), // 시리즈 내 순서 (없으면 파일명/날짜로 정렬)
     img: z.string().optional(),
