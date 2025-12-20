@@ -1,0 +1,67 @@
+/* ===== Base Styles ===== */
+/* HTML elements, links, selection, scrollbar */
+
+/* 기본 스타일 */
+html {
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-default);
+  line-height: 1.7;
+}
+
+/* 링크 스타일 */
+a {
+  color: var(--color-default);
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+a:visited {
+  color: inherit;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* 선택 스타일 */
+::selection {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
+/* 스크롤바 스타일 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-scroll-handle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
+
+/* 코드 블록 스타일 */
+.expressive-code {
+  margin: 1.5rem 0;
+}
+
+/* KaTeX 스타일 조정 */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5rem 0;
+  margin-bottom: 24px;
+}

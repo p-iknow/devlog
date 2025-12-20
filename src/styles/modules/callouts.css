@@ -1,0 +1,233 @@
+/* ===== Callouts ===== */
+/* Callout/admonition styles (@r4ai/remark-callout) */
+
+/* Base callout structure */
+.prose [data-callout] {
+  --callout-bg: var(--color-background);
+  --callout-border: var(--color-subtle);
+  --callout-icon-bg: var(--color-muted);
+  margin: 28px 0;
+  padding: 0;
+  border-radius: 12px;
+  background: var(--callout-bg);
+  border: 1px solid var(--callout-border);
+  overflow: hidden;
+}
+
+.prose [data-callout] [data-callout-title] {
+  margin: 0;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  border-bottom: 1px solid var(--callout-border);
+  background: color-mix(in srgb, var(--callout-icon-bg) 8%, transparent);
+}
+
+.prose [data-callout] [data-callout-title]::before {
+  content: "";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  background-color: var(--callout-icon-bg);
+  mask-repeat: no-repeat;
+  mask-size: 22px 22px;
+  mask-position: center;
+}
+
+.prose [data-callout] p {
+  margin: 0;
+}
+
+.prose [data-callout] [data-callout-body] {
+  padding: 16px 18px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-secondary);
+}
+
+.prose [data-callout] [data-callout-body] > * + * {
+  margin-top: 12px;
+}
+
+.prose [data-callout] [data-callout-body] code {
+  font-size: 13px;
+}
+
+/* === Callout Types === */
+
+/* Note - Blue (Tailwind) */
+.prose [data-callout-type="note"] {
+  --callout-icon-bg: var(--color-blue-500);
+  --callout-border: rgb(59 130 246 / 0.2);
+  --callout-bg: rgb(59 130 246 / 0.04);
+}
+
+.prose [data-callout-type="note"] [data-callout-title] {
+  color: var(--color-blue-600);
+}
+
+.prose [data-callout-type="note"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+}
+
+/* Info - Sky (Tailwind) */
+.prose [data-callout-type="info"] {
+  --callout-icon-bg: var(--color-sky-500);
+  --callout-border: rgb(14 165 233 / 0.2);
+  --callout-bg: rgb(14 165 233 / 0.04);
+}
+
+.prose [data-callout-type="info"] [data-callout-title] {
+  color: var(--color-sky-600);
+}
+
+.prose [data-callout-type="info"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+}
+
+/* Tip - Emerald (Tailwind) */
+.prose [data-callout-type="tip"],
+.prose [data-callout-type="important"] {
+  --callout-icon-bg: var(--color-emerald-500);
+  --callout-border: rgb(16 185 129 / 0.2);
+  --callout-bg: rgb(16 185 129 / 0.04);
+}
+
+.prose [data-callout-type="tip"] [data-callout-title],
+.prose [data-callout-type="important"] [data-callout-title] {
+  color: var(--color-emerald-600);
+}
+
+.prose [data-callout-type="tip"] [data-callout-title]::before,
+.prose [data-callout-type="important"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6A4.997 4.997 0 0 1 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z'/%3E%3C/svg%3E");
+}
+
+/* Warning - Amber (Tailwind) */
+.prose [data-callout-type="warning"],
+.prose [data-callout-type="attention"] {
+  --callout-icon-bg: var(--color-amber-500);
+  --callout-border: rgb(245 158 11 / 0.25);
+  --callout-bg: rgb(245 158 11 / 0.04);
+}
+
+.prose [data-callout-type="warning"] [data-callout-title],
+.prose [data-callout-type="attention"] [data-callout-title] {
+  color: var(--color-amber-600);
+}
+
+.prose [data-callout-type="warning"] [data-callout-title]::before,
+.prose [data-callout-type="attention"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+}
+
+/* Question - Violet (Tailwind) */
+.prose [data-callout-type="question"],
+.prose [data-callout-type="help"],
+.prose [data-callout-type="faq"] {
+  --callout-icon-bg: var(--color-violet-500);
+  --callout-border: rgb(139 92 246 / 0.2);
+  --callout-bg: rgb(139 92 246 / 0.04);
+}
+
+.prose [data-callout-type="question"] [data-callout-title],
+.prose [data-callout-type="help"] [data-callout-title],
+.prose [data-callout-type="faq"] [data-callout-title] {
+  color: var(--color-violet-600);
+}
+
+.prose [data-callout-type="question"] [data-callout-title]::before,
+.prose [data-callout-type="help"] [data-callout-title]::before,
+.prose [data-callout-type="faq"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z'/%3E%3C/svg%3E");
+}
+
+/* Caution - Red (Tailwind) */
+.prose [data-callout-type="caution"] {
+  --callout-icon-bg: var(--color-red-500);
+  --callout-border: rgb(239 68 68 / 0.2);
+  --callout-bg: rgb(239 68 68 / 0.04);
+}
+
+.prose [data-callout-type="caution"] [data-callout-title] {
+  color: var(--color-red-600);
+}
+
+.prose [data-callout-type="caution"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+}
+
+/* Bug - Rose (Tailwind) */
+.prose [data-callout-type="bug"] {
+  --callout-icon-bg: var(--color-rose-500);
+  --callout-border: rgb(244 63 94 / 0.2);
+  --callout-bg: rgb(244 63 94 / 0.04);
+}
+
+.prose [data-callout-type="bug"] [data-callout-title] {
+  color: var(--color-rose-600);
+}
+
+.prose [data-callout-type="bug"] [data-callout-title]::before {
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M20 8h-2.81a5.985 5.985 0 0 0-1.82-1.96L17 4.41 15.59 3l-2.17 2.17C12.96 5.06 12.49 5 12 5c-.49 0-.96.06-1.41.17L8.41 3 7 4.41l1.62 1.63C7.88 6.55 7.26 7.22 6.81 8H4v2h2.09c-.05.33-.09.66-.09 1v1H4v2h2v1c0 .34.04.67.09 1H4v2h2.81c1.04 1.79 2.97 3 5.19 3s4.15-1.21 5.19-3H20v-2h-2.09c.05-.33.09-.66.09-1v-1h2v-2h-2v-1c0-.34-.04-.67-.09-1H20V8zm-6 8h-4v-2h4v2zm0-4h-4v-2h4v2z'/%3E%3C/svg%3E");
+}
+
+/* === Dark Mode Adjustments === */
+[data-theme="dark"] .prose [data-callout],
+:root:not([data-theme="light"]) .prose [data-callout] {
+  --callout-bg: rgba(255, 255, 255, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose [data-callout] {
+    --callout-bg: rgba(255, 255, 255, 0.02);
+  }
+}
+
+[data-theme="dark"] .prose [data-callout-type="note"],
+[data-theme="dark"] .prose [data-callout-type="info"],
+[data-theme="dark"] .prose [data-callout-type="tip"],
+[data-theme="dark"] .prose [data-callout-type="important"],
+[data-theme="dark"] .prose [data-callout-type="warning"],
+[data-theme="dark"] .prose [data-callout-type="attention"],
+[data-theme="dark"] .prose [data-callout-type="question"],
+[data-theme="dark"] .prose [data-callout-type="help"],
+[data-theme="dark"] .prose [data-callout-type="faq"],
+[data-theme="dark"] .prose [data-callout-type="caution"],
+[data-theme="dark"] .prose [data-callout-type="bug"] {
+  --callout-bg: rgba(255, 255, 255, 0.02);
+}
+
+[data-theme="dark"] .prose [data-callout-type="note"] [data-callout-title] { color: var(--color-blue-400); }
+[data-theme="dark"] .prose [data-callout-type="info"] [data-callout-title] { color: var(--color-sky-400); }
+[data-theme="dark"] .prose [data-callout-type="tip"] [data-callout-title],
+[data-theme="dark"] .prose [data-callout-type="important"] [data-callout-title] { color: var(--color-emerald-400); }
+[data-theme="dark"] .prose [data-callout-type="warning"] [data-callout-title],
+[data-theme="dark"] .prose [data-callout-type="attention"] [data-callout-title] { color: var(--color-amber-400); }
+[data-theme="dark"] .prose [data-callout-type="question"] [data-callout-title],
+[data-theme="dark"] .prose [data-callout-type="help"] [data-callout-title],
+[data-theme="dark"] .prose [data-callout-type="faq"] [data-callout-title] { color: var(--color-violet-400); }
+[data-theme="dark"] .prose [data-callout-type="caution"] [data-callout-title] { color: var(--color-red-400); }
+[data-theme="dark"] .prose [data-callout-type="bug"] [data-callout-title] { color: var(--color-rose-400); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .prose [data-callout-type="note"] [data-callout-title] { color: var(--color-blue-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="info"] [data-callout-title] { color: var(--color-sky-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="tip"] [data-callout-title],
+  :root:not([data-theme="light"]) .prose [data-callout-type="important"] [data-callout-title] { color: var(--color-emerald-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="warning"] [data-callout-title],
+  :root:not([data-theme="light"]) .prose [data-callout-type="attention"] [data-callout-title] { color: var(--color-amber-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="question"] [data-callout-title],
+  :root:not([data-theme="light"]) .prose [data-callout-type="help"] [data-callout-title],
+  :root:not([data-theme="light"]) .prose [data-callout-type="faq"] [data-callout-title] { color: var(--color-violet-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="caution"] [data-callout-title] { color: var(--color-red-400); }
+  :root:not([data-theme="light"]) .prose [data-callout-type="bug"] [data-callout-title] { color: var(--color-rose-400); }
+}

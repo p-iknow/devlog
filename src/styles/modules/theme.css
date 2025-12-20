@@ -1,0 +1,76 @@
+/* ===== Theme Configuration ===== */
+/* Font families, color palettes, and semantic tokens */
+
+@theme {
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
+    sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+
+  /* === Chakra UI Color Palette Override === */
+  /* Tailwind와 다른 Chakra 컬러만 정의 (Tailwind 기본 blue/sky/emerald 등은 그대로 사용) */
+
+  /* Chakra Gray Scale */
+  --chakra-gray-50: #f7fafc;
+  --chakra-gray-100: #edf2f7;
+  --chakra-gray-200: #e2e8f0;
+  --chakra-gray-300: #cbd5e0;
+  --chakra-gray-400: #a0aec0;
+  --chakra-gray-500: #718096;
+  --chakra-gray-600: #4a5568;
+  --chakra-gray-700: #2d3748;
+  --chakra-gray-800: #1a202c;
+  --chakra-gray-900: #171923;
+
+  /* Chakra Blue Scale */
+  --chakra-blue-50: #ebf8ff;
+  --chakra-blue-100: #bee3f8;
+  --chakra-blue-200: #90cdf4;
+  --chakra-blue-300: #63b3ed;
+  --chakra-blue-400: #4299e1;
+  --chakra-blue-500: #3182ce;
+  --chakra-blue-600: #2c5282;
+  --chakra-blue-700: #2b6cb0;
+
+  /* Brand Colors */
+  --brand-gradient-start: #0066FF;
+  --brand-gradient-end: #00D4FF;
+  --brand-accent: #0088DD;
+
+  /* === Semantic Tokens (Light Mode) === */
+
+  /* Surface & Background */
+  --color-surface: var(--color-white);
+  --color-background: var(--chakra-gray-50);
+  --color-divider: var(--chakra-gray-100);
+
+  /* Text Hierarchy */
+  --color-default: var(--chakra-gray-800);
+  --color-secondary: var(--chakra-gray-600);
+  --color-tertiary: var(--chakra-gray-500);
+  --color-muted: var(--chakra-gray-400);
+  --color-subtle: var(--chakra-gray-200);
+
+  /* Accent Colors (Chakra Blue) */
+  --color-accent: var(--chakra-blue-400);
+  --color-accent-hover: var(--chakra-blue-500);
+  --color-accent-light: var(--chakra-blue-300);
+  --color-accent-lighter: var(--chakra-blue-200);
+  --color-accent-bg: var(--chakra-blue-50);
+  --color-accent-border: var(--chakra-blue-200);
+
+  /* Component Colors */
+  --color-header-bg: rgb(255 255 255 / 0.9);
+  --color-header-shadow: rgb(0 0 0 / 0.06);
+  --color-inline-code-bg: var(--chakra-blue-50);
+  --color-tag-bg: var(--chakra-blue-50);
+  --color-tag-text: var(--chakra-blue-600);
+  --color-blockquote-border: var(--chakra-blue-400);
+  --color-blockquote-bg: var(--chakra-blue-50);
+  --color-table-bg: var(--chakra-gray-50);
+  --color-table-header-bg: var(--chakra-gray-100);
+  --color-table-hover-bg: var(--chakra-gray-100);
+  --color-scroll-track: var(--chakra-gray-100);
+  --color-scroll-handle: var(--chakra-gray-300);
+  --color-link-hover-bg: var(--chakra-blue-500);
+  --color-link-hover-text: var(--color-white);
+}

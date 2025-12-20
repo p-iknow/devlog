@@ -1,0 +1,80 @@
+/* ===== Dark Mode ===== */
+/* Dark mode color overrides for both manual toggle and system preference */
+
+[data-theme="dark"] {
+  /* Surface & Background */
+  --color-surface: var(--chakra-gray-800);
+  --color-background: var(--chakra-gray-700);
+  --color-divider: var(--chakra-gray-700);
+
+  /* Text Hierarchy */
+  --color-default: var(--chakra-gray-50);
+  --color-secondary: var(--chakra-gray-200);
+  --color-tertiary: var(--chakra-gray-400);
+  --color-muted: var(--chakra-gray-500);
+  --color-subtle: var(--chakra-gray-600);
+
+  /* Accent Colors */
+  --color-accent: var(--chakra-blue-300);
+  --color-accent-hover: var(--chakra-blue-700);
+  --color-accent-light: var(--chakra-blue-200);
+  --color-accent-lighter: var(--chakra-blue-100);
+  --color-accent-bg: rgb(66 153 225 / 0.15);
+  --color-accent-border: rgb(99 179 237 / 0.4);
+
+  /* Component Colors */
+  --color-header-bg: rgb(26 32 44 / 0.9);
+  --color-header-shadow: rgb(0 0 0 / 0.3);
+  --color-inline-code-bg: rgb(66 153 225 / 0.15);
+  --color-tag-bg: rgb(66 153 225 / 0.15);
+  --color-tag-text: var(--chakra-blue-200);
+  --color-blockquote-border: var(--chakra-blue-400);
+  --color-blockquote-bg: rgb(66 153 225 / 0.1);
+  --color-table-bg: var(--chakra-gray-700);
+  --color-table-header-bg: var(--color-gray-700);
+  --color-table-hover-bg: var(--color-gray-700);
+  --color-scroll-track: var(--chakra-gray-700);
+  --color-scroll-handle: var(--chakra-gray-600);
+  --color-link-hover-bg: var(--chakra-blue-700);
+  --color-link-hover-text: var(--color-white);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Surface & Background */
+    --color-surface: var(--chakra-gray-800);
+    --color-background: var(--chakra-gray-700);
+    --color-divider: var(--chakra-gray-700);
+
+    /* Text Hierarchy */
+    --color-default: var(--chakra-gray-50);
+    --color-secondary: var(--chakra-gray-200);
+    --color-tertiary: var(--chakra-gray-400);
+    --color-muted: var(--chakra-gray-500);
+    --color-subtle: var(--chakra-gray-600);
+
+    /* Accent Colors */
+    --color-accent: var(--chakra-blue-300);
+    --color-accent-hover: var(--chakra-blue-700);
+    --color-accent-light: var(--chakra-blue-200);
+    --color-accent-lighter: var(--chakra-blue-100);
+    --color-accent-bg: rgb(66 153 225 / 0.15);
+    --color-accent-border: rgb(99 179 237 / 0.4);
+
+    /* Component Colors */
+    --color-header-bg: rgb(26 32 44 / 0.9);
+    --color-header-shadow: rgb(0 0 0 / 0.3);
+    --color-inline-code-bg: rgb(66 153 225 / 0.15);
+    --color-tag-bg: rgb(66 153 225 / 0.15);
+    --color-tag-text: var(--chakra-blue-200);
+    --color-blockquote-border: var(--chakra-blue-400);
+    --color-blockquote-bg: rgb(66 153 225 / 0.1);
+    --color-table-bg: var(--chakra-gray-700);
+    --color-table-header-bg: var(--color-gray-700);
+    --color-table-hover-bg: var(--color-gray-700);
+    --color-scroll-track: var(--chakra-gray-700);
+    --color-scroll-handle: var(--chakra-gray-600);
+    --color-link-hover-bg: var(--chakra-blue-700);
+    --color-link-hover-text: var(--color-white);
+  }
+}
