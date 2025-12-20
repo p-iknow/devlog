@@ -2,39 +2,62 @@
 import { siteConfig } from "@/config/site";
 ---
 
-<div id="comments" class="utterances-container">
-  <Fragment set:html={`<script
-    src="https://utteranc.es/client.js"
-    repo="${siteConfig.utterances.repo}"
-    issue-term="${siteConfig.utterances.issueTerm}"
-    theme="github-light"
-    crossorigin="anonymous"
-    async
-  ></script>`} />
-</div>
+<section class="giscus-container"></section>
 
-<script>
-  // 테마에 따라 utterances 테마 변경
-  function updateUtterancesTheme() {
+<script is:inline define:vars={{ config: siteConfig.giscus }}>
+  // 현재 테마 가져오기
+  function getCurrentTheme() {
     const theme = document.documentElement.getAttribute("data-theme");
-    const utterancesTheme = theme === "dark" ? "github-dark" : "github-light";
+    if (theme) return theme === "dark" ? "dark" : "light";
 
-    const iframe = document.querySelector<HTMLIFrameElement>(
-      ".utterances-frame"
-    );
-    if (iframe) {
-      iframe.contentWindow?.postMessage(
-        { type: "set-theme", theme: utterancesTheme },
-        "https://utteranc.es"
-      );
-    }
+    // data-theme이 없으면 시스템 선호도 확인
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
   }
 
-  // MutationObserver로 테마 변경 감지
+  // giscus script 동적으로 생성 및 삽입
+  function loadGiscus() {
+    const container = document.querySelector(".giscus-container");
+    if (!container) return;
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", config.repo);
+    script.setAttribute("data-repo-id", config.repoId);
+    script.setAttribute("data-category", config.category);
+    script.setAttribute("data-category-id", config.categoryId);
+    script.setAttribute("data-mapping", config.mapping);
+    script.setAttribute("data-strict", config.strict);
+    script.setAttribute("data-reactions-enabled", config.reactionsEnabled);
+    script.setAttribute("data-emit-metadata", config.emitMetadata);
+    script.setAttribute("data-input-position", config.inputPosition);
+    script.setAttribute("data-theme", getCurrentTheme());
+    script.setAttribute("data-lang", config.lang);
+    script.setAttribute("data-loading", config.loading);
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  // giscus 테마 업데이트
+  function updateGiscusTheme() {
+    const giscusTheme = getCurrentTheme();
+    const iframe = document.querySelector("iframe.giscus-frame");
+    if (!iframe) return;
+
+    iframe.contentWindow.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme } } },
+      "https://giscus.app"
+    );
+  }
+
+  // MutationObserver로 data-theme 속성 변경 감지
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.attributeName === "data-theme") {
-        updateUtterancesTheme();
+        updateGiscusTheme();
       }
     });
   });
@@ -44,18 +67,16 @@ import { siteConfig } from "@/config/site";
     attributeFilter: ["data-theme"],
   });
 
-  // 초기 로드 시 테마 설정
-  window.addEventListener("load", () => {
-    setTimeout(updateUtterancesTheme, 1000);
-  });
+  // 즉시 giscus 로드
+  loadGiscus();
 </script>
 
 <style>
-  .utterances-container {
+  .giscus-container {
     max-width: 100%;
   }
 
-  .utterances-container :global(.utterances) {
+  .giscus-container :global(.giscus) {
     max-width: 100%;
   }
 </style>
