@@ -322,14 +322,72 @@ if (type === "post") {
     </style>
 
     <script>
-      document.getElementById('series-toggle')?.addEventListener('click', () => {
+      /**
+       * @fileoverview Series Navigation Toggle with astro:page-load lifecycle event
+       *
+       * @description
+       * This component re-initializes on every page navigation using astro:page-load
+       * because series content is page-specific and cannot be persisted with transition:persist.
+       *
+       * @rationale astro:page-load Pattern
+       *
+       * **Why astro:page-load?**
+       *
+       * 1. **Page-Specific Content**
+       *    - Each series post has different navigation content
+       *    - Series list must re-render with different posts
+       *    - Current post indicator updates on each navigation
+       *
+       * 2. **Stable Element IDs**
+       *    - IDs (#series-toggle, #series-list, #toggle-arrow) are consistent
+       *    - Direct element selection is efficient and clear
+       *    - No need for event delegation with .closest()
+       *
+       * 3. **Astro's Recommended Pattern**
+       *    - For page-specific, dynamic content that changes between routes
+       *    - astro:page-load ensures fresh initialization after navigation
+       *
+       * @rationale Why Not Event Delegation?
+       * Event delegation would work technically, but offers no benefits:
+       * - Elements are replaced on each navigation (not persisted)
+       * - No risk of duplicate listeners (function re-runs each time)
+       * - Direct element selection is simpler for this use case
+       *
+       * @lifecycle View Transitions Event Order
+       * 1. **Initial page load:** initSeriesToggle() runs immediately
+       * 2. **View Transitions navigation:**
+       *    - astro:before-swap → old content removed
+       *    - astro:after-swap → new content swapped
+       *    - astro:page-load → initSeriesToggle() runs again
+       *
+       * @function initSeriesToggle
+       * @description Attaches click event listener to series toggle button
+       * @returns {void}
+       *
+       * @see {@link https://docs.astro.build/en/guides/view-transitions/#astropage-load astro:page-load event}
+       * @see {@link https://docs.astro.build/en/guides/view-transitions/#lifecycle-events Lifecycle Events}
+       * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ When to use lifecycle events}
+       */
+
+      function initSeriesToggle() {
+        const toggleButton = document.getElementById('series-toggle');
         const list = document.getElementById('series-list');
         const arrow = document.getElementById('toggle-arrow');
-        if (list && arrow) {
-          list.classList.toggle('collapsed');
-          arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
-        }
-      });
+
+        toggleButton?.addEventListener('click', () => {
+          if (list && arrow) {
+            list.classList.toggle('collapsed');
+            arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
+          }
+        });
+      }
+
+      // Run on initial page load
+      initSeriesToggle();
+
+      // Re-run on every View Transitions navigation
+      // This is necessary because series content changes between posts
+      document.addEventListener('astro:page-load', initSeriesToggle);
     </script>
 
     <Content />

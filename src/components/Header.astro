@@ -261,6 +261,7 @@ const enUrl = getAlternateUrl("en");
     margin-right: 15px;
     color: var(--color-muted);
     transition: color 0.3s;
+    position: relative;
   }
 
   .nav-icon:hover {
@@ -270,6 +271,16 @@ const enUrl = getAlternateUrl("en");
 
   .nav-icon.active {
     color: var(--color-accent);
+  }
+
+  .nav-icon.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--color-accent);
   }
 
   .nav-icon svg {
@@ -436,13 +447,69 @@ const enUrl = getAlternateUrl("en");
 </style>
 
 <script>
+  /**
+   * @fileoverview Header Event Handlers with Event Delegation Pattern
+   *
+   * @description
+   * This script implements event delegation for Header interactions to work seamlessly
+   * with Astro's View Transitions. Event listeners are registered once on document/window
+   * and persist across all page navigations without re-initialization.
+   *
+   * @rationale Event Delegation Pattern
+   * We chose event delegation over Astro's lifecycle events for:
+   *
+   * 1. **Single Event Listener Registration**
+   *    - Listeners registered ONCE on document/window
+   *    - No re-attachment needed on page transitions
+   *    - Prevents memory leaks from duplicate listeners
+   *
+   * 2. **View Transitions Independence**
+   *    - Works seamlessly with Astro View Transitions
+   *    - No dependency on astro:page-load or astro:after-swap
+   *    - Listeners persist across all navigations
+   *
+   * 3. **Performance Benefits**
+   *    - Lower memory footprint (fewer listeners)
+   *    - No re-initialization overhead
+   *    - Automatic handling of dynamic elements
+   *
+   * @alternative Astro's Lifecycle Events Approach
+   * Astro recommends lifecycle events for page-specific scripts:
+   *
+   * @example Using astro:page-load
+   * ```javascript
+   * document.addEventListener('astro:page-load', () => {
+   *   // Re-attach event listeners after each navigation
+   *   document.querySelector('.lang-current')
+   *     ?.addEventListener('click', handler);
+   * });
+   * ```
+   *
+   * @example Using transition:persist
+   * ```astro
+   * <header transition:persist>
+   *   <!-- DOM and listeners are preserved across navigations -->
+   * </header>
+   * ```
+   *
+   * @recommendation
+   * Event delegation is preferable for global, static UI elements
+   * that don't change between pages (Header, Footer, etc.)
+   *
+   * @see {@link https://docs.astro.build/en/guides/view-transitions/ Astro View Transitions}
+   * @see {@link https://docs.astro.build/en/guides/view-transitions/#lifecycle-events Lifecycle Events}
+   * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ Event Delegation Pattern}
+   */
+
   // Mobile header hide on scroll
+  // Uses window-level event delegation - runs once, persists across all navigations
   let lastScrollY = window.scrollY;
-  const header = document.querySelector('.header');
-  const isMobile = () => window.innerWidth <= 768;
 
   window.addEventListener('scroll', () => {
-    if (!isMobile()) {
+    const header = document.querySelector('.header');
+    const isMobile = window.innerWidth <= 768;
+
+    if (!isMobile) {
       header?.classList.remove('header-hidden');
       return;
     }
@@ -459,27 +526,39 @@ const enUrl = getAlternateUrl("en");
   });
 
   // Language dropdown
-  const langSelect = document.querySelector('.lang-select');
-  const langButton = document.querySelector('.lang-current');
-
-  langButton?.addEventListener('click', (e) => {
-    e.stopPropagation();
-    langSelect?.classList.toggle('open');
-    const isOpen = langSelect?.classList.contains('open');
-    langButton?.setAttribute('aria-expanded', String(isOpen));
-  });
-
+  // Uses document-level event delegation with event.target.closest()
+  // This pattern works with View Transitions without re-initialization
   document.addEventListener('click', (e) => {
-    if (!langSelect?.contains(e.target as Node)) {
-      langSelect?.classList.remove('open');
-      langButton?.setAttribute('aria-expanded', 'false');
+    const target = e.target as HTMLElement;
+    const langButton = target.closest('.lang-current');
+    const langSelect = target.closest('.lang-select');
+
+    // Click on language button - toggle dropdown
+    if (langButton) {
+      e.stopPropagation();
+      const container = langButton.closest('.lang-select');
+      container?.classList.toggle('open');
+      const isOpen = container?.classList.contains('open');
+      langButton?.setAttribute('aria-expanded', String(isOpen));
+      return;
+    }
+
+    // Click outside language dropdown - close all dropdowns
+    if (!langSelect) {
+      document.querySelectorAll('.lang-select').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.lang-current')?.setAttribute('aria-expanded', 'false');
+      });
     }
   });
 
+  // Keyboard accessibility - close dropdown on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      langSelect?.classList.remove('open');
-      langButton?.setAttribute('aria-expanded', 'false');
+      document.querySelectorAll('.lang-select').forEach(el => {
+        el.classList.remove('open');
+        el.querySelector('.lang-current')?.setAttribute('aria-expanded', 'false');
+      });
     }
   });
 </script>

@@ -1,7 +1,7 @@
 ---
 ---
 
-<div class="toggle-wrapper" id="theme-toggle">
+<div class="toggle-wrapper" id="theme-toggle" transition:persist>
   <div class="icon-rail">
     <!-- Moon icon (shown in dark mode) -->
     <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
@@ -15,6 +15,61 @@
 </div>
 
 <script>
+  /**
+   * @fileoverview Theme Toggle with transition:persist directive
+   *
+   * @description
+   * This component uses Astro's transition:persist directive on the wrapper element
+   * to maintain theme state and event listeners across page navigations in View Transitions.
+   *
+   * @rationale transition:persist Pattern
+   *
+   * **Benefits:**
+   *
+   * 1. **DOM Preservation**
+   *    - Theme toggle element persists across View Transitions
+   *    - Event listener remains attached (no re-initialization)
+   *    - Visual state (icon animation) maintained
+   *
+   * 2. **Theme State Consistency**
+   *    - Theme preference persists in localStorage
+   *    - No flash of wrong theme during transitions
+   *    - Smooth animation between light/dark modes
+   *
+   * 3. **Simple Implementation**
+   *    - Script runs ONCE on initial page load
+   *    - No lifecycle event listeners needed
+   *    - No duplicate event listener management
+   *
+   * @alternative Without transition:persist
+   * Without persist, you need manual theme management:
+   *
+   * @example Prevent theme flashing with astro:after-swap
+   * ```javascript
+   * document.addEventListener('astro:after-swap', () => {
+   *   const theme = localStorage.getItem('theme') || 'light';
+   *   document.documentElement.setAttribute('data-theme', theme);
+   * });
+   * ```
+   *
+   * @example Re-attach listeners with astro:page-load
+   * ```javascript
+   * document.addEventListener('astro:page-load', () => {
+   *   document.getElementById('theme-toggle')
+   *     ?.addEventListener('click', handleThemeToggle);
+   * });
+   * ```
+   *
+   * @recommendation
+   * transition:persist is the recommended approach for UI elements that:
+   * - Maintain state across navigations
+   * - Are identical on all pages
+   * - Have interactive behaviors that should persist
+   *
+   * @see {@link https://docs.astro.build/en/guides/view-transitions/#maintaining-state transition:persist directive}
+   * @see {@link https://docs.astro.build/en/guides/view-transitions/#astroafter-swap astro:after-swap for theme}
+   */
+
   const toggle = document.getElementById("theme-toggle");
 
   function setTheme(theme: string) {
@@ -22,6 +77,7 @@
     localStorage.setItem("theme", theme);
   }
 
+  // Event listener attached once - persists due to transition:persist on wrapper
   toggle?.addEventListener("click", () => {
     const current = document.documentElement.getAttribute("data-theme");
     const next = current === "dark" ? "light" : "dark";
