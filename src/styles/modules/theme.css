@@ -31,6 +31,27 @@
   --chakra-blue-600: #2c5282;
   --chakra-blue-700: #2b6cb0;
 
+  /* Tailwind Slate Scale (for tag levels) */
+  --tw-slate-400: #94a3b8;
+  --tw-slate-500: #64748b;
+  --tw-slate-600: #475569;
+
+  /* Tailwind Sky Scale (for tag levels) */
+  --tw-sky-400: #38bdf8;
+  --tw-sky-500: #0ea5e9;
+
+  /* Tailwind Blue Scale (for tag levels) */
+  --tw-blue-400: #60a5fa;
+  --tw-blue-500: #3b82f6;
+
+  /* Tailwind Indigo Scale (for tag levels) */
+  --tw-indigo-400: #818cf8;
+  --tw-indigo-500: #6366f1;
+
+  /* Tailwind Violet Scale (for tag levels) */
+  --tw-violet-400: #a78bfa;
+  --tw-violet-500: #8b5cf6;
+
   /* Brand Colors */
   --brand-gradient-start: #0066FF;
   --brand-gradient-end: #00D4FF;
