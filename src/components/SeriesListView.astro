@@ -90,7 +90,7 @@ const dateLocale = LOCALE[lang];
   series.length > 0 ? (
     <div class="space-y-8">
       {series.map(({ slug, title, description, posts: seriesPosts }) => (
-        <div class="rounded-xl border border-subtle bg-bg-secondary/30 p-6">
+        <div class="rounded-xl border border-subtle bg-background p-6">
           <div class="mb-4 flex items-center justify-between">
             <a href={getSeriesUrl(slug, lang)} class="link-title">
               <h2 class="text-xl font-bold">{title}</h2>
