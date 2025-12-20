@@ -82,7 +82,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
         </div>
       </div>
       {headings.length > 0 && (
-        <aside class="toc" id="toc">
+        <aside class="toc" id="toc" transition:animate="fade">
           <ul class="toc-list">
             {headings.filter(h => h.depth >= 2 && h.depth <= 4).map((heading) => (
               <li class={`toc-item toc-depth-${heading.depth}`}>
