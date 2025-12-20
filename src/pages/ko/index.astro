@@ -13,6 +13,7 @@ import {
   getPostUrl,
   type PostWithLang,
   type SeriesPostWithLang,
+  type PostEntry,
 } from "@/utils/posts";
 
 const lang = KoLocale;
@@ -53,7 +54,6 @@ const sortedCategories = Array.from(categoryCounts.entries())
   .sort((a, b) => b[1] - a[1]);
 
 // href 생성 함수
-type PostEntry = PostWithLang | SeriesPostWithLang;
 const getHref = (post: PostEntry) => getPostUrl(post, lang);
 ---
 

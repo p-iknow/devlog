@@ -71,6 +71,15 @@ export type SeriesPostWithLang = CollectionEntry<"seriesPosts"> & {
 };
 
 /**
+ * 통합 포스트 타입 (posts 또는 seriesPosts, lang 포함 여부 무관)
+ */
+export type PostEntry =
+  | CollectionEntry<"posts">
+  | CollectionEntry<"seriesPosts">
+  | PostWithLang
+  | SeriesPostWithLang;
+
+/**
  * 포스트의 최종 slug를 계산
  * post.id에서 폴더 경로를 추출하고, frontmatter의 slug와 조합
  * 예: post.id = "js/190524_comma-operator", data.slug = "comma-operator"

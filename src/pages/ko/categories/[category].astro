@@ -7,6 +7,7 @@ import {
   filterPosts,
   getPostUrl,
   type PostWithLang,
+  type PostEntry,
 } from "@/utils/posts";
 
 const lang = KoLocale;
@@ -42,7 +43,7 @@ export async function getStaticPaths() {
 
 const { category, posts } = Astro.props;
 
-const getHref = (post: PostWithLang) => getPostUrl(post, lang);
+const getHref = (post: PostEntry) => getPostUrl(post, lang);
 ---
 
 <BaseLayout title={`${category} | Categories`} description={`${category} 카테고리의 글`} lang={lang}>

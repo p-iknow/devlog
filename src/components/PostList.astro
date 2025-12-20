@@ -1,14 +1,6 @@
 ---
 import { format } from "date-fns";
-import type { CollectionEntry } from "astro:content";
-import type { PostWithLang, SeriesPostWithLang } from "@/utils/posts";
-
-// 통합 포스트 타입 (posts 또는 seriesPosts, lang 포함 여부 무관)
-type PostEntry =
-  | CollectionEntry<"posts">
-  | CollectionEntry<"seriesPosts">
-  | PostWithLang
-  | SeriesPostWithLang;
+import type { PostEntry } from "@/utils/posts";
 
 interface Props {
   posts: PostEntry[];
@@ -53,7 +45,7 @@ const author = "@p-iknow";
             </div>
           )}
           <a href={resolveHref(post)} class="link-title post-title">
-            {seriesSlug && post.data.part ? `${post.data.part}. ${title}` : title}
+            {seriesSlug && 'part' in post.data && post.data.part ? `${post.data.part}. ${title}` : title}
           </a>
           <p class="post-excerpt">{description}</p>
           <span class="post-date">{formattedDate} · {author}</span>
