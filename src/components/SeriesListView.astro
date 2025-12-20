@@ -1,0 +1,168 @@
+---
+import { getCollection } from "astro:content";
+import { type Locale, LOCALES, defaultLocale, LOCALE } from "@/config/locale";
+import { getSeriesPostUrl, getSeriesUrl, sortSeriesPosts } from "@/utils/posts";
+
+interface Props {
+  lang: Locale;
+}
+
+const { lang } = Astro.props;
+const isDev = import.meta.env.DEV;
+
+// 포스트에서 lang 추출
+const getPostLang = (post: { data: { lang?: string } }): Locale => {
+  const postLang = post.data.lang;
+  if (postLang && LOCALES.includes(postLang as Locale)) {
+    return postLang as Locale;
+  }
+  return defaultLocale;
+};
+
+// 시리즈 메타정보와 글 가져오기
+const seriesCollection = await getCollection("series", (s) => getPostLang(s) === lang);
+const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
+  if (post.data.draft) return false;
+  if (post.data["dev-only"] && !isDev) return false;
+  return getPostLang(post) === lang;
+});
+
+// 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_index.en" -> "markdown-guide")
+const getSeriesSlug = (id: string) => id.replace(/\/_index.*$/, "");
+
+// 시리즈 글 id에서 폴더명 추출 (예: "시리즈-테스트/01-시작하기" -> "시리즈-테스트")
+const getPostSeriesSlug = (id: string) => id.split("/")[0];
+
+// 시리즈별 포스트 그룹화
+const seriesMap = new Map<string, typeof seriesPostsCollection>();
+seriesPostsCollection.forEach((post) => {
+  const seriesSlug = getPostSeriesSlug(post.id);
+  const posts = seriesMap.get(seriesSlug) || [];
+  posts.push(post);
+  seriesMap.set(seriesSlug, posts);
+});
+
+// 시리즈 목록 생성 (글 개수 순 정렬)
+const series = seriesCollection
+  .map((s) => {
+    const slug = getSeriesSlug(s.id);
+    const posts = seriesMap.get(slug) || [];
+    return {
+      slug,
+      title: s.data.title,
+      description: s.data.description,
+      posts: sortSeriesPosts(posts),
+    };
+  })
+  .filter((s) => s.posts.length > 0)
+  .sort((a, b) => b.posts.length - a.posts.length);
+
+const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
+
+// i18n texts
+const texts = {
+  en: {
+    title: "Series",
+    summary: (seriesCount: number, postCount: number) =>
+      `${seriesCount} series across ${postCount} posts`,
+    parts: (count: number) => `${count} parts`,
+    noSeries: "No series found.",
+  },
+  ko: {
+    title: "시리즈",
+    summary: (seriesCount: number, postCount: number) =>
+      `${seriesCount}개 시리즈, ${postCount}개 포스트`,
+    parts: (count: number) => `${count}편`,
+    noSeries: "시리즈가 없습니다.",
+  },
+} as const;
+
+const t = texts[lang];
+const dateLocale = LOCALE[lang];
+---
+
+<div class="series-header">
+  <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
+  <p class="series-summary">{t.summary(series.length, totalPosts)}</p>
+</div>
+
+{
+  series.length > 0 ? (
+    <div class="space-y-8">
+      {series.map(({ slug, title, description, posts: seriesPosts }) => (
+        <div class="rounded-xl border border-subtle bg-bg-secondary/30 p-6">
+          <div class="mb-4 flex items-center justify-between">
+            <a href={getSeriesUrl(slug, lang)} class="link-title">
+              <h2 class="text-xl font-bold">{title}</h2>
+            </a>
+            <span class="rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+              {t.parts(seriesPosts.length)}
+            </span>
+          </div>
+          {description && <p class="mb-4 text-sm text-muted">{description}</p>}
+
+          <div class="series-timeline relative ml-6 pl-6">
+            {seriesPosts.map((post, index) => (
+              <a
+                href={getSeriesPostUrl(post.id, lang)}
+                class="group series-item relative mb-3 block no-underline last:mb-0"
+              >
+                <span class="series-number absolute -left-6 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-subtle text-xs font-medium transition-colors group-hover:bg-accent group-hover:text-white">
+                  {index + 1}
+                </span>
+                <div class="series-content rounded-lg px-3 py-2 transition-colors group-hover:bg-subtle/30">
+                  <span class="series-title font-medium transition-colors group-hover:text-accent">
+                    {post.data.title}
+                  </span>
+                  <span class="ml-2 text-sm text-muted">
+                    {post.data.date.toLocaleDateString(dateLocale, {
+                      year: "numeric",
+                      month: lang === "en" ? "short" : "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  ) : (
+    <p class="text-muted">{t.noSeries}</p>
+  )
+}
+
+<style is:global>
+  .series-header {
+    margin-bottom: 32px;
+  }
+
+  .series-summary {
+    font-size: 15px;
+    color: var(--color-muted);
+    margin-top: -24px;
+  }
+
+  .series-item,
+  .series-item:hover,
+  .series-title {
+    text-decoration: none !important;
+  }
+
+  /* Timeline line connecting circles */
+  .series-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    left: -14px;
+    top: 50%;
+    width: 2px;
+    height: calc(100% + 12px);
+    background-color: var(--color-subtle);
+    z-index: 0;
+  }
+
+  .series-number {
+    z-index: 1;
+  }
+</style>

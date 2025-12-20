@@ -21,7 +21,6 @@ const posts = defineCollection({
     "dev-only": z.boolean().default(false), // dev 환경에서만 보임
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    series: z.string().optional(),
     img: z.string().optional(),
     lang: z.enum(LOCALES).optional(), // 파일명에서 추출 (예: post.ko.md -> ko)
     slug: z.string(), // URL용 slug (폴더경로/kebab-case-영문)
