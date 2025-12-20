@@ -3,7 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostLayout from "@/layouts/PostLayout.astro";
 import { KoLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
-import { getSeriesPostUrl, getSeriesUrl, stripLangFromId } from "@/utils/posts";
+import { getSeriesPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
 
 const lang = KoLocale;
 const isDev = import.meta.env.DEV;
@@ -63,9 +63,11 @@ export async function getStaticPaths() {
   // 시리즈 상세 페이지 경로 생성
   seriesCollection.forEach((series) => {
     const slug = getSeriesSlug(series.id);
-    const posts = (seriesPostsMap.get(slug) || []).sort(
-      (a, b) => (a.data.part ?? 999) - (b.data.part ?? 999)
-    );
+    const posts = (seriesPostsMap.get(slug) || []).sort((a, b) => {
+      const orderA = a.data.part ?? extractOrderFromFilename(a.id);
+      const orderB = b.data.part ?? extractOrderFromFilename(b.id);
+      return orderA - orderB;
+    });
 
     paths.push({
       params: { slug },
@@ -83,9 +85,11 @@ export async function getStaticPaths() {
   seriesPostsCollection.forEach((post) => {
     const seriesSlug = getPostSeriesSlug(post.id);
     const series = seriesCollection.find((s) => getSeriesSlug(s.id) === seriesSlug);
-    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort(
-      (a, b) => (a.data.part ?? 999) - (b.data.part ?? 999)
-    );
+    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort((a, b) => {
+      const orderA = a.data.part ?? extractOrderFromFilename(a.id);
+      const orderB = b.data.part ?? extractOrderFromFilename(b.id);
+      return orderA - orderB;
+    });
 
     paths.push({
       params: { slug: stripLang(post.id) },

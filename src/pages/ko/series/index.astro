@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { KoLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
-import { getSeriesPostUrl, getSeriesUrl } from "@/utils/posts";
+import { getSeriesPostUrl, getSeriesUrl, sortSeriesPosts } from "@/utils/posts";
 
 const lang = KoLocale;
 const isDev = import.meta.env.DEV;
@@ -48,7 +48,7 @@ const series = seriesCollection
       slug,
       title: s.data.title,
       description: s.data.description,
-      posts: posts.sort((a, b) => (a.data.part ?? 999) - (b.data.part ?? 999)),
+      posts: sortSeriesPosts(posts),
     };
   })
   .filter((s) => s.posts.length > 0)

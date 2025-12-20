@@ -227,3 +227,30 @@ export async function getAllSeriesPostsWithLang(
     }))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
+
+/**
+ * 파일명에서 순서 번호 추출 (예: "01-title.md" -> 1)
+ * 번호가 없으면 999 반환
+ */
+export function extractOrderFromFilename(id: string): number {
+  // id 형식: "series-slug/01-post-title.ko" 또는 "series-slug/01-post-title"
+  const filename = id.split("/").pop() || "";
+  const match = filename.match(/^(\d+)-/);
+  return match ? parseInt(match[1], 10) : 999;
+}
+
+/**
+ * 시리즈 포스트 정렬 함수
+ * - part 필드 우선 사용
+ * - part가 없으면 파일명의 숫자 사용 (01-, 02- 등)
+ * - 둘 다 없으면 맨 뒤로 (999)
+ */
+export function sortSeriesPosts<T extends CollectionEntry<"seriesPosts"> | SeriesPostWithLang>(
+  posts: T[]
+): T[] {
+  return posts.sort((a, b) => {
+    const orderA = a.data.part ?? extractOrderFromFilename(a.id);
+    const orderB = b.data.part ?? extractOrderFromFilename(b.id);
+    return orderA - orderB;
+  });
+}
