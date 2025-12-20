@@ -152,7 +152,7 @@ const enUrl = getAlternateUrl("en");
     font-family: 'Source Code Pro', var(--font-mono);
     font-weight: 700;
     font-size: 22px;
-    background: linear-gradient(135deg, #0066FF 0%, #00D4FF 100%);
+    background: linear-gradient(135deg, var(--brand-gradient-start) 0%, var(--brand-gradient-end) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -162,14 +162,14 @@ const enUrl = getAlternateUrl("en");
     margin: 0 8px;
     font-size: 18px;
     font-weight: 300;
-    color: #0066FF;
+    color: var(--brand-gradient-start);
     opacity: 0.3;
   }
 
   .blog-subtitle {
     font-size: 13px;
     font-weight: 500;
-    color: #0088DD;
+    color: var(--brand-accent);
     letter-spacing: 0.3px;
     opacity: 0.7;
     transition: opacity 0.2s ease;
@@ -383,11 +383,11 @@ const enUrl = getAlternateUrl("en");
 
   .lang-option.active {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(14, 165, 233, 0.08) 100%);
-    color: #3b82f6;
+    color: var(--chakra-blue-600);
   }
 
   :global(.dark) .lang-option.active {
-    color: #60a5fa;
+    color: var(--chakra-blue-400);
   }
 
   .lang-option .lang-flag {
@@ -400,13 +400,13 @@ const enUrl = getAlternateUrl("en");
   }
 
   .lang-check {
-    color: #3b82f6;
+    color: var(--chakra-blue-600);
     font-weight: 600;
     font-size: 12px;
   }
 
   :global(.dark) .lang-check {
-    color: #60a5fa;
+    color: var(--chakra-blue-400);
   }
 
   @media (max-width: 768px) {
