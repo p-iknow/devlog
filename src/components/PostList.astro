@@ -90,25 +90,16 @@ const author = "@p-iknow";
     padding: 2px 8px;
     font-size: 0.75rem;
     font-weight: 500;
-    color: #2563eb;
-    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--color-tag-text);
+    background-color: var(--color-tag-bg);
     border-radius: 4px;
     text-decoration: none;
     transition: background-color 0.2s;
   }
 
   .series-badge:hover {
-    background-color: rgba(37, 99, 235, 0.2);
+    background-color: var(--color-accent-bg);
     text-decoration: none;
-  }
-
-  :global([data-theme="dark"]) .series-badge {
-    color: #60a5fa;
-    background-color: rgba(96, 165, 250, 0.15);
-  }
-
-  :global([data-theme="dark"]) .series-badge:hover {
-    background-color: rgba(96, 165, 250, 0.25);
   }
 
 </style>
