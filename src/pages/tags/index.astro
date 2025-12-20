@@ -135,7 +135,7 @@ const totalPosts = posts.length + seriesPosts.length;
   .tag-level-1 {
     font-size: 13px;
     padding: 8px 14px;
-    background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+    background: linear-gradient(135deg, var(--tw-slate-500) 0%, var(--tw-slate-400) 100%);
     color: #ffffff;
   }
   .tag-level-1 .tag-count {
@@ -145,28 +145,28 @@ const totalPosts = posts.length + seriesPosts.length;
   .tag-level-2 {
     font-size: 14px;
     padding: 9px 16px;
-    background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+    background: linear-gradient(135deg, var(--tw-sky-500) 0%, var(--tw-sky-400) 100%);
     color: #ffffff;
   }
 
   .tag-level-3 {
     font-size: 15px;
     padding: 10px 18px;
-    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    background: linear-gradient(135deg, var(--tw-blue-500) 0%, var(--tw-blue-400) 100%);
     color: #ffffff;
   }
 
   .tag-level-4 {
     font-size: 16px;
     padding: 11px 20px;
-    background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+    background: linear-gradient(135deg, var(--tw-indigo-500) 0%, var(--tw-indigo-400) 100%);
     color: #ffffff;
   }
 
   .tag-level-5 {
     font-size: 17px;
     padding: 12px 22px;
-    background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+    background: linear-gradient(135deg, var(--tw-violet-500) 0%, var(--tw-violet-400) 100%);
     color: #ffffff;
   }
 
@@ -183,12 +183,12 @@ const totalPosts = posts.length + seriesPosts.length;
 
   /* Dark mode adjustments */
   [data-theme="dark"] .tag-level-1 {
-    background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+    background: linear-gradient(135deg, var(--tw-slate-600) 0%, var(--tw-slate-500) 100%);
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) .tag-level-1 {
-      background: linear-gradient(135deg, #475569 0%, #64748b 100%);
+      background: linear-gradient(135deg, var(--tw-slate-600) 0%, var(--tw-slate-500) 100%);
     }
   }
 
