@@ -1,7 +1,7 @@
 ---
 ---
 
-<div class="toggle-wrapper" id="theme-toggle" transition:persist>
+<div class="toggle-wrapper" id="theme-toggle">
   <div class="icon-rail">
     <!-- Moon icon (shown in dark mode) -->
     <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor">
@@ -16,72 +16,68 @@
 
 <script>
   /**
-   * @fileoverview Theme Toggle with transition:persist directive
+   * @fileoverview Theme Toggle with Event Delegation
    *
    * @description
-   * This component uses Astro's transition:persist directive on the wrapper element
-   * to maintain theme state and event listeners across page navigations in View Transitions.
+   * This component uses event delegation pattern to handle theme toggling.
+   * Theme state is persisted in localStorage, and the listener is registered
+   * once on document level to work seamlessly with View Transitions.
    *
-   * @rationale transition:persist Pattern
+   * @rationale Event Delegation Pattern
    *
-   * **Benefits:**
+   * **Why Event Delegation?**
    *
-   * 1. **DOM Preservation**
-   *    - Theme toggle element persists across View Transitions
-   *    - Event listener remains attached (no re-initialization)
-   *    - Visual state (icon animation) maintained
+   * 1. **Single Event Listener**
+   *    - Listener registered ONCE on document
+   *    - No re-attachment needed on page transitions
+   *    - Prevents duplicate listeners that cause double-toggle
    *
-   * 2. **Theme State Consistency**
-   *    - Theme preference persists in localStorage
+   * 2. **View Transitions Compatible**
+   *    - Works independently of lifecycle events
+   *    - No need for transition:persist directive
+   *    - Consistent behavior across all navigations
+   *
+   * 3. **Theme State Persistence**
+   *    - Theme saved in localStorage
+   *    - Restored on page load via BaseLayout's theme script
    *    - No flash of wrong theme during transitions
-   *    - Smooth animation between light/dark modes
    *
-   * 3. **Simple Implementation**
-   *    - Script runs ONCE on initial page load
-   *    - No lifecycle event listeners needed
-   *    - No duplicate event listener management
+   * @rationale Why Not transition:persist?
+   * While transition:persist is designed for this use case, it can cause issues:
+   * - Scripts may still re-execute in some scenarios
+   * - Can lead to duplicate event listeners
+   * - Event delegation is more reliable and consistent
    *
-   * @alternative Without transition:persist
-   * Without persist, you need manual theme management:
-   *
-   * @example Prevent theme flashing with astro:after-swap
+   * @example Event Delegation Pattern
    * ```javascript
-   * document.addEventListener('astro:after-swap', () => {
-   *   const theme = localStorage.getItem('theme') || 'light';
-   *   document.documentElement.setAttribute('data-theme', theme);
+   * // Runs once, works forever
+   * document.addEventListener('click', (e) => {
+   *   const toggle = e.target.closest('#theme-toggle');
+   *   if (toggle) {
+   *     // handle theme change
+   *   }
    * });
    * ```
    *
-   * @example Re-attach listeners with astro:page-load
-   * ```javascript
-   * document.addEventListener('astro:page-load', () => {
-   *   document.getElementById('theme-toggle')
-   *     ?.addEventListener('click', handleThemeToggle);
-   * });
-   * ```
-   *
-   * @recommendation
-   * transition:persist is the recommended approach for UI elements that:
-   * - Maintain state across navigations
-   * - Are identical on all pages
-   * - Have interactive behaviors that should persist
-   *
-   * @see {@link https://docs.astro.build/en/guides/view-transitions/#maintaining-state transition:persist directive}
-   * @see {@link https://docs.astro.build/en/guides/view-transitions/#astroafter-swap astro:after-swap for theme}
+   * @see {@link https://docs.astro.build/en/guides/view-transitions/ Astro View Transitions}
+   * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ Event Delegation Pattern}
    */
-
-  const toggle = document.getElementById("theme-toggle");
 
   function setTheme(theme: string) {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("theme", theme);
   }
 
-  // Event listener attached once - persists due to transition:persist on wrapper
-  toggle?.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    setTheme(next);
+  // Event delegation - runs once, persists across all navigations
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const toggle = target.closest("#theme-toggle");
+
+    if (toggle) {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      setTheme(next);
+    }
   });
 </script>
 

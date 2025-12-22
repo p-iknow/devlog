@@ -323,71 +323,67 @@ if (type === "post") {
 
     <script>
       /**
-       * @fileoverview Series Navigation Toggle with astro:page-load lifecycle event
+       * @fileoverview Series Navigation Toggle with Event Delegation
        *
        * @description
-       * This component re-initializes on every page navigation using astro:page-load
-       * because series content is page-specific and cannot be persisted with transition:persist.
+       * This component uses event delegation pattern to avoid duplicate event listeners
+       * when navigating between series posts with View Transitions.
        *
-       * @rationale astro:page-load Pattern
+       * @rationale Event Delegation Pattern
        *
-       * **Why astro:page-load?**
+       * **Why Event Delegation?**
        *
-       * 1. **Page-Specific Content**
-       *    - Each series post has different navigation content
-       *    - Series list must re-render with different posts
-       *    - Current post indicator updates on each navigation
+       * 1. **Single Event Listener**
+       *    - Listener registered ONCE on document
+       *    - No re-attachment needed on page transitions
+       *    - Prevents duplicate listeners that cause double-toggle bug
        *
-       * 2. **Stable Element IDs**
-       *    - IDs (#series-toggle, #series-list, #toggle-arrow) are consistent
-       *    - Direct element selection is efficient and clear
-       *    - No need for event delegation with .closest()
+       * 2. **Works with Dynamic Content**
+       *    - Series content changes between posts
+       *    - Event delegation handles new elements automatically
+       *    - No need to track and remove old listeners
        *
-       * 3. **Astro's Recommended Pattern**
-       *    - For page-specific, dynamic content that changes between routes
-       *    - astro:page-load ensures fresh initialization after navigation
+       * 3. **View Transitions Compatible**
+       *    - Independent of astro:page-load lifecycle
+       *    - Persists across all navigations
+       *    - Consistent behavior on initial and subsequent loads
        *
-       * @rationale Why Not Event Delegation?
-       * Event delegation would work technically, but offers no benefits:
-       * - Elements are replaced on each navigation (not persisted)
-       * - No risk of duplicate listeners (function re-runs each time)
-       * - Direct element selection is simpler for this use case
+       * @rationale Why Not astro:page-load?
+       * Using astro:page-load causes duplicate event listeners:
+       * - First load: initSeriesToggle() + addEventListener('astro:page-load')
+       * - Each navigation: Another initSeriesToggle() call
+       * - Result: Multiple listeners → toggle fires multiple times → appears broken
        *
-       * @lifecycle View Transitions Event Order
-       * 1. **Initial page load:** initSeriesToggle() runs immediately
-       * 2. **View Transitions navigation:**
-       *    - astro:before-swap → old content removed
-       *    - astro:after-swap → new content swapped
-       *    - astro:page-load → initSeriesToggle() runs again
+       * @example Event Delegation Pattern
+       * ```javascript
+       * // Runs once, works forever
+       * document.addEventListener('click', (e) => {
+       *   const button = e.target.closest('#series-toggle');
+       *   if (button) {
+       *     // handle click
+       *   }
+       * });
+       * ```
        *
-       * @function initSeriesToggle
-       * @description Attaches click event listener to series toggle button
-       * @returns {void}
-       *
-       * @see {@link https://docs.astro.build/en/guides/view-transitions/#astropage-load astro:page-load event}
-       * @see {@link https://docs.astro.build/en/guides/view-transitions/#lifecycle-events Lifecycle Events}
-       * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ When to use lifecycle events}
+       * @see {@link https://docs.astro.build/en/guides/view-transitions/ Astro View Transitions}
+       * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ Event Delegation Pattern}
        */
 
-      function initSeriesToggle() {
-        const toggleButton = document.getElementById('series-toggle');
-        const list = document.getElementById('series-list');
-        const arrow = document.getElementById('toggle-arrow');
+      // Event delegation - runs once, persists across all navigations
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const toggleButton = target.closest('#series-toggle');
 
-        toggleButton?.addEventListener('click', () => {
+        if (toggleButton) {
+          const list = document.getElementById('series-list');
+          const arrow = document.getElementById('toggle-arrow');
+
           if (list && arrow) {
             list.classList.toggle('collapsed');
             arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
           }
-        });
-      }
-
-      // Run on initial page load
-      initSeriesToggle();
-
-      // Re-run on every View Transitions navigation
-      // This is necessary because series content changes between posts
-      document.addEventListener('astro:page-load', initSeriesToggle);
+        }
+      });
     </script>
 
     <Content />
