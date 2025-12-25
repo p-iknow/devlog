@@ -11,6 +11,7 @@ import {
 } from "@/config/locale";
 import {
   getPostsByLang,
+  getPostSlug,
   type PostWithLang,
 } from "@/utils/posts";
 
@@ -45,7 +46,7 @@ const langPath = getLangPath(lang);
 const formattedDate = format(date, "yyyy-MM-dd");
 const ogImage = img || siteConfig.ogImage;
 
-// Get posts for this language for prev/next navigation
+// Get posts for this language for prev/next navigation (posts only, not series)
 const allPosts = await getPostsByLang({ lang });
 const currentIndex = allPosts.findIndex((post) => post.id === currentSlug);
 const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
@@ -169,7 +170,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     {!hidePostNavigation && (prevPost || nextPost) && (
       <nav class="post-navigation">
         {prevPost ? (
-          <a href={`${langPath}/posts/${prevPost.id}`} class="nav-link nav-prev">
+          <a href={`${langPath}/posts/${getPostSlug(prevPost)}`} class="nav-link nav-prev">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
@@ -180,7 +181,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
           </a>
         ) : <div />}
         {nextPost ? (
-          <a href={`${langPath}/posts/${nextPost.id}`} class="nav-link nav-next">
+          <a href={`${langPath}/posts/${getPostSlug(nextPost)}`} class="nav-link nav-next">
             <div class="nav-content">
               <span class="nav-label">Next</span>
               <span class="nav-title">{nextPost.data.title}</span>
@@ -275,14 +276,16 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     font-size: 14px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: thin; /* Firefox - always show thin scrollbar */
+    scrollbar-gutter: stable; /* Reserve space for scrollbar to prevent layout shift */
+    scrollbar-color: transparent transparent; /* Initially transparent */
     padding-left: 24px;
     border-left: 1px solid var(--color-subtle);
     align-self: flex-start;
   }
 
   .toc::-webkit-scrollbar {
-    width: 6px;
+    width: 3px;
   }
 
   .toc::-webkit-scrollbar-track {
@@ -291,20 +294,32 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 
   .toc::-webkit-scrollbar-thumb {
     background: transparent;
-    border-radius: 3px;
+    border-radius: 10px;
+    transition: background 0.2s ease;
   }
 
   .toc:hover {
-    scrollbar-width: thin; /* Firefox */
-    scrollbar-color: var(--color-muted) transparent;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent; /* Firefox - show on hover */
+  }
+
+  [data-theme="dark"] .toc:hover {
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   }
 
   .toc:hover::-webkit-scrollbar-thumb {
-    background: var(--color-muted);
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  [data-theme="dark"] .toc:hover::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .toc:hover::-webkit-scrollbar-thumb:hover {
-    background: var(--color-tertiary);
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="dark"] .toc:hover::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
   }
 
   @media (max-width: 1024px) {

@@ -1,6 +1,7 @@
 ---
 import { format } from "date-fns";
 import type { PostEntry } from "@/utils/posts";
+import { stripLangFromId } from "@/utils/posts";
 
 interface Props {
   posts: PostEntry[];
@@ -9,8 +10,13 @@ interface Props {
 
 const { posts, getHref } = Astro.props;
 
-// 기본 href 생성 함수 (posts Collection 기준)
-const defaultGetHref = (post: PostEntry) => `/posts/${post.id}`;
+// 기본 href 생성 함수 (collection에 따라 다른 URL 생성)
+const defaultGetHref = (post: PostEntry) => {
+  if (post.collection === "seriesPosts") {
+    return `/series/${stripLangFromId(post.id)}`;
+  }
+  return `/posts/${post.id}`;
+};
 const resolveHref = getHref || defaultGetHref;
 
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
