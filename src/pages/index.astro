@@ -2,7 +2,6 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
 import Bio from "@/components/Bio.astro";
-import CategorySidebar from "@/components/CategorySidebar.astro";
 import { EnLocale } from "@/config/locale";
 import type { CollectionEntry } from "astro:content";
 import {
@@ -18,11 +17,10 @@ import {
 
 const lang = EnLocale;
 
-// 영어 포스트 (algorithm 카테고리 제외)
+// 영어 포스트
 const posts = await getPostsByLang({
   lang,
-  filter: (post) =>
-    filterPosts(post) && post.data.category?.toLowerCase() !== "algorithm",
+  filter: filterPosts,
 });
 
 // 영어 시리즈 포스트
@@ -40,19 +38,6 @@ const sortedPosts = allPosts.sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
-// 카테고리 수집 및 카운트
-const categoryCounts = new Map<string, number>();
-allPosts.forEach((post) => {
-  const category = post.data.category;
-  if (category) {
-    categoryCounts.set(category, (categoryCounts.get(category) || 0) + 1);
-  }
-});
-
-// 카테고리를 카운트 기준 내림차순 정렬
-const sortedCategories = Array.from(categoryCounts.entries())
-  .sort((a, b) => b[1] - a[1]);
-
 // href 생성 함수
 const getHref = (post: PostEntry) => getPostUrl(post, lang);
 ---
@@ -62,12 +47,7 @@ const getHref = (post: PostEntry) => getPostUrl(post, lang);
   <Bio />
   <hr class="divider" />
 
-  <div class="content-wrapper">
-    <CategorySidebar categories={sortedCategories} lang={lang} />
-    <div class="main-content">
-      <PostList posts={sortedPosts} getHref={getHref} />
-    </div>
-  </div>
+  <PostList posts={sortedPosts} getHref={getHref} />
 </BaseLayout>
 
 <style>
@@ -80,26 +60,5 @@ const getHref = (post: PostEntry) => getPostUrl(post, lang);
     margin-bottom: 28px;
     border: none;
     border-bottom: 1px solid var(--color-divider);
-  }
-
-  .content-wrapper {
-    display: flex;
-    gap: 48px;
-  }
-
-  .main-content {
-    flex: 1;
-    min-width: 0;
-    max-width: 776px;
-  }
-
-  @media (max-width: 1024px) {
-    .content-wrapper {
-      display: block;
-    }
-
-    .main-content {
-      max-width: none;
-    }
   }
 </style>
