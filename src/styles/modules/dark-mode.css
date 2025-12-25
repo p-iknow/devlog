@@ -3,9 +3,9 @@
 
 [data-theme="dark"] {
   /* Surface & Background */
-  --color-surface: var(--chakra-gray-800);
-  --color-background: var(--chakra-gray-700);
-  --color-divider: var(--chakra-gray-700);
+  --color-surface: #1e293b;
+  --color-background: #0f172a;
+  --color-divider: #334155;
 
   /* Text Hierarchy */
   --color-default: var(--chakra-gray-50);
@@ -42,9 +42,9 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     /* Surface & Background */
-    --color-surface: var(--chakra-gray-800);
-    --color-background: var(--chakra-gray-700);
-    --color-divider: var(--chakra-gray-700);
+    --color-surface: #1e293b;
+    --color-background: #0f172a;
+    --color-divider: #334155;
 
     /* Text Hierarchy */
     --color-default: var(--chakra-gray-50);
