@@ -290,15 +290,16 @@ if (type === "post") {
       .series-list-item:hover {
         text-decoration: none !important;
       }
-      .series-list-item {
-        color: var(--color-secondary) !important;
+      .series-nav .series-list-item {
+        color: var(--color-secondary);
+        transition: color 0.2s ease, background-color 0.2s ease;
       }
-      .series-list-item:hover {
-        color: var(--color-accent) !important;
-        background-color: rgba(0, 0, 0, 0.03) !important;
+      .series-nav .series-list-item:hover {
+        color: var(--color-accent);
+        background-color: rgba(0, 0, 0, 0.03);
       }
-      [data-theme="dark"] .series-list-item:hover {
-        background-color: rgba(255, 255, 255, 0.05) !important;
+      [data-theme="dark"] .series-nav .series-list-item:hover {
+        background-color: rgba(255, 255, 255, 0.05);
       }
       .series-list-item.current,
       .series-list-item.current:hover {
