@@ -2,79 +2,79 @@
 /* Dark mode color overrides for both manual toggle and system preference */
 
 [data-theme="dark"] {
-  /* Surface & Background */
-  --color-surface: #1e293b;
-  --color-background: #0f172a;
-  --color-divider: #334155;
+  /* Surface & Background - Modern dark palette with blue tone */
+  --color-surface: #1c2836;
+  --color-background: #041623;
+  --color-divider: #2d3a4d;
 
-  /* Text Hierarchy */
-  --color-default: var(--chakra-gray-50);
-  --color-secondary: var(--chakra-gray-200);
-  --color-tertiary: var(--chakra-gray-400);
-  --color-muted: var(--chakra-gray-500);
-  --color-subtle: var(--chakra-gray-600);
+  /* Text Hierarchy - Softer contrast for reduced eye strain */
+  --color-default: #e6edf3;
+  --color-secondary: #c9d1d9;
+  --color-tertiary: #8b949e;
+  --color-muted: #6e7681;
+  --color-subtle: #484f58;
 
-  /* Accent Colors */
-  --color-accent: var(--chakra-blue-300);
-  --color-accent-hover: var(--chakra-blue-700);
-  --color-accent-light: var(--chakra-blue-200);
-  --color-accent-lighter: var(--chakra-blue-100);
-  --color-accent-bg: rgb(66 153 225 / 0.15);
-  --color-accent-border: rgb(99 179 237 / 0.4);
+  /* Accent Colors - Vibrant but not harsh */
+  --color-accent: #58a6ff;
+  --color-accent-hover: #1f6feb;
+  --color-accent-light: #79c0ff;
+  --color-accent-lighter: #a5d6ff;
+  --color-accent-bg: rgba(88, 166, 255, 0.1);
+  --color-accent-border: rgba(88, 166, 255, 0.3);
 
   /* Component Colors */
-  --color-header-bg: rgb(26 32 44 / 0.9);
-  --color-header-shadow: rgb(0 0 0 / 0.3);
-  --color-inline-code-bg: rgb(66 153 225 / 0.15);
-  --color-tag-bg: rgb(66 153 225 / 0.15);
-  --color-tag-text: var(--chakra-blue-200);
-  --color-blockquote-border: var(--chakra-blue-400);
-  --color-blockquote-bg: rgb(66 153 225 / 0.1);
-  --color-table-bg: var(--chakra-gray-700);
-  --color-table-header-bg: var(--color-gray-700);
-  --color-table-hover-bg: var(--color-gray-700);
-  --color-scroll-track: var(--chakra-gray-700);
-  --color-scroll-handle: var(--chakra-gray-600);
-  --color-link-hover-bg: var(--chakra-blue-700);
-  --color-link-hover-text: var(--color-white);
+  --color-header-bg: rgba(15, 20, 25, 0.95);
+  --color-header-shadow: rgba(0, 0, 0, 0.4);
+  --color-inline-code-bg: rgba(110, 118, 129, 0.2);
+  --color-tag-bg: rgba(88, 166, 255, 0.12);
+  --color-tag-text: #79c0ff;
+  --color-blockquote-border: #58a6ff;
+  --color-blockquote-bg: rgba(88, 166, 255, 0.08);
+  --color-table-bg: #1a1f2e;
+  --color-table-header-bg: #21262d;
+  --color-table-hover-bg: #21262d;
+  --color-scroll-track: #21262d;
+  --color-scroll-handle: #484f58;
+  --color-link-hover-bg: #1f6feb;
+  --color-link-hover-text: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    /* Surface & Background */
-    --color-surface: #1e293b;
-    --color-background: #0f172a;
-    --color-divider: #334155;
+    /* Surface & Background - Modern dark palette with blue tone */
+    --color-surface: #1c2836;
+    --color-background: #041623;
+    --color-divider: #2d3a4d;
 
-    /* Text Hierarchy */
-    --color-default: var(--chakra-gray-50);
-    --color-secondary: var(--chakra-gray-200);
-    --color-tertiary: var(--chakra-gray-400);
-    --color-muted: var(--chakra-gray-500);
-    --color-subtle: var(--chakra-gray-600);
+    /* Text Hierarchy - Softer contrast for reduced eye strain */
+    --color-default: #e6edf3;
+    --color-secondary: #c9d1d9;
+    --color-tertiary: #8b949e;
+    --color-muted: #6e7681;
+    --color-subtle: #484f58;
 
-    /* Accent Colors */
-    --color-accent: var(--chakra-blue-300);
-    --color-accent-hover: var(--chakra-blue-700);
-    --color-accent-light: var(--chakra-blue-200);
-    --color-accent-lighter: var(--chakra-blue-100);
-    --color-accent-bg: rgb(66 153 225 / 0.15);
-    --color-accent-border: rgb(99 179 237 / 0.4);
+    /* Accent Colors - Vibrant but not harsh */
+    --color-accent: #58a6ff;
+    --color-accent-hover: #1f6feb;
+    --color-accent-light: #79c0ff;
+    --color-accent-lighter: #a5d6ff;
+    --color-accent-bg: rgba(88, 166, 255, 0.1);
+    --color-accent-border: rgba(88, 166, 255, 0.3);
 
     /* Component Colors */
-    --color-header-bg: rgb(26 32 44 / 0.9);
-    --color-header-shadow: rgb(0 0 0 / 0.3);
-    --color-inline-code-bg: rgb(66 153 225 / 0.15);
-    --color-tag-bg: rgb(66 153 225 / 0.15);
-    --color-tag-text: var(--chakra-blue-200);
-    --color-blockquote-border: var(--chakra-blue-400);
-    --color-blockquote-bg: rgb(66 153 225 / 0.1);
-    --color-table-bg: var(--chakra-gray-700);
-    --color-table-header-bg: var(--color-gray-700);
-    --color-table-hover-bg: var(--color-gray-700);
-    --color-scroll-track: var(--chakra-gray-700);
-    --color-scroll-handle: var(--chakra-gray-600);
-    --color-link-hover-bg: var(--chakra-blue-700);
-    --color-link-hover-text: var(--color-white);
+    --color-header-bg: rgba(15, 20, 25, 0.95);
+    --color-header-shadow: rgba(0, 0, 0, 0.4);
+    --color-inline-code-bg: rgba(110, 118, 129, 0.2);
+    --color-tag-bg: rgba(88, 166, 255, 0.12);
+    --color-tag-text: #79c0ff;
+    --color-blockquote-border: #58a6ff;
+    --color-blockquote-bg: rgba(88, 166, 255, 0.08);
+    --color-table-bg: #1a1f2e;
+    --color-table-header-bg: #21262d;
+    --color-table-hover-bg: #21262d;
+    --color-scroll-track: #21262d;
+    --color-scroll-handle: #484f58;
+    --color-link-hover-bg: #1f6feb;
+    --color-link-hover-text: #ffffff;
   }
 }

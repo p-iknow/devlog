@@ -43,10 +43,28 @@ export default defineConfig({
 
   integrations: [
     astroExpressiveCode({
-      themes: ["dracula-soft"],
+      themes: ["dracula-soft", "night-owl"],
+      themeCssSelector: (theme, { styleVariants }) => {
+        // First theme (dracula-soft) for light mode
+        // Second theme (night-owl) for dark mode
+        if (styleVariants.length >= 2) {
+          const isLightTheme = theme === styleVariants[0]?.theme;
+          const isDarkTheme = theme === styleVariants[1]?.theme;
+
+          if (isLightTheme) return '[data-theme="light"]';
+          if (isDarkTheme) return '[data-theme="dark"]';
+        }
+
+        // Fallback based on theme type
+        return `[data-theme="${theme.type}"]`;
+      },
       plugins: [pluginLineNumbers()],
       defaultProps: {
         showLineNumbers: true,
+      },
+      styleOverrides: {
+        borderRadius: "0.5rem",
+        borderWidth: "1px",
       },
     }),
     mdx(),
