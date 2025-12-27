@@ -41,37 +41,38 @@ const author = "@p-iknow";
     const seriesSlug = getSeriesSlug(post);
 
     return (
-      <>
-        <div class="post-item">
-          {seriesSlug && (
-            <div class="series-badge-wrapper">
-              <a href={`/series/${seriesSlug}`} class="series-badge">
-                <span>🗂️</span><span>{seriesSlug}</span>
+      <div class="post-item">
+        {seriesSlug && (
+          <div class="series-badge-wrapper">
+            <a href={`/series/${seriesSlug}`} class="series-badge">
+              <span>🗂️</span><span>{seriesSlug}</span>
+            </a>
+          </div>
+        )}
+        <a href={resolveHref(post)} class="link-title post-title">
+          {seriesSlug && 'part' in post.data && post.data.part ? `${post.data.part}. ${title}` : title}
+        </a>
+        <p class="post-excerpt">{description}</p>
+        <span class="post-date">{formattedDate} · {author}</span>
+        {tags.length > 0 && (
+          <div class="post-tags">
+            {tags.map((tag) => (
+              <a href={`/tags/${tag}`} class="post-tag">
+                <span class="post-tag-hash">#</span>{spaceToDash(tag)}
               </a>
-            </div>
-          )}
-          <a href={resolveHref(post)} class="link-title post-title">
-            {seriesSlug && 'part' in post.data && post.data.part ? `${post.data.part}. ${title}` : title}
-          </a>
-          <p class="post-excerpt">{description}</p>
-          <span class="post-date">{formattedDate} · {author}</span>
-          {tags.length > 0 && (
-            <div class="post-tags">
-              {tags.map((tag) => (
-                <a href={`/tags/${tag}`} class="post-tag">
-                  <span class="post-tag-hash">#</span>{spaceToDash(tag)}
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-        {!isLast && <hr class="post-divider" />}
-      </>
+            ))}
+          </div>
+        )}
+      </div>
     );
   })}
 </div>
 
 <style>
+  .post-item {
+    margin-bottom: 48px;
+  }
+
   .series-badge-wrapper {
     margin-bottom: 6px;
   }

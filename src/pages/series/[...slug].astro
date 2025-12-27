@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostLayout from "@/layouts/PostLayout.astro";
+import PostList from "@/components/PostList.astro";
 import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
 import { getSeriesPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
 
@@ -126,43 +127,16 @@ if (type === "post") {
 
 {type === "series" ? (
   <BaseLayout title={`${data.series.data.title} | Series`} description={data.series.data.description} lang={lang}>
-    <div class="mb-8">
-      <a
-        href="/series"
-        class="mb-4 inline-block text-sm text-muted hover:text-primary"
-      >
-        &larr; All Series
-      </a>
-      <h1 class="text-3xl font-bold">{data.series.data.title}</h1>
-      <p class="mt-2 text-muted">{data.series.data.description}</p>
-      <p class="mt-2 text-sm text-muted">{data.posts.length} posts in this series</p>
+    <div class="vertical-space"></div>
+    <div class="series-header">
+      <h1 class="series-title">{data.series.data.title}</h1>
+      <p class="series-description">{data.series.data.description}</p>
     </div>
-
-    <div class="space-y-4">
-      {data.posts
-        .filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))
-        .map((post: any, index: number) => (
-          <a
-            href={getSeriesPostUrl(post.id, lang)}
-            class="group block rounded-lg border border-subtle p-4 transition-colors hover:border-accent hover:bg-background"
-          >
-            <div class="flex items-start gap-4">
-              <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">
-                {index + 1}
-              </span>
-              <div>
-                <h2 class="font-semibold transition-colors group-hover:text-accent">
-                  {post.data.part ? `${post.data.part}. ${post.data.title}` : post.data.title}
-                </h2>
-                <p class="mt-1 text-sm text-muted">{post.data.description}</p>
-                <p class="mt-2 text-xs text-muted">
-                  {post.data.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
-                </p>
-              </div>
-            </div>
-          </a>
-        ))}
-    </div>
+    <hr class="divider" />
+    <PostList
+      posts={data.posts.filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))}
+      getHref={(post: any) => getSeriesPostUrl(post.id, lang)}
+    />
   </BaseLayout>
 ) : (
   <PostLayout
@@ -427,3 +401,34 @@ if (type === "post") {
     })()}
   </PostLayout>
 )}
+
+<style>
+  .vertical-space {
+    height: 32px;
+  }
+
+  .series-header {
+    margin-bottom: 0;
+  }
+
+  .series-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-default);
+  }
+
+  .series-description {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: var(--color-muted);
+    font-size: 1rem;
+  }
+
+  .divider {
+    margin-top: 32px;
+    margin-bottom: 28px;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+</style>
