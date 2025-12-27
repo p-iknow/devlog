@@ -83,7 +83,12 @@ const dateLocale = LOCALE[lang];
 
 <div class="series-header">
   <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
-  <p class="series-summary">{t.summary(series.length, totalPosts)}</p>
+  <p class="series-summary">
+    <span class="text-accent-highlight">{series.length}</span>
+    {lang === "en" ? " series across " : "개 시리즈, "}
+    <span class="text-accent-highlight">{totalPosts}</span>
+    {lang === "en" ? " posts" : "개 포스트"}
+  </p>
 </div>
 
 {
