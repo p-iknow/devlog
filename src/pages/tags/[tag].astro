@@ -80,7 +80,9 @@ const getPostHref = (post: PostEntry) => getPostUrl(post, lang);
       <span class="arrow">&larr;</span> All Tags
     </a>
     <h1 class="text-3xl font-bold"># {tag}</h1>
-    <p class="mt-2 text-muted">{posts.length} posts</p>
+    <p class="mt-2 text-muted">
+      <span class="text-accent-highlight">{posts.length}</span> posts
+    </p>
   </div>
 
   <PostList posts={posts} getHref={getPostHref as any} />
