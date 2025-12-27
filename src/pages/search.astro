@@ -1,15 +1,15 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { format } from "date-fns";
-import { filterPosts, filterSeriesPosts, getPostUrl } from "@/utils/posts";
 import { EnLocale } from "@/config/locale";
-
-type PostEntry = CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">;
+import { getPostsByLang, getSeriesPostsByLang, getPostUrl, type PostWithLang, type SeriesPostWithLang } from "@/utils/posts";
 
 const lang = EnLocale;
-const posts = await getCollection("posts", filterPosts);
-const seriesPosts = await getCollection("seriesPosts", filterSeriesPosts);
+
+type PostEntry = PostWithLang | SeriesPostWithLang;
+
+const posts = await getPostsByLang({ lang });
+const seriesPosts = await getSeriesPostsByLang({ lang });
 
 // 두 컬렉션을 합쳐서 날짜순 정렬
 const allPosts: PostEntry[] = [...posts, ...seriesPosts]
@@ -29,7 +29,7 @@ const searchablePosts = allPosts.map((post) => ({
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
-<BaseLayout title="Search" description="Search posts">
+<BaseLayout title="Search" description="Search posts" lang={lang}>
   <div class="search-container">
     <div class="search-header">
       <h1 class="mb-8 text-3xl font-bold">Search</h1>
