@@ -2,24 +2,18 @@
 import { siteConfig } from "@/config/site";
 ---
 
-<section class="giscus-container"></section>
+<section class="giscus"></section>
 
 <script is:inline define:vars={{ config: siteConfig.giscus }}>
-  // 현재 테마 가져오기
   function getCurrentTheme() {
     const theme = document.documentElement.getAttribute("data-theme");
     if (theme) return theme === "dark" ? "dark" : "light";
-
-    // data-theme이 없으면 시스템 선호도 확인
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
 
-  // giscus script 동적으로 생성 및 삽입
   function loadGiscus() {
-    const container = document.querySelector(".giscus-container");
-    if (!container) return;
+    const container = document.querySelector(".giscus");
+    if (!container || container.querySelector("script")) return;
 
     const script = document.createElement("script");
     script.src = "https://giscus.app/client.js";
@@ -37,46 +31,42 @@ import { siteConfig } from "@/config/site";
     script.setAttribute("data-loading", config.loading);
     script.setAttribute("crossorigin", "anonymous");
     script.async = true;
-
     container.appendChild(script);
   }
 
-  // giscus 테마 업데이트
   function updateGiscusTheme() {
-    const giscusTheme = getCurrentTheme();
     const iframe = document.querySelector("iframe.giscus-frame");
     if (!iframe) return;
-
     iframe.contentWindow.postMessage(
-      { giscus: { setConfig: { theme: giscusTheme } } },
+      { giscus: { setConfig: { theme: getCurrentTheme() } } },
       "https://giscus.app"
     );
   }
 
-  // MutationObserver로 data-theme 속성 변경 감지
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.attributeName === "data-theme") {
+  // 초기화 - 중복 실행 방지
+  if (!window.__giscusInitialized) {
+    window.__giscusInitialized = true;
+
+    // 테마 변경 감지
+    new MutationObserver((mutations) => {
+      if (mutations.some(m => m.attributeName === "data-theme")) {
         updateGiscusTheme();
       }
+    }).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
     });
-  });
 
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["data-theme"],
-  });
+    // View Transitions 지원
+    document.addEventListener("astro:page-load", loadGiscus);
+  }
 
-  // 즉시 giscus 로드
+  // 현재 페이지 로드
   loadGiscus();
 </script>
 
 <style>
-  .giscus-container {
-    max-width: 100%;
-  }
-
-  .giscus-container :global(.giscus) {
+  .giscus {
     max-width: 100%;
   }
 </style>

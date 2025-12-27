@@ -119,16 +119,14 @@ const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
     <script is:inline>
       // Initial theme setup
       (function() {
-        const theme = (() => {
+        const getTheme = () => {
           if (typeof localStorage !== "undefined") {
             const stored = localStorage.getItem("theme");
             if (stored) return stored;
           }
-          return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-        })();
-        document.documentElement.setAttribute("data-theme", theme);
+          return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        };
+        document.documentElement.setAttribute("data-theme", getTheme());
       })();
     </script>
 
@@ -140,21 +138,10 @@ const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
         return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
       }
 
-      function restoreTheme() {
-        document.documentElement.setAttribute("data-theme", getStoredTheme());
-      }
-
-      // Restore theme on initial load
-      document.addEventListener('DOMContentLoaded', restoreTheme);
-
       // Apply theme BEFORE DOM swap to prevent flash
       document.addEventListener('astro:before-swap', (e) => {
-        const theme = getStoredTheme();
-        e.newDocument.documentElement.setAttribute("data-theme", theme);
+        e.newDocument.documentElement.setAttribute("data-theme", getStoredTheme());
       });
-
-      // Restore theme after View Transitions (backup)
-      document.addEventListener('astro:page-load', restoreTheme);
     </script>
   </head>
   <body

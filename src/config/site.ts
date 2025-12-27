@@ -22,7 +22,7 @@ export const siteConfig = {
     emitMetadata: "1",
     inputPosition: "top",
     lang: "en",
-    loading: "lazy",
+    loading: "eager",
   },
   googleAnalyticsId: "UA-110581115-1",
 };
