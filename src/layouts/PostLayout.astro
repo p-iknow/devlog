@@ -4,6 +4,7 @@ import { siteConfig } from "@/config/site";
 import { format } from "date-fns";
 import Comments from "@/components/Comments.astro";
 import Bio from "@/components/Bio.astro";
+import PostNavigation from "@/components/PostNavigation.astro";
 import {
   type Locale,
   defaultLocale,
@@ -168,30 +169,12 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     </script>
 
     {!hidePostNavigation && (prevPost || nextPost) && (
-      <nav class="post-navigation">
-        {prevPost ? (
-          <a href={`${langPath}/posts/${getPostSlug(prevPost)}`} class="nav-link nav-prev">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
-            <div class="nav-content">
-              <span class="nav-label">Prev</span>
-              <span class="nav-title">{prevPost.data.title}</span>
-            </div>
-          </a>
-        ) : <div />}
-        {nextPost ? (
-          <a href={`${langPath}/posts/${getPostSlug(nextPost)}`} class="nav-link nav-next">
-            <div class="nav-content">
-              <span class="nav-label">Next</span>
-              <span class="nav-title">{nextPost.data.title}</span>
-            </div>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
-          </a>
-        ) : <div />}
-      </nav>
+      <PostNavigation
+        prevPost={prevPost}
+        nextPost={nextPost}
+        lang={lang}
+        getHref={(post) => `${langPath}/posts/${getPostSlug(post)}`}
+      />
     )}
 
     <div class="post-bio">
@@ -405,82 +388,24 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     padding-left: 49px;
   }
 
-  .post-navigation {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 48px;
-  }
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px;
-    background-color: var(--color-background);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s;
-    max-width: 48%;
-  }
-
-  .nav-link:hover {
-    background-color: var(--color-accent-bg);
-  }
-
-  .nav-link svg {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    color: var(--color-muted);
-  }
-
-  .nav-prev {
-    margin-right: auto;
-  }
-
-  .nav-next {
-    margin-left: auto;
-    text-align: right;
-  }
-
-  .nav-content {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .nav-label {
-    font-size: 12px;
-    color: var(--color-muted);
-  }
-
-  .nav-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--color-default);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
   .post-bio {
     margin-top: 48px;
     padding: 24px;
     background-color: var(--color-background);
     border: 1px solid var(--color-subtle);
     border-radius: 12px;
+    max-width: 776px;
   }
 
   .footer-divider {
     margin: 48px 0 0;
     border: none;
     border-bottom: 1px solid var(--color-divider);
+    max-width: 776px;
   }
 
   .article-footer {
     margin-top: 32px;
+    max-width: 776px;
   }
 </style>

@@ -3,6 +3,7 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostLayout from "@/layouts/PostLayout.astro";
 import PostList from "@/components/PostList.astro";
+import PostNavigation from "@/components/PostNavigation.astro";
 import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
 import { getSeriesPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
 
@@ -288,12 +289,6 @@ if (type === "post") {
       .series-nav-btn:visited {
         text-decoration: none !important;
       }
-      .series-post-nav,
-      .series-post-nav:hover,
-      .series-post-nav:link,
-      .series-post-nav:visited {
-        text-decoration: none !important;
-      }
     </style>
 
     <script>
@@ -371,32 +366,12 @@ if (type === "post") {
       const nextPost = currentIndex < filteredPosts.length - 1 ? filteredPosts[currentIndex + 1] : null;
 
       return (
-        <div class="mt-12 grid gap-4 sm:grid-cols-2">
-          {prevPost ? (
-            <a
-              href={getSeriesPostUrl(prevPost.id, lang)}
-              class="series-post-nav group rounded-lg border border-subtle p-4 transition-colors hover:border-accent"
-            >
-              <div class="text-sm text-muted">&larr; Previous</div>
-              <div class="mt-1 font-medium transition-colors group-hover:text-accent">
-                {prevPost.data.title}
-              </div>
-            </a>
-          ) : (
-            <div />
-          )}
-          {nextPost && (
-            <a
-              href={getSeriesPostUrl(nextPost.id, lang)}
-              class="series-post-nav group rounded-lg border border-subtle p-4 text-right transition-colors hover:border-accent"
-            >
-              <div class="text-sm text-muted">Next &rarr;</div>
-              <div class="mt-1 font-medium transition-colors group-hover:text-accent">
-                {nextPost.data.title}
-              </div>
-            </a>
-          )}
-        </div>
+        <PostNavigation
+          prevPost={prevPost}
+          nextPost={nextPost}
+          lang={lang}
+          getHref={(post) => getSeriesPostUrl(post.id, lang)}
+        />
       );
     })()}
   </PostLayout>
