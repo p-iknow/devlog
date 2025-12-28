@@ -18,9 +18,10 @@ type AnyPost =
 
 /**
  * 언어에 따른 URL prefix 반환
+ * All locales have a prefix (e.g., /en, /ko)
  */
 export function getLangPath(lang: Locale): string {
-  return lang === defaultLocale ? "" : `/${lang}`;
+  return `/${lang}`;
 }
 
 /**

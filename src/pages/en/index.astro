@@ -1,0 +1,63 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostList from "@/components/PostList.astro";
+import Bio from "@/components/Bio.astro";
+import { EnLocale } from "@/config/locale";
+import {
+  getPostsByLang,
+  getSeriesPostsByLang,
+  filterPosts,
+  filterSeriesPosts,
+  getPostUrl,
+  type PostWithLang,
+  type SeriesPostWithLang,
+  type PostEntry,
+} from "@/utils/posts";
+
+const lang = EnLocale;
+
+// 영어 포스트
+const posts = await getPostsByLang({
+  lang,
+  filter: filterPosts,
+});
+
+// 영어 시리즈 포스트
+const seriesPosts = await getSeriesPostsByLang({
+  lang,
+  filter: filterSeriesPosts,
+});
+
+// 두 Collection 합치기
+type AnyPost = PostWithLang | SeriesPostWithLang;
+const allPosts: AnyPost[] = [...posts, ...seriesPosts];
+
+// 날짜순 정렬 (내림차순)
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+// href 생성 함수
+const getHref = (post: PostEntry) => getPostUrl(post, lang);
+---
+
+<BaseLayout lang={lang}>
+  <div class="vertical-space"></div>
+  <Bio />
+  <hr class="divider" />
+
+  <PostList posts={sortedPosts} getHref={getHref} />
+</BaseLayout>
+
+<style>
+  .vertical-space {
+    height: 32px;
+  }
+
+  .divider {
+    margin-top: 32px;
+    margin-bottom: 28px;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+</style>

@@ -29,10 +29,10 @@ export const LOCALE = {
 
 /**
  * Get the language path prefix for a given locale
- * Default locale (en) has no prefix
+ * All locales have a prefix (e.g., /en, /ko)
  */
 export function getLangPath(lang: Locale): string {
-  return lang === defaultLocale ? "" : `/${lang}`;
+  return `/${lang}`;
 }
 
 /**

@@ -5,6 +5,49 @@
 [build.environment]
   NODE_VERSION = "20"
 
+# Redirect root to English
+[[redirects]]
+  from = "/"
+  to = "/en"
+  status = 301
+
+# Redirect old English paths to /en/*
+[[redirects]]
+  from = "/posts/*"
+  to = "/en/posts/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/tags/*"
+  to = "/en/tags/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/tags"
+  to = "/en/tags"
+  status = 301
+
+[[redirects]]
+  from = "/series/*"
+  to = "/en/series/:splat"
+  status = 301
+
+[[redirects]]
+  from = "/series"
+  to = "/en/series"
+  status = 301
+
+[[redirects]]
+  from = "/search"
+  to = "/en/search"
+  status = 301
+
+[[redirects]]
+  from = "/rss.xml"
+  to = "/en/rss.xml"
+  status = 301
+
+# 404 fallback - must be last
 [[redirects]]
   from = "/*"
   to = "/404"

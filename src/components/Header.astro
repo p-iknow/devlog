@@ -3,6 +3,7 @@ import { siteConfig } from "@/config/site";
 import {
   type Locale,
   defaultLocale,
+  LOCALES,
   getLangPath,
 } from "@/config/locale";
 import ThemeToggle from "@/components/ThemeToggle.astro";
@@ -15,18 +16,25 @@ const { lang = defaultLocale } = Astro.props;
 const langPath = getLangPath(lang);
 
 const pathname = Astro.url.pathname;
-const isActive = (path: string) => pathname === path || pathname === `${langPath}${path}`;
+const isActive = (path: string) => {
+  const fullPath = `${langPath}${path}`;
+  return pathname === fullPath || pathname === fullPath + "/";
+};
 
 // 언어 전환 URL 생성
 const getAlternateUrl = (targetLang: Locale) => {
-  const currentPath = pathname;
-  if (targetLang === "en") {
-    // 한국어 -> 영어: /ko prefix 제거
-    return currentPath.replace(/^\/ko/, "") || "/";
-  } else {
-    // 영어 -> 한국어: /ko prefix 추가
-    return `/ko${currentPath.replace(/^\/ko/, "")}`;
+  // 현재 언어 prefix 제거
+  let basePath = pathname;
+  for (const locale of LOCALES) {
+    const prefix = `/${locale}`;
+    if (basePath.startsWith(prefix)) {
+      basePath = basePath.substring(prefix.length) || "/";
+      break;
+    }
   }
+
+  // 대상 언어 prefix 추가
+  return `/${targetLang}${basePath === "/" ? "" : basePath}`;
 };
 const koUrl = getAlternateUrl("ko");
 const enUrl = getAlternateUrl("en");

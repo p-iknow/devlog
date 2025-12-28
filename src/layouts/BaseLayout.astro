@@ -5,6 +5,7 @@ import {
   type Locale,
   defaultLocale,
   LOCALE,
+  LOCALES,
   getLangPath,
 } from "@/config/locale";
 import Header from "@/components/Header.astro";
@@ -33,14 +34,16 @@ const currentPath = Astro.url.pathname;
 const getAlternatePath = (targetLang: Locale) => {
   // 현재 언어 prefix 제거
   let basePath = currentPath;
-  if (currentPath.startsWith("/ko/")) {
-    basePath = currentPath.replace("/ko", "");
-  } else if (currentPath.startsWith("/ko")) {
-    basePath = currentPath.replace("/ko", "") || "/";
+  for (const locale of LOCALES) {
+    const prefix = `/${locale}`;
+    if (basePath.startsWith(prefix)) {
+      basePath = basePath.substring(prefix.length) || "/";
+      break;
+    }
   }
 
   // 대상 언어 prefix 추가
-  return targetLang === defaultLocale ? basePath : `/ko${basePath}`;
+  return `/${targetLang}${basePath === "/" ? "" : basePath}`;
 };
 
 const enUrl = new URL(getAlternatePath("en"), siteConfig.siteUrl);
@@ -95,7 +98,7 @@ const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
       rel="alternate"
       type="application/rss+xml"
       title={siteConfig.title}
-      href="/rss.xml"
+      href={`/${lang}/rss.xml`}
     />
 
     <!-- Client Router (View Transitions) -->
