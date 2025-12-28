@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostList from "@/components/PostList.astro";
 import { format } from "date-fns";
 import type { Locale } from "@/config/locale";
 import { getPostUrl, type PostWithLang, type SeriesPostWithLang } from "@/utils/posts";
@@ -61,8 +62,6 @@ const searchablePosts = allPosts.map((post: any) => ({
   tags: post.data.tags || [],
   body: post.body || "",
 }));
-
-const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
 <BaseLayout title={t.title} description={t.description} lang={lang}>
@@ -86,32 +85,8 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       />
     </div>
 
-    <div id="search-results" class="post-list">
-      {allPosts.map((post: any, index: number) => {
-        const { title, description, date, tags = [] } = post.data;
-        const formattedDate = format(date, "yyyy-MM-dd");
-        const isLast = index === allPosts.length - 1;
-
-        return (
-          <>
-            <div class="post-item" data-post-id={post.id} data-collection={post.collection}>
-              <a href={getPostUrl(post, lang)} class="link-title post-title">{title}</a>
-              <p class="post-date">{formattedDate}</p>
-              <p class="post-excerpt">{description}</p>
-              {tags.length > 0 && (
-                <div class="post-tags">
-                  {tags.map((tag: string) => (
-                    <a href={`/${lang}/tags/${tag}`} class="post-tag">
-                      <span class="post-tag-hash">#</span>{spaceToDash(tag)}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-            {!isLast && <hr class="post-divider" />}
-          </>
-        );
-      })}
+    <div id="search-results">
+      <PostList posts={allPosts} getHref={(post) => getPostUrl(post, lang)} />
     </div>
 
     <div id="no-results" class="no-results" style="display: none;">
@@ -126,14 +101,12 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
   const noResults = document.getElementById('no-results');
   const postCount = document.getElementById('post-count');
   const postItems = document.querySelectorAll('.post-item');
-  const dividers = document.querySelectorAll('.post-divider');
 
   function filterPosts(query) {
     const lowerQuery = query.toLowerCase().trim();
     let visibleCount = 0;
-    let lastVisibleIndex = -1;
 
-    postItems.forEach((item, index) => {
+    postItems.forEach((item) => {
       const postId = item.getAttribute('data-post-id');
       const postCollection = item.getAttribute('data-collection');
       const post = posts.find(p => p.id === postId && p.collection === postCollection);
@@ -149,16 +122,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 
       item.style.display = isVisible ? 'block' : 'none';
 
-      // Handle dividers
-      if (dividers[index]) {
-        dividers[index].style.display = 'none';
-      }
-
       if (isVisible) {
-        if (lastVisibleIndex >= 0 && dividers[lastVisibleIndex]) {
-          dividers[lastVisibleIndex].style.display = 'block';
-        }
-        lastVisibleIndex = index;
         visibleCount++;
       }
     });
@@ -181,7 +145,6 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 </script>
 
 <style>
-  /* 검색 페이지 전용 스타일 - 포스트 리스트 스타일은 global.css에서 관리 */
   .search-container {
     margin-top: 0;
   }

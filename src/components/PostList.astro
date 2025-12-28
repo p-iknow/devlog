@@ -34,14 +34,13 @@ const author = "@p-iknow";
 ---
 
 <div class="post-list">
-  {posts.map((post, index) => {
+  {posts.map((post ) => {
     const { title, description, date, tags = [] } = post.data;
     const formattedDate = format(date, "yyyy-MM-dd");
-    const isLast = index === posts.length - 1;
     const seriesSlug = getSeriesSlug(post);
 
     return (
-      <div class="post-item">
+      <div class="post-item" data-post-id={post.id} data-collection={post.collection}>
         {seriesSlug && (
           <div class="series-badge-wrapper">
             <a href={`/series/${seriesSlug}`} class="series-badge">
