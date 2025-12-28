@@ -11,8 +11,10 @@ import {
   getLangPath,
 } from "@/config/locale";
 import {
-  getPostsByLang,
+  getAllCombinedPostsByLang,
   getPostSlug,
+  getPostUrl,
+  stripLangFromId,
   type PostWithLang,
 } from "@/utils/posts";
 
@@ -47,9 +49,15 @@ const langPath = getLangPath(lang);
 const formattedDate = format(date, "yyyy-MM-dd");
 const ogImage = img || siteConfig.ogImage;
 
-// Get posts for this language for prev/next navigation (posts only, not series)
-const allPosts = await getPostsByLang({ lang });
-const currentIndex = allPosts.findIndex((post) => post.id === currentSlug);
+// Get all posts (regular + series) for this language for prev/next navigation
+const allPosts = await getAllCombinedPostsByLang({ lang });
+const currentIndex = allPosts.findIndex((post) => {
+  if (post.collection === "posts") {
+    return getPostSlug(post) === currentSlug;
+  } else {
+    return stripLangFromId(post.id) === currentSlug;
+  }
+});
 const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
@@ -173,7 +181,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
         prevPost={prevPost}
         nextPost={nextPost}
         lang={lang}
-        getHref={(post) => `${langPath}/posts/${getPostSlug(post)}`}
+        getHref={(post) => getPostUrl(post, lang)}
       />
     )}
 

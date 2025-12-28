@@ -1,16 +1,14 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import PostLayout from "@/layouts/PostLayout.astro";
 import PostList from "@/components/PostList.astro";
-import PostNavigation from "@/components/PostNavigation.astro";
 import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
-import { getSeriesPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
+import { getPostUrl, extractOrderFromFilename } from "@/utils/posts";
 
 const lang = EnLocale;
 const isDev = import.meta.env.DEV;
 
-// 포스트에서 lang 추출
+// Helper function to extract lang from post
 const getPostLang = (post: { data: { lang?: string } }): Locale => {
   const postLang = post.data.lang;
   if (postLang && LOCALES.includes(postLang as Locale)) {
@@ -30,11 +28,6 @@ export async function getStaticPaths() {
     return "en";
   };
 
-  // id에서 언어 접미사(.en, .ko)를 제거하여 URL slug 생성
-  const stripLang = (id: string): string => {
-    return id.replace(/\.(en|ko)$/, "");
-  };
-
   const seriesCollection = await getCollection("series", (s) => getPostLang(s) === "en");
   const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
     if (post.data.draft) return false;
@@ -44,16 +37,19 @@ export async function getStaticPaths() {
 
   const paths: Array<{
     params: { slug: string };
-    props: { type: "series" | "post"; data: any };
+    props: { series: any; posts: any[] };
   }> = [];
 
-  // 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_index.en" -> "markdown-guide")
+  // Helper to extract series slug from id
   const getSeriesSlug = (id: string) => id.replace(/\/_index.*$/, "");
 
-  // 시리즈 글 id에서 폴더명 추출
+  // Helper to extract series slug from post id
+  const stripLang = (id: string): string => {
+    return id.replace(/\.(en|ko)$/, "");
+  };
   const getPostSeriesSlug = (id: string) => stripLang(id).split("/")[0];
 
-  // 시리즈별 글 그룹화
+  // Group series posts by series
   const seriesPostsMap = new Map<string, typeof seriesPostsCollection>();
   seriesPostsCollection.forEach((post) => {
     const seriesSlug = getPostSeriesSlug(post.id);
@@ -62,7 +58,7 @@ export async function getStaticPaths() {
     seriesPostsMap.set(seriesSlug, posts);
   });
 
-  // 시리즈 상세 페이지 경로 생성
+  // Create series listing pages
   seriesCollection.forEach((series) => {
     const slug = getSeriesSlug(series.id);
     const posts = (seriesPostsMap.get(slug) || []).sort((a, b) => {
@@ -74,34 +70,8 @@ export async function getStaticPaths() {
     paths.push({
       params: { slug },
       props: {
-        type: "series",
-        data: {
-          series,
-          posts,
-        },
-      },
-    });
-  });
-
-  // 시리즈 글 상세 페이지 경로 생성
-  seriesPostsCollection.forEach((post) => {
-    const seriesSlug = getPostSeriesSlug(post.id);
-    const series = seriesCollection.find((s) => getSeriesSlug(s.id) === seriesSlug);
-    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort((a, b) => {
-      const orderA = a.data.part ?? extractOrderFromFilename(a.id);
-      const orderB = b.data.part ?? extractOrderFromFilename(b.id);
-      return orderA - orderB;
-    });
-
-    paths.push({
-      params: { slug: stripLang(post.id) },
-      props: {
-        type: "post",
-        data: {
-          post,
-          series,
-          allPosts,
-        },
+        series,
+        posts,
       },
     });
   });
@@ -109,273 +79,21 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { type, data } = Astro.props;
-
-// dev-only 글 필터링
-if (type === "post" && data.post.data["dev-only"] && !isDev) {
-  return Astro.redirect("/404");
-}
-
-// 시리즈 글인 경우 렌더링
-let Content: any;
-let headings: { depth: number; slug: string; text: string }[] = [];
-if (type === "post") {
-  const rendered = await render(data.post);
-  Content = rendered.Content;
-  headings = rendered.headings;
-}
+const { series, posts } = Astro.props;
 ---
 
-{type === "series" ? (
-  <BaseLayout title={`${data.series.data.title} | Series`} description={data.series.data.description} lang={lang}>
-    <div class="vertical-space"></div>
-    <div class="series-header">
-      <h1 class="series-title">{data.series.data.title}</h1>
-      <p class="series-description">{data.series.data.description}</p>
-    </div>
-    <hr class="divider" />
-    <PostList
-      posts={data.posts.filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))}
-      getHref={(post: any) => getSeriesPostUrl(post.id, lang)}
-    />
-  </BaseLayout>
-) : (
-  <PostLayout
-    title={data.post.data.part ? `${data.post.data.part}. ${data.post.data.title}` : data.post.data.title}
-    description={data.post.data.description}
-    date={data.post.data.date}
-    update={data.post.data.update}
-    tags={data.post.data.tags}
-    img={data.post.data.img}
-    headings={headings}
-    hidePostNavigation={true}
-    lang={lang}
-  >
-    {/* 시리즈 네비게이션 - Velog 스타일 */}
-    {(() => {
-      const filteredPosts = data.allPosts.filter((p: any) => !p.data.draft && (!p.data["dev-only"] || isDev));
-      const currentIndex = filteredPosts.findIndex((p: any) => p.id === data.post.id);
-      const totalPosts = filteredPosts.length;
-      const prevPost = currentIndex > 0 ? filteredPosts[currentIndex - 1] : null;
-      const nextPost = currentIndex < totalPosts - 1 ? filteredPosts[currentIndex + 1] : null;
-
-      return (
-        <div class="series-nav relative mb-8 rounded-lg bg-background">
-          {/* 시리즈 북마크 아이콘 */}
-          <div class="absolute right-4 top-0">
-            <svg width="24" height="36" fill="currentColor" viewBox="0 0 32 48" class="text-accent">
-              <path fill="currentColor" d="M32 0H0v48h.163l16-16L32 47.836V0z"></path>
-            </svg>
-          </div>
-
-          {/* 시리즈 제목 */}
-          <div class="p-4 pb-0 pr-12">
-            <a
-              href={getSeriesUrl(stripLangFromId(data.post.id).split("/")[0], lang)}
-              class="series-title-link text-lg font-bold text-default hover:text-accent transition-colors"
-            >
-              {data.series?.data.title}
-            </a>
-          </div>
-
-          {/* 펼쳐지는 목록 - 제목 아래에 표시 */}
-          <div id="series-list" class="series-list-container">
-            <div class="max-h-64 overflow-y-auto px-4 py-2">
-              {filteredPosts.map((p: any, i: number) => (
-                <a
-                  href={getSeriesPostUrl(p.id, lang)}
-                  class={`series-list-item block rounded px-3 py-2 text-sm transition-colors ${
-                    p.id === data.post.id
-                      ? "current bg-accent/10 text-accent font-medium"
-                      : "text-default hover:bg-subtle/30 hover:text-accent"
-                  }`}
-                >
-                  {i + 1}. {p.data.title}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* 하단 컨트롤 영역 */}
-          <div class="flex items-center justify-between px-4 py-3">
-            {/* 목록 보기 토글 */}
-            <button
-              id="series-toggle"
-              class="flex items-center gap-1 text-sm text-muted hover:text-default transition-colors"
-              type="button"
-            >
-              <span id="toggle-arrow" class="inline-block transition-transform duration-200" style="transform: rotate(180deg)">&#9660;</span>
-              <span>Show list</span>
-            </button>
-
-            {/* 페이지네이션 */}
-            <div class="flex items-center gap-3">
-              <span class="text-sm text-muted">{currentIndex + 1}/{totalPosts}</span>
-              <div class="flex items-center gap-1">
-                {prevPost ? (
-                  <a
-                    href={getSeriesPostUrl(prevPost.id, lang)}
-                    class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                    aria-label="Previous post"
-                  >
-                    &#10094;
-                  </a>
-                ) : (
-                  <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10094;</span>
-                )}
-                {nextPost ? (
-                  <a
-                    href={getSeriesPostUrl(nextPost.id, lang)}
-                    class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                    aria-label="Next post"
-                  >
-                    &#10095;
-                  </a>
-                ) : (
-                  <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10095;</span>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    })()}
-
-    <style is:global>
-      .series-list-container {
-        display: grid;
-        grid-template-rows: 1fr;
-        transition: grid-template-rows 0.3s ease-out;
-      }
-      .series-list-container.collapsed {
-        grid-template-rows: 0fr;
-      }
-      .series-list-container > div {
-        overflow: hidden;
-      }
-      .series-title-link,
-      .series-title-link:hover,
-      .series-title-link:link,
-      .series-title-link:visited {
-        text-decoration: none !important;
-      }
-      .series-list-item,
-      .series-list-item:link,
-      .series-list-item:visited,
-      .series-list-item:hover {
-        text-decoration: none !important;
-      }
-      .series-nav .series-list-item {
-        color: var(--color-secondary);
-        transition: color 0.2s ease, background-color 0.2s ease;
-      }
-      .series-nav .series-list-item:hover {
-        color: var(--color-accent);
-        background-color: rgba(0, 0, 0, 0.03);
-      }
-      [data-theme="dark"] .series-nav .series-list-item:hover {
-        background-color: rgba(255, 255, 255, 0.05);
-      }
-      .series-list-item.current,
-      .series-list-item.current:hover {
-        color: var(--color-accent) !important;
-        background: transparent !important;
-        cursor: default;
-        pointer-events: none;
-      }
-      .series-nav-btn,
-      .series-nav-btn:hover,
-      .series-nav-btn:link,
-      .series-nav-btn:visited {
-        text-decoration: none !important;
-      }
-    </style>
-
-    <script>
-      /**
-       * @fileoverview Series Navigation Toggle with Event Delegation
-       *
-       * @description
-       * This component uses event delegation pattern to avoid duplicate event listeners
-       * when navigating between series posts with View Transitions.
-       *
-       * @rationale Event Delegation Pattern
-       *
-       * **Why Event Delegation?**
-       *
-       * 1. **Single Event Listener**
-       *    - Listener registered ONCE on document
-       *    - No re-attachment needed on page transitions
-       *    - Prevents duplicate listeners that cause double-toggle bug
-       *
-       * 2. **Works with Dynamic Content**
-       *    - Series content changes between posts
-       *    - Event delegation handles new elements automatically
-       *    - No need to track and remove old listeners
-       *
-       * 3. **View Transitions Compatible**
-       *    - Independent of astro:page-load lifecycle
-       *    - Persists across all navigations
-       *    - Consistent behavior on initial and subsequent loads
-       *
-       * @rationale Why Not astro:page-load?
-       * Using astro:page-load causes duplicate event listeners:
-       * - First load: initSeriesToggle() + addEventListener('astro:page-load')
-       * - Each navigation: Another initSeriesToggle() call
-       * - Result: Multiple listeners → toggle fires multiple times → appears broken
-       *
-       * @example Event Delegation Pattern
-       * ```javascript
-       * // Runs once, works forever
-       * document.addEventListener('click', (e) => {
-       *   const button = e.target.closest('#series-toggle');
-       *   if (button) {
-       *     // handle click
-       *   }
-       * });
-       * ```
-       *
-       * @see {@link https://docs.astro.build/en/guides/view-transitions/ Astro View Transitions}
-       * @see {@link https://events-3bg.pages.dev/jotter/astro/scripts/ Event Delegation Pattern}
-       */
-
-      // Event delegation - runs once, persists across all navigations
-      document.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        const toggleButton = target.closest('#series-toggle');
-
-        if (toggleButton) {
-          const list = document.getElementById('series-list');
-          const arrow = document.getElementById('toggle-arrow');
-
-          if (list && arrow) {
-            list.classList.toggle('collapsed');
-            arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
-          }
-        }
-      });
-    </script>
-
-    <Content />
-
-    {/* 이전/다음 글 네비게이션 */}
-    {(() => {
-      const filteredPosts = data.allPosts.filter((p: any) => !p.data.draft && (!p.data["dev-only"] || isDev));
-      const currentIndex = filteredPosts.findIndex((p: any) => p.id === data.post.id);
-      const prevPost = currentIndex > 0 ? filteredPosts[currentIndex - 1] : null;
-      const nextPost = currentIndex < filteredPosts.length - 1 ? filteredPosts[currentIndex + 1] : null;
-
-      return (
-        <PostNavigation
-          prevPost={prevPost}
-          nextPost={nextPost}
-          lang={lang}
-          getHref={(post) => getSeriesPostUrl(post.id, lang)}
-        />
-      );
-    })()}
-  </PostLayout>
-)}
+<BaseLayout title={`${series.data.title} | Series`} description={series.data.description} lang={lang}>
+  <div class="vertical-space"></div>
+  <div class="series-header">
+    <h1 class="series-title">{series.data.title}</h1>
+    <p class="series-description">{series.data.description}</p>
+  </div>
+  <hr class="divider" />
+  <PostList
+    posts={posts.filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))}
+    getHref={(post: any) => getPostUrl(post, lang)}
+  />
+</BaseLayout>
 
 <style>
   .vertical-space {

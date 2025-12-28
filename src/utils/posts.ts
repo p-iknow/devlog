@@ -26,13 +26,13 @@ export function getLangPath(lang: Locale): string {
 /**
  * 포스트 URL 생성
  * - posts 컬렉션: /{lang}/posts/{slug}
- * - seriesPosts 컬렉션: /{lang}/series/{id} (언어 접미사 제거)
+ * - seriesPosts 컬렉션: /{lang}/posts/{id} (언어 접미사 제거)
  */
 export function getPostUrl(post: AnyPost, lang: Locale): string {
   const langPath = getLangPath(lang);
 
   if (post.collection === "seriesPosts") {
-    return `${langPath}/series/${stripLangFromId(post.id)}`;
+    return `${langPath}/posts/${stripLangFromId(post.id)}`;
   }
 
   // posts 컬렉션
@@ -46,11 +46,12 @@ export function getPostUrl(post: AnyPost, lang: Locale): string {
 
 /**
  * 시리즈 포스트 URL 생성 (id 기반)
- * - /{lang}/series/{id} (언어 접미사 제거)
+ * - /{lang}/posts/{id} (언어 접미사 제거)
+ * @deprecated Use getPostUrl instead for unified URL handling
  */
 export function getSeriesPostUrl(postId: string, lang: Locale): string {
   const langPath = getLangPath(lang);
-  return `${langPath}/series/${stripLangFromId(postId)}`;
+  return `${langPath}/posts/${stripLangFromId(postId)}`;
 }
 
 /**
@@ -226,6 +227,22 @@ export async function getAllSeriesPostsWithLang(
       lang: getPostLang(post),
     }))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+}
+
+/**
+ * 특정 언어의 모든 포스트(posts + seriesPosts)를 날짜순으로 가져오기
+ */
+export async function getAllCombinedPostsByLang({
+  lang,
+}: {
+  lang: Locale;
+}): Promise<(PostWithLang | SeriesPostWithLang)[]> {
+  const posts = await getPostsByLang({ lang });
+  const seriesPosts = await getSeriesPostsByLang({ lang });
+
+  return [...posts, ...seriesPosts].sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+  );
 }
 
 /**

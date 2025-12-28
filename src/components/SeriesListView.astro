@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { type Locale, LOCALES, defaultLocale, LOCALE } from "@/config/locale";
-import { getSeriesPostUrl, getSeriesUrl, sortSeriesPosts } from "@/utils/posts";
+import { getPostUrl, getSeriesUrl, sortSeriesPosts } from "@/utils/posts";
 
 interface Props {
   lang: Locale;
@@ -109,7 +109,7 @@ const dateLocale = LOCALE[lang];
           <div class="series-timeline relative ml-6 pl-6">
             {seriesPosts.map((post, index) => (
               <a
-                href={getSeriesPostUrl(post.id, lang)}
+                href={getPostUrl(post, lang)}
                 class="group series-item relative mb-3 block no-underline last:mb-0"
               >
                 <span class="series-number absolute -left-6 top-1/2 -translate-y-1/2 flex h-5 w-5 items-center justify-center rounded-full bg-subtle text-xs font-medium transition-colors group-hover:bg-accent group-hover:text-white">

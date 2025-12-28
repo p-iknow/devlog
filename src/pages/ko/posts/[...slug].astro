@@ -1,27 +1,239 @@
 ---
-import { render } from "astro:content";
+import { getCollection, render } from "astro:content";
 import PostLayout from "@/layouts/PostLayout.astro";
 import { KoLocale } from "@/config/locale";
-import { getPostSlug } from "@/utils/posts";
+import { getPostSlug, getPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
 
 const lang = KoLocale;
+const isDev = import.meta.env.DEV;
 
 export async function getStaticPaths() {
-  const { getPostsByLang, getPostSlug } = await import("@/utils/posts");
+  const { getPostsByLang, getSeriesPostsByLang, getPostSlug } = await import("@/utils/posts");
   const { KoLocale } = await import("@/config/locale");
+  const { getCollection } = await import("astro:content");
 
+  const isDev = import.meta.env.DEV;
+
+  // Get regular posts
   const posts = await getPostsByLang({ lang: KoLocale });
-  return posts.map((post) => ({
+  const regularPaths = posts.map((post) => ({
     params: { slug: getPostSlug(post) },
-    props: { post },
+    props: { post, type: "post" as const },
   }));
+
+  // Get series posts
+  const seriesPosts = await getSeriesPostsByLang({ lang: KoLocale });
+
+  // Get series metadata
+  const seriesCollection = await getCollection("series", (s) => {
+    const postLang = s.data.lang;
+    return postLang === "ko" || (!postLang);
+  });
+
+  // Group series posts by series
+  const seriesPostsMap = new Map<string, typeof seriesPosts>();
+  seriesPosts.forEach((post) => {
+    const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
+    const posts = seriesPostsMap.get(seriesSlug) || [];
+    posts.push(post);
+    seriesPostsMap.set(seriesSlug, posts);
+  });
+
+  const seriesPaths = seriesPosts.map((post) => {
+    const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
+    const series = seriesCollection.find((s) => s.id.replace(/\/_index.*$/, "") === seriesSlug);
+    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort((a, b) => {
+      const orderA = a.data.part ?? ((): number => {
+        const filename = a.id.split("/").pop() || "";
+        const match = filename.match(/^(\d+)-/);
+        return match ? parseInt(match[1], 10) : 999;
+      })();
+      const orderB = b.data.part ?? ((): number => {
+        const filename = b.id.split("/").pop() || "";
+        const match = filename.match(/^(\d+)-/);
+        return match ? parseInt(match[1], 10) : 999;
+      })();
+      return orderA - orderB;
+    });
+
+    return {
+      params: { slug: post.id.replace(/\.(en|ko)$/, "") },
+      props: {
+        post,
+        type: "seriesPost" as const,
+        series,
+        allPosts,
+      },
+    };
+  });
+
+  return [...regularPaths, ...seriesPaths];
 }
 
-const { post } = Astro.props;
+const { post, type, series, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
-const slug = getPostSlug(post);
+
+// For regular posts, use slug; for series posts, use id (without lang suffix)
+const currentSlug = type === "post" ? getPostSlug(post) : stripLangFromId(post.id);
 ---
 
-<PostLayout {...post.data} headings={headings} currentSlug={slug} lang={lang}>
+<PostLayout {...post.data} headings={headings} currentSlug={currentSlug} lang={lang}>
+  {/* Series navigation for series posts */}
+  {type === "seriesPost" && (() => {
+    const filteredPosts = allPosts.filter((p: any) => !p.data.draft && (!p.data["dev-only"] || isDev));
+    const currentIndex = filteredPosts.findIndex((p: any) => p.id === post.id);
+    const totalPosts = filteredPosts.length;
+    const prevPost = currentIndex > 0 ? filteredPosts[currentIndex - 1] : null;
+    const nextPost = currentIndex < totalPosts - 1 ? filteredPosts[currentIndex + 1] : null;
+
+    return (
+      <div class="series-nav relative mb-8 rounded-lg bg-background">
+        {/* Bookmark icon */}
+        <div class="absolute right-4 top-0">
+          <svg width="24" height="36" fill="currentColor" viewBox="0 0 32 48" class="text-accent">
+            <path fill="currentColor" d="M32 0H0v48h.163l16-16L32 47.836V0z"></path>
+          </svg>
+        </div>
+
+        {/* Series title */}
+        <div class="p-4 pb-0 pr-12">
+          <a
+            href={getSeriesUrl(stripLangFromId(post.id).split("/")[0], lang)}
+            class="series-title-link text-lg font-bold text-default hover:text-accent transition-colors"
+          >
+            {series?.data.title}
+          </a>
+        </div>
+
+        {/* Collapsible list */}
+        <div id="series-list" class="series-list-container">
+          <div class="max-h-64 overflow-y-auto px-4 py-2">
+            {filteredPosts.map((p: any, i: number) => (
+              <a
+                href={getPostUrl(p, lang)}
+                class={`series-list-item block rounded px-3 py-2 text-sm transition-colors ${
+                  p.id === post.id
+                    ? "current bg-accent/10 text-accent font-medium"
+                    : "text-default hover:bg-subtle/30 hover:text-accent"
+                }`}
+              >
+                {i + 1}. {p.data.title}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Bottom controls */}
+        <div class="flex items-center justify-between px-4 py-3">
+          {/* Toggle button */}
+          <button
+            id="series-toggle"
+            class="flex items-center gap-1 text-sm text-muted hover:text-default transition-colors"
+            type="button"
+          >
+            <span id="toggle-arrow" class="inline-block transition-transform duration-200" style="transform: rotate(180deg)">&#9660;</span>
+            <span>목록 보기</span>
+          </button>
+
+          {/* Pagination */}
+          <div class="flex items-center gap-3">
+            <span class="text-sm text-muted">{currentIndex + 1}/{totalPosts}</span>
+            <div class="flex items-center gap-1">
+              {prevPost ? (
+                <a
+                  href={getPostUrl(prevPost, lang)}
+                  class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
+                  aria-label="이전 글"
+                >
+                  &#10094;
+                </a>
+              ) : (
+                <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10094;</span>
+              )}
+              {nextPost ? (
+                <a
+                  href={getPostUrl(nextPost, lang)}
+                  class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
+                  aria-label="다음 글"
+                >
+                  &#10095;
+                </a>
+              ) : (
+                <span class="flex h-7 w-7 items-center justify-center text-subtle">&#10095;</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  })()}
+
+  <style is:global>
+    .series-list-container {
+      display: grid;
+      grid-template-rows: 1fr;
+      transition: grid-template-rows 0.3s ease-out;
+    }
+    .series-list-container.collapsed {
+      grid-template-rows: 0fr;
+    }
+    .series-list-container > div {
+      overflow: hidden;
+    }
+    .series-title-link,
+    .series-title-link:hover,
+    .series-title-link:link,
+    .series-title-link:visited {
+      text-decoration: none !important;
+    }
+    .series-list-item,
+    .series-list-item:link,
+    .series-list-item:visited,
+    .series-list-item:hover {
+      text-decoration: none !important;
+    }
+    .series-list-item {
+      color: var(--color-secondary) !important;
+    }
+    .series-list-item:hover {
+      color: var(--color-accent) !important;
+      background-color: rgba(0, 0, 0, 0.03) !important;
+    }
+    [data-theme="dark"] .series-list-item:hover {
+      background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+    .series-list-item.current,
+    .series-list-item.current:hover {
+      color: var(--color-accent) !important;
+      background: transparent !important;
+      cursor: default;
+      pointer-events: none;
+    }
+    .series-nav-btn,
+    .series-nav-btn:hover,
+    .series-nav-btn:link,
+    .series-nav-btn:visited {
+      text-decoration: none !important;
+    }
+  </style>
+
+  <script>
+    // Event delegation - runs once, persists across all navigations
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const toggleButton = target.closest('#series-toggle');
+
+      if (toggleButton) {
+        const list = document.getElementById('series-list');
+        const arrow = document.getElementById('toggle-arrow');
+
+        if (list && arrow) {
+          list.classList.toggle('collapsed');
+          arrow.style.transform = list.classList.contains('collapsed') ? '' : 'rotate(180deg)';
+        }
+      }
+    });
+  </script>
+
   <Content />
 </PostLayout>
