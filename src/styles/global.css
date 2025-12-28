@@ -13,7 +13,6 @@
 
 /* Internal Module Imports */
 @import "./modules/theme.css";
-@import "./modules/dark-mode.css";
 @import "./modules/base.css";
 @import "./modules/prose.css";
 @import "./modules/callouts.css";
