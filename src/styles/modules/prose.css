@@ -411,7 +411,6 @@
 
 .prose a:hover {
   color: var(--color-accent-hover);
-  font-weight: 600;
   text-decoration: underline;
 }
 
