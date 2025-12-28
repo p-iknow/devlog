@@ -1,80 +1,100 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
 import PostLayout from "@/layouts/PostLayout.astro";
-import { KoLocale } from "@/config/locale";
-import { getPostSlug, getPostUrl, getSeriesUrl, stripLangFromId, extractOrderFromFilename } from "@/utils/posts";
+import type { Locale } from "@/config/locale";
+import { getPostSlug, getPostUrl, getSeriesUrl, stripLangFromId } from "@/utils/posts";
 
-const lang = KoLocale;
 const isDev = import.meta.env.DEV;
 
 export async function getStaticPaths() {
   const { getPostsByLang, getSeriesPostsByLang, getPostSlug } = await import("@/utils/posts");
-  const { KoLocale } = await import("@/config/locale");
+  const { LOCALES } = await import("@/config/locale");
   const { getCollection } = await import("astro:content");
 
-  const isDev = import.meta.env.DEV;
+  const paths = [];
 
-  // Get regular posts
-  const posts = await getPostsByLang({ lang: KoLocale });
-  const regularPaths = posts.map((post) => ({
-    params: { slug: getPostSlug(post) },
-    props: { post, type: "post" as const },
-  }));
+  for (const lang of LOCALES) {
+    // Get regular posts
+    const posts = await getPostsByLang({ lang });
+    const regularPaths = posts.map((post) => ({
+      params: { lang, slug: getPostSlug(post) },
+      props: { post, type: "post" as const },
+    }));
 
-  // Get series posts
-  const seriesPosts = await getSeriesPostsByLang({ lang: KoLocale });
+    // Get series posts
+    const seriesPosts = await getSeriesPostsByLang({ lang });
 
-  // Get series metadata
-  const seriesCollection = await getCollection("series", (s) => {
-    const postLang = s.data.lang;
-    return postLang === "ko" || (!postLang);
-  });
-
-  // Group series posts by series
-  const seriesPostsMap = new Map<string, typeof seriesPosts>();
-  seriesPosts.forEach((post) => {
-    const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
-    const posts = seriesPostsMap.get(seriesSlug) || [];
-    posts.push(post);
-    seriesPostsMap.set(seriesSlug, posts);
-  });
-
-  const seriesPaths = seriesPosts.map((post) => {
-    const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
-    const series = seriesCollection.find((s) => s.id.replace(/\/_index.*$/, "") === seriesSlug);
-    const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort((a, b) => {
-      const orderA = a.data.part ?? ((): number => {
-        const filename = a.id.split("/").pop() || "";
-        const match = filename.match(/^(\d+)-/);
-        return match ? parseInt(match[1], 10) : 999;
-      })();
-      const orderB = b.data.part ?? ((): number => {
-        const filename = b.id.split("/").pop() || "";
-        const match = filename.match(/^(\d+)-/);
-        return match ? parseInt(match[1], 10) : 999;
-      })();
-      return orderA - orderB;
+    // Get series metadata
+    const seriesCollection = await getCollection("series", (s) => {
+      const postLang = s.data.lang;
+      return postLang === lang || (!postLang && lang === "en");
     });
 
-    return {
-      params: { slug: post.id.replace(/\.(en|ko)$/, "") },
-      props: {
-        post,
-        type: "seriesPost" as const,
-        series,
-        allPosts,
-      },
-    };
-  });
+    // Group series posts by series
+    const seriesPostsMap = new Map<string, typeof seriesPosts>();
+    seriesPosts.forEach((post) => {
+      const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
+      const posts = seriesPostsMap.get(seriesSlug) || [];
+      posts.push(post);
+      seriesPostsMap.set(seriesSlug, posts);
+    });
 
-  return [...regularPaths, ...seriesPaths];
+    const seriesPaths = seriesPosts.map((post) => {
+      const seriesSlug = post.id.replace(/\.(en|ko)$/, "").split("/")[0];
+      const series = seriesCollection.find((s) => s.id.replace(/\/_index.*$/, "") === seriesSlug);
+      const allPosts = (seriesPostsMap.get(seriesSlug) || []).sort((a, b) => {
+        const orderA = a.data.part ?? ((): number => {
+          const filename = a.id.split("/").pop() || "";
+          const match = filename.match(/^(\d+)-/);
+          return match ? parseInt(match[1], 10) : 999;
+        })();
+        const orderB = b.data.part ?? ((): number => {
+          const filename = b.id.split("/").pop() || "";
+          const match = filename.match(/^(\d+)-/);
+          return match ? parseInt(match[1], 10) : 999;
+        })();
+        return orderA - orderB;
+      });
+
+      return {
+        params: { lang, slug: post.id.replace(/\.(en|ko)$/, "") },
+        props: {
+          post,
+          type: "seriesPost" as const,
+          series,
+          allPosts,
+        },
+      };
+    });
+
+    paths.push(...regularPaths, ...seriesPaths);
+  }
+
+  return paths;
 }
 
+const { lang } = Astro.params as { lang: Locale };
 const { post, type, series, allPosts } = Astro.props;
 const { Content, headings } = await render(post);
 
 // For regular posts, use slug; for series posts, use id (without lang suffix)
 const currentSlug = type === "post" ? getPostSlug(post) : stripLangFromId(post.id);
+
+// i18n texts
+const i18n = {
+  ko: {
+    showList: "목록 보기",
+    previousPost: "이전 글",
+    nextPost: "다음 글",
+  },
+  en: {
+    showList: "Show list",
+    previousPost: "Previous post",
+    nextPost: "Next post",
+  },
+} as const;
+
+const t = i18n[lang];
 ---
 
 <PostLayout {...post.data} headings={headings} currentSlug={currentSlug} lang={lang}>
@@ -132,7 +152,7 @@ const currentSlug = type === "post" ? getPostSlug(post) : stripLangFromId(post.i
             type="button"
           >
             <span id="toggle-arrow" class="inline-block transition-transform duration-200" style="transform: rotate(180deg)">&#9660;</span>
-            <span>목록 보기</span>
+            <span>{t.showList}</span>
           </button>
 
           {/* Pagination */}
@@ -143,7 +163,7 @@ const currentSlug = type === "post" ? getPostSlug(post) : stripLangFromId(post.i
                 <a
                   href={getPostUrl(prevPost, lang)}
                   class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                  aria-label="이전 글"
+                  aria-label={t.previousPost}
                 >
                   &#10094;
                 </a>
@@ -154,7 +174,7 @@ const currentSlug = type === "post" ? getPostSlug(post) : stripLangFromId(post.i
                 <a
                   href={getPostUrl(nextPost, lang)}
                   class="series-nav-btn flex h-7 w-7 items-center justify-center rounded text-muted hover:bg-subtle/50 hover:text-default transition-colors"
-                  aria-label="다음 글"
+                  aria-label={t.nextPost}
                 >
                   &#10095;
                 </a>

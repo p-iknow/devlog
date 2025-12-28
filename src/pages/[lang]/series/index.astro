@@ -1,0 +1,30 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import SeriesListView from "@/components/SeriesListView.astro";
+import { LOCALES, type Locale } from "@/config/locale";
+
+export async function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+
+const i18n = {
+  ko: {
+    title: "시리즈",
+    description: "시리즈별 포스트 모아보기",
+  },
+  en: {
+    title: "Series",
+    description: "Browse posts by series",
+  },
+} as const;
+
+const t = i18n[lang];
+---
+
+<BaseLayout title={t.title} description={t.description} lang={lang}>
+  <SeriesListView lang={lang} />
+</BaseLayout>

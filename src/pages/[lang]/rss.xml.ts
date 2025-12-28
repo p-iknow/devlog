@@ -2,10 +2,16 @@ import rss from "@astrojs/rss";
 import { siteConfig } from "@/config/site";
 import type { APIContext } from "astro";
 import { getPostsByLang, getSeriesPostsByLang, getPostUrl } from "@/utils/posts";
-import { KoLocale } from "@/config/locale";
+import { LOCALES, type Locale } from "@/config/locale";
+
+export async function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
 
 export async function GET(context: APIContext) {
-  const lang = KoLocale;
+  const lang = context.params.lang as Locale;
   const posts = await getPostsByLang({ lang });
   const seriesPosts = await getSeriesPostsByLang({ lang });
   const allPosts = [...posts, ...seriesPosts].sort(

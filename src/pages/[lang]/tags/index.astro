@@ -1,28 +1,63 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { KoLocale } from "@/config/locale";
-import { getPostsByLang, getSeriesPostsByLang } from "@/utils/posts";
+import type { Locale } from "@/config/locale";
 
-const lang = KoLocale;
+export async function getStaticPaths() {
+  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
+  const { LOCALES } = await import("@/config/locale");
 
-const posts = await getPostsByLang({ lang });
-const seriesPosts = await getSeriesPostsByLang({ lang });
+  const paths = [];
 
-// 태그별 포스트 수 계산 (posts + seriesPosts)
-const tagMap = new Map<string, number>();
-[...posts, ...seriesPosts].forEach((post) => {
-  post.data.tags?.forEach((tag) => {
-    tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
-  });
-});
+  for (const lang of LOCALES) {
+    const posts = await getPostsByLang({ lang });
+    const seriesPosts = await getSeriesPostsByLang({ lang });
 
-const tags = Array.from(tagMap.entries())
-  .sort((a, b) => b[1] - a[1])
-  .map(([name, count]) => ({ name, count }));
+    // 태그별 포스트 수 계산 (posts + seriesPosts)
+    const tagMap = new Map<string, number>();
+    [...posts, ...seriesPosts].forEach((post) => {
+      post.data.tags?.forEach((tag) => {
+        tagMap.set(tag, (tagMap.get(tag) || 0) + 1);
+      });
+    });
+
+    const tags = Array.from(tagMap.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, count]) => ({ name, count }));
+
+    const totalPosts = posts.length + seriesPosts.length;
+
+    paths.push({
+      params: { lang },
+      props: { tags, totalPosts },
+    });
+  }
+
+  return paths;
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const { tags, totalPosts } = Astro.props;
+
+const i18n = {
+  ko: {
+    title: "태그",
+    description: "태그별 글 보기",
+    summary: (tagsCount: number, postsCount: number) =>
+      `${tagsCount}개의 태그, ${postsCount}개의 글`,
+  },
+  en: {
+    title: "Tags",
+    description: "Browse posts by tag",
+    summary: (tagsCount: number, postsCount: number) =>
+      `${tagsCount} tags across ${postsCount} posts`,
+  },
+} as const;
+
+const t = i18n[lang];
 
 // 태그 크기 계산을 위한 최대/최소값
-const maxCount = Math.max(...tags.map(t => t.count));
-const minCount = Math.min(...tags.map(t => t.count));
+const maxCount = Math.max(...tags.map((t: any) => t.count));
+const minCount = Math.min(...tags.map((t: any) => t.count));
 
 // 태그 크기 레벨 계산 (1-5)
 const getTagLevel = (count: number) => {
@@ -31,26 +66,25 @@ const getTagLevel = (count: number) => {
   const normalized = (count - minCount) / range;
   return Math.ceil(normalized * 4) + 1; // 1-5
 };
-
-const totalPosts = posts.length + seriesPosts.length;
 ---
 
-<BaseLayout title="태그" description="태그별 글 보기" lang={lang}>
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <div class="tags-page">
     <header class="tags-header">
-      <h1 class="mb-8 text-3xl font-bold">태그</h1>
+      <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
       <p class="tags-summary">
-        <span class="text-accent-highlight">{tags.length}</span>개의 태그,
-        <span class="text-accent-highlight">{totalPosts}</span>개의 글
+        {t.summary(tags.length, totalPosts).split(/(\d+)/).map((part: string) =>
+          /^\d+$/.test(part) ? <span class="text-accent-highlight">{part}</span> : part
+        )}
       </p>
     </header>
 
     <div class="tags-cloud">
-      {tags.map(({ name, count }, index) => {
+      {tags.map(({ name, count }: any, index: number) => {
         const level = getTagLevel(count);
         return (
           <a
-            href={`/ko/tags/${name.toLowerCase()}`}
+            href={`/${lang}/tags/${name.toLowerCase()}`}
             class={`tag-item tag-level-${level}`}
             style={`--delay: ${index * 0.02}s`}
           >

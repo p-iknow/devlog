@@ -2,8 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
 import Bio from "@/components/Bio.astro";
-import { KoLocale } from "@/config/locale";
-import type { CollectionEntry } from "astro:content";
+import { LOCALES, type Locale } from "@/config/locale";
 import {
   getPostsByLang,
   getSeriesPostsByLang,
@@ -15,15 +14,21 @@ import {
   type PostEntry,
 } from "@/utils/posts";
 
-const lang = KoLocale;
+export async function getStaticPaths() {
+  return LOCALES.map((lang) => ({
+    params: { lang },
+  }));
+}
 
-// 한국어 포스트
+const { lang } = Astro.params as { lang: Locale };
+
+// 포스트
 const posts = await getPostsByLang({
   lang,
   filter: filterPosts,
 });
 
-// 한국어 시리즈 포스트
+// 시리즈 포스트
 const seriesPosts = await getSeriesPostsByLang({
   lang,
   filter: filterSeriesPosts,

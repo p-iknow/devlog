@@ -1,22 +1,58 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { format } from "date-fns";
-import { EnLocale } from "@/config/locale";
-import { getPostsByLang, getSeriesPostsByLang, getPostUrl, type PostWithLang, type SeriesPostWithLang } from "@/utils/posts";
-
-const lang = EnLocale;
+import type { Locale } from "@/config/locale";
+import { getPostUrl, type PostWithLang, type SeriesPostWithLang } from "@/utils/posts";
 
 type PostEntry = PostWithLang | SeriesPostWithLang;
 
-const posts = await getPostsByLang({ lang });
-const seriesPosts = await getSeriesPostsByLang({ lang });
+export async function getStaticPaths() {
+  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
+  const { LOCALES } = await import("@/config/locale");
 
-// 두 컬렉션을 합쳐서 날짜순 정렬
-const allPosts: PostEntry[] = [...posts, ...seriesPosts]
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const paths = [];
+
+  for (const lang of LOCALES) {
+    const posts = await getPostsByLang({ lang });
+    const seriesPosts = await getSeriesPostsByLang({ lang });
+
+    // 두 컬렉션을 합쳐서 날짜순 정렬
+    const allPosts: PostEntry[] = [...posts, ...seriesPosts]
+      .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+    paths.push({
+      params: { lang },
+      props: { allPosts },
+    });
+  }
+
+  return paths;
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const { allPosts } = Astro.props;
+
+const i18n = {
+  ko: {
+    title: "검색",
+    description: "글 검색",
+    postsCount: (count: number) => `${count}개의 글`,
+    placeholder: "제목이나 내용으로 검색...",
+    noResults: "검색 결과가 없습니다.",
+  },
+  en: {
+    title: "Search",
+    description: "Search posts",
+    postsCount: (count: number) => `${count} posts`,
+    placeholder: "Search posts by title or content...",
+    noResults: "No posts found matching your search.",
+  },
+} as const;
+
+const t = i18n[lang];
 
 // Prepare posts data for client-side search
-const searchablePosts = allPosts.map((post) => ({
+const searchablePosts = allPosts.map((post: any) => ({
   id: post.id,
   collection: post.collection,
   title: post.data.title,
@@ -29,12 +65,12 @@ const searchablePosts = allPosts.map((post) => ({
 const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
 ---
 
-<BaseLayout title="Search" description="Search posts" lang={lang}>
+<BaseLayout title={t.title} description={t.description} lang={lang}>
   <div class="search-container">
     <div class="search-header">
-      <h1 class="mb-8 text-3xl font-bold">Search</h1>
+      <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
       <p class="search-count">
-        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span> posts
+        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span> {t.postsCount(searchablePosts.length).replace(/^\d+\s*/, "")}
       </p>
     </div>
 
@@ -45,13 +81,13 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
       <input
         type="text"
         id="search-input"
-        placeholder="Search posts by title or content..."
+        placeholder={t.placeholder}
         autocomplete="off"
       />
     </div>
 
     <div id="search-results" class="post-list">
-      {allPosts.map((post, index) => {
+      {allPosts.map((post: any, index: number) => {
         const { title, description, date, tags = [] } = post.data;
         const formattedDate = format(date, "yyyy-MM-dd");
         const isLast = index === allPosts.length - 1;
@@ -64,8 +100,8 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
               <p class="post-excerpt">{description}</p>
               {tags.length > 0 && (
                 <div class="post-tags">
-                  {tags.map((tag) => (
-                    <a href={`/tags/${tag}`} class="post-tag">
+                  {tags.map((tag: string) => (
+                    <a href={`/${lang}/tags/${tag}`} class="post-tag">
                       <span class="post-tag-hash">#</span>{spaceToDash(tag)}
                     </a>
                   ))}
@@ -79,7 +115,7 @@ const spaceToDash = (text: string) => text.replace(/\s+/g, '-');
     </div>
 
     <div id="no-results" class="no-results" style="display: none;">
-      No posts found matching your search.
+      {t.noResults}
     </div>
   </div>
 </BaseLayout>
