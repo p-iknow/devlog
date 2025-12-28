@@ -1,20 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { KoLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
+import PostList from "@/components/PostList.astro";
+import { KoLocale } from "@/config/locale";
 import { getPostUrl, extractOrderFromFilename } from "@/utils/posts";
 
 const lang = KoLocale;
 const isDev = import.meta.env.DEV;
-
-// Helper function to extract lang from post
-const getPostLang = (post: { data: { lang?: string } }): Locale => {
-  const postLang = post.data.lang;
-  if (postLang && LOCALES.includes(postLang as Locale)) {
-    return postLang as Locale;
-  }
-  return defaultLocale;
-};
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -82,41 +74,73 @@ const { series, posts } = Astro.props;
 ---
 
 <BaseLayout title={`${series.data.title} | 시리즈`} description={series.data.description} lang={lang}>
-  <div class="mb-8">
-    <a
-      href="/ko/series"
-      class="mb-4 inline-block text-sm text-muted hover:text-primary"
-    >
-      &larr; 전체 시리즈
-    </a>
-    <h1 class="text-3xl font-bold">{series.data.title}</h1>
-    <p class="mt-2 text-muted">{series.data.description}</p>
-    <p class="mt-2 text-sm text-muted">{posts.length}편의 글</p>
+  <div class="vertical-space"></div>
+  <a href="/ko/series" class="back-link">
+    &larr; 전체 시리즈
+  </a>
+  <div class="series-header">
+    <h1 class="series-title">{series.data.title}</h1>
+    <p class="series-description">{series.data.description}</p>
+    <p class="series-count"><strong class="count-number">{posts.length}</strong>편의 글</p>
   </div>
-
-  <div class="space-y-4">
-    {posts
-      .filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))
-      .map((post: any, index: number) => (
-        <a
-          href={getPostUrl(post, lang)}
-          class="group block rounded-lg border border-subtle p-4 transition-colors hover:border-accent hover:bg-background"
-        >
-          <div class="flex items-start gap-4">
-            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/10 text-sm font-bold text-accent">
-              {index + 1}
-            </span>
-            <div>
-              <h2 class="font-semibold transition-colors group-hover:text-accent">
-                {post.data.part ? `${post.data.part}. ${post.data.title}` : post.data.title}
-              </h2>
-              <p class="mt-1 text-sm text-muted">{post.data.description}</p>
-              <p class="mt-2 text-xs text-muted">
-                {post.data.date.toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" })}
-              </p>
-            </div>
-          </div>
-        </a>
-      ))}
-  </div>
+  <hr class="divider" />
+  <PostList
+    posts={posts.filter((post: any) => !post.data.draft && (!post.data["dev-only"] || isDev))}
+    getHref={(post: any) => getPostUrl(post, lang)}
+  />
 </BaseLayout>
+
+<style>
+  .vertical-space {
+    height: 32px;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
+  }
+
+  .series-header {
+    margin-bottom: 0;
+  }
+
+  .series-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--color-default);
+  }
+
+  .series-description {
+    margin-top: 8px;
+    margin-bottom: 0;
+    color: var(--color-muted);
+    font-size: 1rem;
+  }
+
+  .series-count {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .count-number {
+    color: var(--color-accent);
+  }
+
+  .divider {
+    margin-top: 32px;
+    margin-bottom: 28px;
+    border: none;
+    border-bottom: 1px solid var(--color-divider);
+  }
+</style>

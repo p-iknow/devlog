@@ -2,20 +2,11 @@
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
-import { EnLocale, type Locale, LOCALES, defaultLocale } from "@/config/locale";
+import { EnLocale } from "@/config/locale";
 import { getPostUrl, extractOrderFromFilename } from "@/utils/posts";
 
 const lang = EnLocale;
 const isDev = import.meta.env.DEV;
-
-// Helper function to extract lang from post
-const getPostLang = (post: { data: { lang?: string } }): Locale => {
-  const postLang = post.data.lang;
-  if (postLang && LOCALES.includes(postLang as Locale)) {
-    return postLang as Locale;
-  }
-  return defaultLocale;
-};
 
 export async function getStaticPaths() {
   const isDev = import.meta.env.DEV;
@@ -84,9 +75,13 @@ const { series, posts } = Astro.props;
 
 <BaseLayout title={`${series.data.title} | Series`} description={series.data.description} lang={lang}>
   <div class="vertical-space"></div>
+  <a href="/en/series" class="back-link">
+    &larr; All Series
+  </a>
   <div class="series-header">
     <h1 class="series-title">{series.data.title}</h1>
     <p class="series-description">{series.data.description}</p>
+    <p class="series-count"><strong class="count-number">{posts.length}</strong> posts</p>
   </div>
   <hr class="divider" />
   <PostList
@@ -98,6 +93,19 @@ const { series, posts } = Astro.props;
 <style>
   .vertical-space {
     height: 32px;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 16px;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--color-accent);
   }
 
   .series-header {
@@ -116,6 +124,17 @@ const { series, posts } = Astro.props;
     margin-bottom: 0;
     color: var(--color-muted);
     font-size: 1rem;
+  }
+
+  .series-count {
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    color: var(--color-muted);
+  }
+
+  .count-number {
+    color: var(--color-accent);
   }
 
   .divider {
