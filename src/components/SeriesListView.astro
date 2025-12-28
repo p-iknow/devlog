@@ -81,9 +81,9 @@ const t = texts[lang];
 const dateLocale = LOCALE[lang];
 ---
 
-<div class="series-header">
+<div class="mb-8">
   <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
-  <p class="series-summary">
+  <p class="text-[15px] text-muted -mt-6">
     <span class="text-accent-highlight">{series.length}</span>
     {lang === "en" ? " series across " : "개 시리즈, "}
     <span class="text-accent-highlight">{totalPosts}</span>
@@ -139,16 +139,6 @@ const dateLocale = LOCALE[lang];
 }
 
 <style is:global>
-  .series-header {
-    margin-bottom: 32px;
-  }
-
-  .series-summary {
-    font-size: 15px;
-    color: var(--color-muted);
-    margin-top: -24px;
-  }
-
   .series-item,
   .series-item:hover,
   .series-title {

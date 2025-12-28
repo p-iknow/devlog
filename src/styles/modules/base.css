@@ -13,21 +13,6 @@ body {
   line-height: 1.7;
 }
 
-/* 링크 스타일 */
-a {
-  color: var(--color-default);
-  text-decoration: none;
-  transition: all 0.15s ease;
-}
-
-a:visited {
-  color: inherit;
-}
-
-a:hover {
-  text-decoration: none;
-}
-
 /* 선택 스타일 */
 ::selection {
   background-color: var(--color-accent);

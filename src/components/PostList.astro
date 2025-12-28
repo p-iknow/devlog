@@ -33,17 +33,17 @@ const getSeriesSlug = (post: PostEntry) => {
 const author = "@p-iknow";
 ---
 
-<div class="post-list">
+<div>
   {posts.map((post ) => {
     const { title, description, date, tags = [] } = post.data;
     const formattedDate = format(date, "yyyy-MM-dd");
     const seriesSlug = getSeriesSlug(post);
 
     return (
-      <div class="post-item" data-post-id={post.id} data-collection={post.collection}>
+      <div class="mb-12" data-post-id={post.id} data-collection={post.collection}>
         {seriesSlug && (
-          <div class="series-badge-wrapper">
-            <a href={`/series/${seriesSlug}`} class="series-badge">
+          <div class="mb-[6px]">
+            <a href={`/series/${seriesSlug}`} class="inline-flex items-center gap-[6px] px-2 py-[2px] text-xs font-medium text-tag-text bg-tag-bg rounded no-underline transition-colors duration-200 hover:bg-accent-bg hover:no-underline">
               <span>🗂️</span><span>{seriesSlug}</span>
             </a>
           </div>
@@ -51,8 +51,8 @@ const author = "@p-iknow";
         <a href={resolveHref(post)} class="link-title post-title">
           {seriesSlug && 'part' in post.data && post.data.part ? `${post.data.part}. ${title}` : title}
         </a>
-        <p class="post-excerpt">{description}</p>
-        <span class="post-date">{formattedDate} · {author}</span>
+        <p class="mt-[6px] mb-0">{description}</p>
+        <span class="block text-[0.8125rem] text-muted mt-[10px] mb-3">{formattedDate} · {author}</span>
         {tags.length > 0 && (
           <div class="post-tags">
             {tags.map((tag) => (
@@ -66,46 +66,3 @@ const author = "@p-iknow";
     );
   })}
 </div>
-
-<style>
-  .post-item {
-    margin-bottom: 48px;
-  }
-
-  .series-badge-wrapper {
-    margin-bottom: 6px;
-  }
-
-  .post-excerpt {
-    margin-top: 6px;
-    margin-bottom: 0;
-  }
-
-  .post-date {
-    display: block;
-    font-size: 0.8125rem;
-    color: var(--color-muted);
-    margin-top: 10px;
-    margin-bottom: 12px;
-  }
-
-  .series-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 8px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-tag-text);
-    background-color: var(--color-tag-bg);
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background-color 0.2s;
-  }
-
-  .series-badge:hover {
-    background-color: var(--color-accent-bg);
-    text-decoration: none;
-  }
-
-</style>

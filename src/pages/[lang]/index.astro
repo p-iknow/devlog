@@ -48,22 +48,9 @@ const getHref = (post: PostEntry) => getPostUrl(post, lang);
 ---
 
 <BaseLayout lang={lang}>
-  <div class="vertical-space"></div>
+  <div class="h-8"></div>
   <Bio />
-  <hr class="divider" />
+  <hr class="mt-8 mb-7 border-0 border-b border-divider" />
 
   <PostList posts={sortedPosts} getHref={getHref} />
 </BaseLayout>
-
-<style>
-  .vertical-space {
-    height: 32px;
-  }
-
-  .divider {
-    margin-top: 32px;
-    margin-bottom: 28px;
-    border: none;
-    border-bottom: 1px solid var(--color-divider);
-  }
-</style>

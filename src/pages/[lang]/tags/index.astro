@@ -69,17 +69,17 @@ const getTagLevel = (count: number) => {
 ---
 
 <BaseLayout title={t.title} description={t.description} lang={lang}>
-  <div class="tags-page">
-    <header class="tags-header">
+  <div class="p-0">
+    <header class="mb-8">
       <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
-      <p class="tags-summary">
+      <p class="text-[15px] text-muted -mt-6">
         {t.summary(tags.length, totalPosts).split(/(\d+)/).map((part: string) =>
           /^\d+$/.test(part) ? <span class="text-accent-highlight">{part}</span> : part
         )}
       </p>
     </header>
 
-    <div class="tags-cloud">
+    <div class="flex flex-wrap gap-3">
       {tags.map(({ name, count }: any, index: number) => {
         const level = getTagLevel(count);
         return (
@@ -98,26 +98,6 @@ const getTagLevel = (count: number) => {
 </BaseLayout>
 
 <style>
-  .tags-page {
-    padding: 0;
-  }
-
-  .tags-header {
-    margin-bottom: 32px;
-  }
-
-  .tags-summary {
-    font-size: 15px;
-    color: var(--color-muted);
-    margin-top: -24px;
-  }
-
-  .tags-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
   .tag-item {
     display: inline-flex;
     align-items: center;

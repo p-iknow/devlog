@@ -18,63 +18,17 @@ const navLabels = {
 const labels = navLabels[lang];
 ---
 
-<nav class="post-navigation">
+<nav class="grid grid-cols-2 gap-4 mt-12 max-w-[776px]">
   {prevPost ? (
-    <a href={getHref(prevPost)} class="nav-link nav-prev">
-      <span class="nav-label">{labels.prev}</span>
-      <span class="nav-title">{prevPost.data.title}</span>
+    <a href={getHref(prevPost)} class="flex flex-col gap-2 p-5 border border-accent rounded-lg no-underline transition-all duration-200 hover:bg-accent-bg col-start-1">
+      <span class="text-sm text-muted">{labels.prev}</span>
+      <span class="text-base font-medium text-accent leading-[1.4]">{prevPost.data.title}</span>
     </a>
   ) : <div />}
   {nextPost ? (
-    <a href={getHref(nextPost)} class="nav-link nav-next">
-      <span class="nav-label">{labels.next}</span>
-      <span class="nav-title">{nextPost.data.title}</span>
+    <a href={getHref(nextPost)} class="flex flex-col gap-2 p-5 border border-accent rounded-lg no-underline transition-all duration-200 hover:bg-accent-bg col-start-2 text-right">
+      <span class="text-sm text-muted">{labels.next}</span>
+      <span class="text-base font-medium text-accent leading-[1.4]">{nextPost.data.title}</span>
     </a>
   ) : <div />}
 </nav>
-
-<style>
-  .post-navigation {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 48px;
-    max-width: 776px;
-  }
-
-  .nav-link {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 20px;
-    border: 1px solid var(--color-accent);
-    border-radius: 8px;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .nav-link:hover {
-    background-color: var(--color-accent-bg);
-  }
-
-  .nav-prev {
-    grid-column: 1;
-  }
-
-  .nav-next {
-    grid-column: 2;
-    text-align: right;
-  }
-
-  .nav-label {
-    font-size: 14px;
-    color: var(--color-muted);
-  }
-
-  .nav-title {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--color-accent);
-    line-height: 1.4;
-  }
-</style>
