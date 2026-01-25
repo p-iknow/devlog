@@ -26,18 +26,3 @@ export const LOCALE = {
   en: "en-US",
   ko: "ko-KR",
 } as const satisfies Record<Locale, string>;
-
-/**
- * Get the language path prefix for a given locale
- * All locales have a prefix (e.g., /en, /ko)
- */
-export function getLangPath(lang: Locale): string {
-  return `/${lang}`;
-}
-
-/**
- * Check if a locale is the default locale
- */
-export function isDefaultLocale(lang: Locale): boolean {
-  return lang === defaultLocale;
-}

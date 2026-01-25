@@ -1,12 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  getLangPath,
-  isDefaultLocale,
-  defaultLocale,
-  LOCALES,
-  EnLocale,
-  KoLocale,
-} from "./locale";
+import { getLangPath, isDefaultLocale } from "./locale";
+import { defaultLocale, LOCALES, EnLocale, KoLocale } from "@/config/locale";
 
 describe("getLangPath", () => {
   it("returns /en for English locale", () => {

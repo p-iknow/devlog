@@ -1,11 +1,7 @@
 ---
 import { siteConfig } from "@/config/site";
-import {
-  type Locale,
-  defaultLocale,
-  LOCALES,
-  getLangPath,
-} from "@/config/locale";
+import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
+import { getLangPath } from "@/utils/locale";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
 interface Props {

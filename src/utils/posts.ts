@@ -1,14 +1,7 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import {
-  type Locale,
-  defaultLocale,
-  LOCALES,
-  getLangPath,
-} from "@/config/locale";
-
-// Re-export for backward compatibility
-export { getLangPath };
+import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
+import { getLangPath } from "@/utils/locale";
 
 /**
  * id에서 언어 접미사(.en, .ko)를 제거하여 URL slug 생성

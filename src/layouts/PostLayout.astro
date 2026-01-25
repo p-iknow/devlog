@@ -5,11 +5,8 @@ import { format } from "date-fns";
 import Comments from "@/components/Comments.astro";
 import Bio from "@/components/Bio.astro";
 import PostNavigation from "@/components/PostNavigation.astro";
-import {
-  type Locale,
-  defaultLocale,
-  getLangPath,
-} from "@/config/locale";
+import { type Locale, defaultLocale } from "@/config/locale";
+import { getLangPath } from "@/utils/locale";
 import {
   getAllCombinedPostsByLang,
   getPostSlug,
