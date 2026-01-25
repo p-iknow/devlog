@@ -2,8 +2,8 @@
 /* Font families, color palettes, and semantic tokens */
 
 @theme {
-  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui,
-    sans-serif;
+  --font-sans:
+    "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
 
   /* === Chakra UI Color Palette Override === */
@@ -53,9 +53,9 @@
   --tw-violet-500: #8b5cf6;
 
   /* Brand Colors */
-  --brand-gradient-start: #0066FF;
-  --brand-gradient-end: #00D4FF;
-  --brand-accent: #0088DD;
+  --brand-gradient-start: #0066ff;
+  --brand-gradient-end: #00d4ff;
+  --brand-accent: #0088dd;
 
   /* === Semantic Tokens (Light Mode) === */
 
@@ -79,6 +79,34 @@
   --color-accent-bg: var(--chakra-blue-50);
   --color-accent-border: var(--chakra-blue-200);
 
+  /* Interactive Elements */
+  --color-check-indicator: var(--chakra-blue-600);
+
+  /* Tag Gradient Colors (6 variations) */
+  --color-tag-1-start: var(--tw-blue-500);
+  --color-tag-1-end: var(--tw-blue-400);
+  --color-tag-1-shadow: rgb(59 130 246 / 0.4);
+
+  --color-tag-2-start: var(--tw-indigo-500);
+  --color-tag-2-end: var(--tw-indigo-400);
+  --color-tag-2-shadow: rgb(99 102 241 / 0.4);
+
+  --color-tag-3-start: var(--tw-sky-500);
+  --color-tag-3-end: var(--tw-sky-400);
+  --color-tag-3-shadow: rgb(14 165 233 / 0.4);
+
+  --color-tag-4-start: var(--tw-violet-500);
+  --color-tag-4-end: var(--tw-violet-400);
+  --color-tag-4-shadow: rgb(139 92 246 / 0.4);
+
+  --color-tag-5-start: #06b6d4;
+  --color-tag-5-end: #22d3ee;
+  --color-tag-5-shadow: rgb(6 182 212 / 0.4);
+
+  --color-tag-6-start: #2563eb;
+  --color-tag-6-end: var(--tw-blue-500);
+  --color-tag-6-shadow: rgb(37 99 235 / 0.4);
+
   /* Component Colors */
   --color-header-bg: rgb(255 255 255 / 0.9);
   --color-header-shadow: rgb(0 0 0 / 0.06);
@@ -100,6 +128,8 @@
 /* Dark mode color overrides for both manual toggle and system preference */
 
 [data-theme="dark"] {
+  --color-check-indicator: #58a6ff;
+
   /* Surface & Background - Modern dark palette with blue tone */
   --color-surface: #1c2836;
   --color-background: #041623;
@@ -139,6 +169,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
+    --color-check-indicator: #58a6ff;
+
     /* Surface & Background - Modern dark palette with blue tone */
     --color-surface: #1c2836;
     --color-background: #041623;
