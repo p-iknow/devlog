@@ -2,20 +2,22 @@
 
 **Generated:** 2026-01-25 | **Commit:** c740883
 
-Extracted skills from ai-lab research. Each skill follows the standard structure.
+Extracted skills from ai-lab research. Each skill follows the standard
+structure.
 
 ## SKILL INDEX
 
-| Skill | Triggers | Purpose |
-|-------|----------|---------|
-| [doc-frontmatter](doc-frontmatter/) | "frontmatter", "add frontmatter" | Generate/validate YAML frontmatter for docs |
-| [learning-content-creator](learning-content-creator/) | "create learning content", "research to learning" | Transform research into structured learning content |
-| [meta-agent](meta-agent/) | "create an agent", "new agent" | Guide for creating specialized AI agents |
-| [meta-command](meta-command/) | "create a command", "command spec", "frontmatter" | Guide for creating and validating commands |
-| [meta-prompt-engineer](meta-prompt-engineer/) | "write a prompt", "create prompt", "meta-prompt" | Generate high-quality prompts using proven techniques |
-| [meta-session-wrapper](meta-session-wrapper/) | "wrap this session", "extract workflow" | Extract reusable patterns from completed sessions |
-| [meta-skill](meta-skill/) | "create a skill", "new skill" | Guide for creating effective AI skills |
-| [meta-structure-organizer](meta-structure-organizer/) | "should this be a skill?", "command or agent?" | Organize features into Command/Skill/Agent |
+| Skill                                                 | Triggers                                          | Purpose                                               |
+| ----------------------------------------------------- | ------------------------------------------------- | ----------------------------------------------------- |
+| [doc-frontmatter](doc-frontmatter/)                   | "frontmatter", "add frontmatter"                  | Generate/validate YAML frontmatter for docs           |
+| [learning-content-creator](learning-content-creator/) | "create learning content", "research to learning" | Transform research into structured learning content   |
+| [meta-agent](meta-agent/)                             | "create an agent", "new agent"                    | Guide for creating specialized AI agents              |
+| [meta-command](meta-command/)                         | "create a command", "command spec", "frontmatter" | Guide for creating and validating commands            |
+| [meta-prompt-engineer](meta-prompt-engineer/)         | "write a prompt", "create prompt", "meta-prompt"  | Generate high-quality prompts using proven techniques |
+| [meta-session-wrapper](meta-session-wrapper/)         | "wrap this session", "extract workflow"           | Extract reusable patterns from completed sessions     |
+| [meta-skill](meta-skill/)                             | "create a skill", "new skill"                     | Guide for creating effective AI skills                |
+| [meta-structure-organizer](meta-structure-organizer/) | "should this be a skill?", "command or agent?"    | Organize features into Command/Skill/Agent            |
+| [test-master](test-master/)                           | "test", "테스트", "unit test", "단위 테스트"      | Unit test writing guidelines and patterns             |
 
 ## STRUCTURE PATTERN
 
@@ -32,7 +34,7 @@ skill-name/
 
 ```yaml
 ---
-name: skill-name          # kebab-case, matches directory
+name: skill-name # kebab-case, matches directory
 description: |
   USE WHEN: trigger keywords
   DO NOT USE WHEN: exclusions
@@ -42,4 +44,5 @@ description: |
 ## SEE ALSO
 
 - Root [AGENTS.md](../../AGENTS.md) for full skill patterns
-- [docs/02-naming-convention/](../../docs/02-naming-convention/) for naming rules
+- [docs/02-naming-convention/](../../docs/02-naming-convention/) for naming
+  rules
