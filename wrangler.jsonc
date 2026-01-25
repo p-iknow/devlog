@@ -1,5 +1,12 @@
 {
+  "$schema": "node_modules/wrangler/config-schema.json",
   "name": "devlog",
   "compatibility_date": "2026-01-25",
-  "pages_build_output_dir": "./dist"
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+  },
+  "observability": {
+    "enabled": true,
+  },
 }

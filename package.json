@@ -14,6 +14,7 @@
     "dev": "astro dev --port 3000",
     "build": "astro build",
     "preview": "astro preview --port 5000",
+    "deploy": "wrangler deploy",
     "type-check": "astro check && tsc --noEmit",
     "format": "prettier --write 'src/**/*.{astro,css,html,json,md,mdx,js,jsx,ts,tsx}'",
     "lint": "eslint --fix 'src/**/*.{astro,js,jsx,ts,tsx}'"
@@ -44,6 +45,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "typescript-eslint": "^8.53.1"
+    "typescript-eslint": "^8.53.1",
+    "wrangler": "^4.60.0"
   }
 }
