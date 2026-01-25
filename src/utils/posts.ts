@@ -3,12 +3,10 @@ import { getCollection } from "astro:content";
 import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
 import { getLangPath } from "@/utils/locale";
 import { isPublished } from "@/utils/filter";
+import { stripLangFromId } from "@/utils/lang";
 
 export { isPublished, type Filterable } from "@/utils/filter";
-
-export function stripLangFromId(id: string): string {
-  return id.replace(/\.(en|ko)$/, "");
-}
+export { stripLangFromId } from "@/utils/lang";
 
 type AnyPost =
   | CollectionEntry<"posts">
