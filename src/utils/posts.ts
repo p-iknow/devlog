@@ -2,11 +2,10 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
 import { getLangPath } from "@/utils/locale";
+import { isPublished } from "@/utils/filter";
 
-/**
- * id에서 언어 접미사(.en, .ko)를 제거하여 URL slug 생성
- * 예: "markdown-guide/04-markdown-katex-guide.ko" -> "markdown-guide/04-markdown-katex-guide"
- */
+export { isPublished, type Filterable } from "@/utils/filter";
+
 export function stripLangFromId(id: string): string {
   return id.replace(/\.(en|ko)$/, "");
 }
@@ -107,40 +106,14 @@ export function getPostLang(
   return defaultLocale;
 }
 
-/**
- * 포스트 필터링 함수
- * - draft: true인 포스트는 항상 제외
- * - devOnly: true인 포스트는 production에서만 제외
- */
 export function filterPosts(post: CollectionEntry<"posts">): boolean {
-  const isDev = import.meta.env.DEV;
-
-  // draft는 항상 제외
-  if (post.data.draft) return false;
-
-  // dev-only는 production에서만 제외
-  if (post.data["dev-only"] && !isDev) return false;
-
-  return true;
+  return isPublished(post);
 }
 
-/**
- * 시리즈 포스트 필터링 함수
- * - draft: true인 포스트는 항상 제외
- * - devOnly: true인 포스트는 production에서만 제외
- */
 export function filterSeriesPosts(
   post: CollectionEntry<"seriesPosts">
 ): boolean {
-  const isDev = import.meta.env.DEV;
-
-  // draft는 항상 제외
-  if (post.data.draft) return false;
-
-  // dev-only는 production에서만 제외
-  if (post.data["dev-only"] && !isDev) return false;
-
-  return true;
+  return isPublished(post);
 }
 
 /**

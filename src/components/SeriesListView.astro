@@ -6,6 +6,7 @@ import {
   getSeriesUrl,
   sortSeriesPosts,
   getPostLang,
+  isPublished,
 } from "@/utils/posts";
 
 interface Props {
@@ -13,15 +14,15 @@ interface Props {
 }
 
 const { lang } = Astro.props;
-const isDev = import.meta.env.DEV;
 
-// 시리즈 메타정보와 글 가져오기
-const seriesCollection = await getCollection("series", (s) => getPostLang(s) === lang);
-const seriesPostsCollection = await getCollection("seriesPosts", (post) => {
-  if (post.data.draft) return false;
-  if (post.data["dev-only"] && !isDev) return false;
-  return getPostLang(post) === lang;
-});
+const seriesCollection = await getCollection(
+  "series",
+  (s) => getPostLang(s) === lang
+);
+const seriesPostsCollection = await getCollection(
+  "seriesPosts",
+  (post) => isPublished(post) && getPostLang(post) === lang
+);
 
 // 시리즈 id에서 폴더명 추출 (예: "markdown-guide/_index.en" -> "markdown-guide")
 const getSeriesSlug = (id: string) => id.replace(/\/_index.*$/, "");
