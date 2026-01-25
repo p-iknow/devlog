@@ -1,0 +1,21 @@
+---
+import { parseTextWithNumbers } from "@/utils/i18n";
+
+interface Props {
+  text: string;
+  class?: string;
+}
+
+const { text, class: className } = Astro.props;
+const parts = parseTextWithNumbers(text);
+---
+
+<span class={className}>
+  {parts.map((part) =>
+    part.type === "number" ? (
+      <span class="text-accent-highlight">{part.value}</span>
+    ) : (
+      part.value
+    )
+  )}
+</span>

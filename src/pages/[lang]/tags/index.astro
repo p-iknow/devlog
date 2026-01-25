@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import HighlightedText from "@/components/HighlightedText.astro";
 import type { Locale } from "@/config/locale";
 
 export async function getStaticPaths() {
@@ -72,11 +73,10 @@ const getTagLevel = (count: number) => {
   <div class="p-0">
     <header class="mb-8">
       <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
-      <p class="text-[15px] text-muted -mt-6">
-        {t.summary(tags.length, totalPosts).split(/(\d+)/).map((part: string) =>
-          /^\d+$/.test(part) ? <span class="text-accent-highlight">{part}</span> : part
-        )}
-      </p>
+      <HighlightedText
+        text={t.summary(tags.length, totalPosts)}
+        class="text-[15px] text-muted -mt-6 block"
+      />
     </header>
 
     <div class="flex flex-wrap gap-3">

@@ -37,14 +37,14 @@ const i18n = {
   ko: {
     title: "검색",
     description: "글 검색",
-    postsCount: (count: number) => `${count}개의 글`,
+    postsLabel: "개의 글",
     placeholder: "제목이나 내용으로 검색...",
     noResults: "검색 결과가 없습니다.",
   },
   en: {
     title: "Search",
     description: "Search posts",
-    postsCount: (count: number) => `${count} posts`,
+    postsLabel: " posts",
     placeholder: "Search posts by title or content...",
     noResults: "No posts found matching your search.",
   },
@@ -69,7 +69,7 @@ const searchablePosts = allPosts.map((post: any) => ({
     <div class="search-header">
       <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
       <p class="search-count">
-        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span> {t.postsCount(searchablePosts.length).replace(/^\d+\s*/, "")}
+        <span id="post-count" class="text-accent-highlight">{searchablePosts.length}</span>{t.postsLabel}
       </p>
     </div>
 

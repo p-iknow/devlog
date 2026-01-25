@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/PostList.astro";
+import HighlightedText from "@/components/HighlightedText.astro";
 import type { Locale } from "@/config/locale";
 import {
   getPostUrl,
@@ -105,11 +106,7 @@ const getPostHref = (post: PostEntry) => getPostUrl(post, lang);
       <span class="arrow">&larr;</span> {t.allTags}
     </a>
     <h1 class="text-3xl font-bold"># {tag}</h1>
-    <p class="mt-2 text-muted">
-      {t.postsCount(posts.length).split(/(\d+)/).map((part: string) =>
-        /^\d+$/.test(part) ? <span class="text-accent-highlight">{part}</span> : part
-      )}
-    </p>
+    <HighlightedText text={t.postsCount(posts.length)} class="mt-2 text-muted block" />
   </div>
 
   <PostList posts={posts} getHref={getPostHref as any} />
