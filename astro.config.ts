@@ -14,7 +14,7 @@ import rehypeKatex from "rehype-katex";
 import remarkCallout from "@r4ai/remark-callout";
 
 export default defineConfig({
-  site: "https://p-iknow.netlify.app",
+  site: "https://p-stack.dev",
 
   i18n: {
     locales: ["en", "ko"],
