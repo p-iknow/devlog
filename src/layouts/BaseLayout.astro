@@ -1,12 +1,8 @@
 ---
 import "@/styles/global.css";
 import { siteConfig } from "@/config/site";
-import {
-  type Locale,
-  defaultLocale,
-  LOCALE,
-  LOCALES,
-} from "@/config/locale";
+import { type Locale, defaultLocale, LOCALE } from "@/config/locale";
+import { getAlternatePath } from "@/utils/locale";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { ClientRouter } from "astro:transitions";
@@ -28,25 +24,9 @@ const {
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl);
 const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);
 
-// hreflang alternate URLs 생성
 const currentPath = Astro.url.pathname;
-const getAlternatePath = (targetLang: Locale) => {
-  // 현재 언어 prefix 제거
-  let basePath = currentPath;
-  for (const locale of LOCALES) {
-    const prefix = `/${locale}`;
-    if (basePath.startsWith(prefix)) {
-      basePath = basePath.substring(prefix.length) || "/";
-      break;
-    }
-  }
-
-  // 대상 언어 prefix 추가
-  return `/${targetLang}${basePath === "/" ? "" : basePath}`;
-};
-
-const enUrl = new URL(getAlternatePath("en"), siteConfig.siteUrl);
-const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
+const enUrl = new URL(getAlternatePath(currentPath, "en"), siteConfig.siteUrl);
+const koUrl = new URL(getAlternatePath(currentPath, "ko"), siteConfig.siteUrl);
 ---
 
 <!doctype html>

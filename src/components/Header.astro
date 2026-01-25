@@ -1,7 +1,7 @@
 ---
 import { siteConfig } from "@/config/site";
-import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
-import { getLangPath } from "@/utils/locale";
+import { type Locale, defaultLocale } from "@/config/locale";
+import { getLangPath, getAlternatePath } from "@/utils/locale";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
 interface Props {
@@ -17,23 +17,8 @@ const isActive = (path: string) => {
   return pathname === fullPath || pathname === fullPath + "/";
 };
 
-// 언어 전환 URL 생성
-const getAlternateUrl = (targetLang: Locale) => {
-  // 현재 언어 prefix 제거
-  let basePath = pathname;
-  for (const locale of LOCALES) {
-    const prefix = `/${locale}`;
-    if (basePath.startsWith(prefix)) {
-      basePath = basePath.substring(prefix.length) || "/";
-      break;
-    }
-  }
-
-  // 대상 언어 prefix 추가
-  return `/${targetLang}${basePath === "/" ? "" : basePath}`;
-};
-const koUrl = getAlternateUrl("ko");
-const enUrl = getAlternateUrl("en");
+const koUrl = getAlternatePath(pathname, "ko");
+const enUrl = getAlternatePath(pathname, "en");
 ---
 
 <header class="header">

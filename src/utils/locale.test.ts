@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getLangPath, isDefaultLocale } from "./locale";
+import { getLangPath, isDefaultLocale, getAlternatePath } from "./locale";
 import { defaultLocale, LOCALES, EnLocale, KoLocale } from "@/config/locale";
 
 describe("getLangPath", () => {
@@ -25,6 +25,43 @@ describe("isDefaultLocale", () => {
 
   it("returns false for non-default locale (ko)", () => {
     expect(isDefaultLocale("ko")).toBe(false);
+  });
+});
+
+describe("getAlternatePath", () => {
+  it("switches /en path to /ko", () => {
+    expect(getAlternatePath("/en/posts/hello", "ko")).toBe("/ko/posts/hello");
+  });
+
+  it("switches /ko path to /en", () => {
+    expect(getAlternatePath("/ko/posts/hello", "en")).toBe("/en/posts/hello");
+  });
+
+  it("handles root path with lang prefix", () => {
+    expect(getAlternatePath("/en", "ko")).toBe("/ko");
+  });
+
+  it("normalizes trailing slash to no trailing slash on lang-root", () => {
+    expect(getAlternatePath("/en/", "ko")).toBe("/ko");
+  });
+
+  it("handles nested paths", () => {
+    expect(getAlternatePath("/en/series/markdown-guide/01-intro", "ko")).toBe(
+      "/ko/series/markdown-guide/01-intro"
+    );
+  });
+
+  it("keeps same language if target matches current", () => {
+    expect(getAlternatePath("/en/posts/hello", "en")).toBe("/en/posts/hello");
+  });
+
+  it("adds lang prefix to paths without one", () => {
+    expect(getAlternatePath("/posts/hello", "ko")).toBe("/ko/posts/hello");
+  });
+
+  it("handles bare root path", () => {
+    expect(getAlternatePath("/", "en")).toBe("/en");
+    expect(getAlternatePath("/", "ko")).toBe("/ko");
   });
 });
 
