@@ -1,11 +1,12 @@
 ---
 import type { Locale } from "@/config/locale";
+import type { PostEntry } from "@/utils/posts";
 
 interface Props {
-  prevPost: any | null;
-  nextPost: any | null;
+  prevPost: PostEntry | null;
+  nextPost: PostEntry | null;
   lang: Locale;
-  getHref: (post: any) => string;
+  getHref: (post: PostEntry) => string;
 }
 
 const { prevPost, nextPost, lang, getHref } = Astro.props;

@@ -5,11 +5,8 @@ import HighlightedText from "@/components/HighlightedText.astro";
 import type { Locale } from "@/config/locale";
 import {
   getPostUrl,
-  type PostWithLang,
-  type SeriesPostWithLang,
+  type PostEntry,
 } from "@/utils/posts";
-
-type PostEntry = PostWithLang | SeriesPostWithLang;
 
 export async function getStaticPaths() {
   const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
@@ -17,7 +14,7 @@ export async function getStaticPaths() {
 
   const paths: Array<{
     params: { lang: string; tag: string };
-    props: { tag: string; posts: any[] };
+    props: { tag: string; posts: PostEntry[] };
   }> = [];
 
   for (const lang of LOCALES) {
@@ -109,5 +106,5 @@ const getPostHref = (post: PostEntry) => getPostUrl(post, lang);
     <HighlightedText text={t.postsCount(posts.length)} class="mt-2 text-muted block" />
   </div>
 
-  <PostList posts={posts} getHref={getPostHref as any} />
+  <PostList posts={posts} getHref={getPostHref} />
 </BaseLayout>
