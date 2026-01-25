@@ -1,6 +1,14 @@
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-import { type Locale, defaultLocale, LOCALES } from "@/config/locale";
+import {
+  type Locale,
+  defaultLocale,
+  LOCALES,
+  getLangPath,
+} from "@/config/locale";
+
+// Re-export for backward compatibility
+export { getLangPath };
 
 /**
  * id에서 언어 접미사(.en, .ko)를 제거하여 URL slug 생성
@@ -15,14 +23,6 @@ type AnyPost =
   | CollectionEntry<"seriesPosts">
   | (CollectionEntry<"posts"> & { lang: Locale })
   | (CollectionEntry<"seriesPosts"> & { lang: Locale });
-
-/**
- * 언어에 따른 URL prefix 반환
- * All locales have a prefix (e.g., /en, /ko)
- */
-export function getLangPath(lang: Locale): string {
-  return `/${lang}`;
-}
 
 /**
  * 포스트 URL 생성
@@ -103,7 +103,9 @@ export function getPostSlug(
 /**
  * 포스트에서 lang을 추출 (frontmatter 우선, 없으면 기본 언어)
  */
-export function getPostLang(post: CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">): Locale {
+export function getPostLang(
+  post: CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">
+): Locale {
   const lang = post.data.lang;
   if (lang && LOCALES.includes(lang as Locale)) {
     return lang as Locale;
@@ -220,7 +222,10 @@ export async function getAllPostsWithLang(
 export async function getAllSeriesPostsWithLang(
   filter?: (post: CollectionEntry<"seriesPosts">) => boolean
 ): Promise<SeriesPostWithLang[]> {
-  const allPosts = await getCollection("seriesPosts", filter ?? filterSeriesPosts);
+  const allPosts = await getCollection(
+    "seriesPosts",
+    filter ?? filterSeriesPosts
+  );
 
   return allPosts
     .map((post) => ({
@@ -263,9 +268,9 @@ export function extractOrderFromFilename(id: string): number {
  * - part가 없으면 파일명의 숫자 사용 (01-, 02- 등)
  * - 둘 다 없으면 맨 뒤로 (999)
  */
-export function sortSeriesPosts<T extends CollectionEntry<"seriesPosts"> | SeriesPostWithLang>(
-  posts: T[]
-): T[] {
+export function sortSeriesPosts<
+  T extends CollectionEntry<"seriesPosts"> | SeriesPostWithLang,
+>(posts: T[]): T[] {
   return posts.sort((a, b) => {
     const orderA = a.data.part ?? extractOrderFromFilename(a.id);
     const orderB = b.data.part ?? extractOrderFromFilename(b.id);
