@@ -6,7 +6,6 @@ import {
   defaultLocale,
   LOCALE,
   LOCALES,
-  getLangPath,
 } from "@/config/locale";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -106,10 +105,11 @@ const koUrl = new URL(getAlternatePath("ko"), siteConfig.siteUrl);
 
     <!-- Google Analytics -->
     <script
+      is:inline
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalyticsId}`}
     ></script>
-    <script define:vars={{ gaId: siteConfig.googleAnalyticsId }}>
+    <script is:inline define:vars={{ gaId: siteConfig.googleAnalyticsId }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);

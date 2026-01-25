@@ -95,7 +95,7 @@ const searchablePosts = allPosts.map((post: any) => ({
   </div>
 </BaseLayout>
 
-<script define:vars={{ searchablePosts }}>
+<script is:inline define:vars={{ searchablePosts }}>
   const posts = searchablePosts;
   const searchInput = document.getElementById('search-input');
   const noResults = document.getElementById('no-results');
