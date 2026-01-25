@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import { type Locale, LOCALE } from "@/config/locale";
+import { type Locale } from "@/config/locale";
 import {
   getPostUrl,
   getSeriesUrl,
@@ -8,6 +8,7 @@ import {
   getPostLang,
   isPublished,
 } from "@/utils/posts";
+import { formatDateLocalized } from "@/utils/date";
 
 interface Props {
   lang: Locale;
@@ -74,7 +75,6 @@ const texts = {
 } as const;
 
 const t = texts[lang];
-const dateLocale = LOCALE[lang];
 ---
 
 <div class="mb-8">
@@ -116,11 +116,7 @@ const dateLocale = LOCALE[lang];
                     {post.data.title}
                   </span>
                   <span class="ml-2 text-sm text-muted">
-                    {post.data.date.toLocaleDateString(dateLocale, {
-                      year: "numeric",
-                      month: lang === "en" ? "short" : "long",
-                      day: "numeric",
-                    })}
+                    {formatDateLocalized(post.data.date, lang)}
                   </span>
                 </div>
               </a>
