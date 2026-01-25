@@ -56,19 +56,18 @@ const series = seriesCollection
 
 const totalPosts = series.reduce((sum, s) => sum + s.posts.length, 0);
 
-// i18n texts
 const texts = {
   en: {
     title: "Series",
-    summary: (seriesCount: number, postCount: number) =>
-      `${seriesCount} series across ${postCount} posts`,
+    seriesLabel: " series across ",
+    postsLabel: " posts",
     parts: (count: number) => `${count} parts`,
     noSeries: "No series found.",
   },
   ko: {
     title: "시리즈",
-    summary: (seriesCount: number, postCount: number) =>
-      `${seriesCount}개 시리즈, ${postCount}개 포스트`,
+    seriesLabel: "개 시리즈, ",
+    postsLabel: "개 포스트",
     parts: (count: number) => `${count}편`,
     noSeries: "시리즈가 없습니다.",
   },
@@ -82,9 +81,9 @@ const dateLocale = LOCALE[lang];
   <h1 class="mb-8 text-3xl font-bold">{t.title}</h1>
   <p class="text-[15px] text-muted -mt-6">
     <span class="text-accent-highlight">{series.length}</span>
-    {lang === "en" ? " series across " : "개 시리즈, "}
+    {t.seriesLabel}
     <span class="text-accent-highlight">{totalPosts}</span>
-    {lang === "en" ? " posts" : "개 포스트"}
+    {t.postsLabel}
   </p>
 </div>
 
