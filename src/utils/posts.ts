@@ -93,11 +93,12 @@ export function getPostSlug(
   return slug;
 }
 
-/**
- * 포스트에서 lang을 추출 (frontmatter 우선, 없으면 기본 언어)
- */
 export function getPostLang(
-  post: CollectionEntry<"posts"> | CollectionEntry<"seriesPosts">
+  post:
+    | CollectionEntry<"posts">
+    | CollectionEntry<"seriesPosts">
+    | CollectionEntry<"series">
+    | { data: { lang?: string } }
 ): Locale {
   const lang = post.data.lang;
   if (lang && LOCALES.includes(lang as Locale)) {

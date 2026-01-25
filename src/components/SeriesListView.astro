@@ -1,7 +1,12 @@
 ---
 import { getCollection } from "astro:content";
-import { type Locale, LOCALES, defaultLocale, LOCALE } from "@/config/locale";
-import { getPostUrl, getSeriesUrl, sortSeriesPosts } from "@/utils/posts";
+import { type Locale, LOCALE } from "@/config/locale";
+import {
+  getPostUrl,
+  getSeriesUrl,
+  sortSeriesPosts,
+  getPostLang,
+} from "@/utils/posts";
 
 interface Props {
   lang: Locale;
@@ -9,15 +14,6 @@ interface Props {
 
 const { lang } = Astro.props;
 const isDev = import.meta.env.DEV;
-
-// 포스트에서 lang 추출
-const getPostLang = (post: { data: { lang?: string } }): Locale => {
-  const postLang = post.data.lang;
-  if (postLang && LOCALES.includes(postLang as Locale)) {
-    return postLang as Locale;
-  }
-  return defaultLocale;
-};
 
 // 시리즈 메타정보와 글 가져오기
 const seriesCollection = await getCollection("series", (s) => getPostLang(s) === lang);
