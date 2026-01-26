@@ -1,7 +1,8 @@
 import rss from "@astrojs/rss";
 import { siteConfig } from "@/config/site";
 import type { APIContext } from "astro";
-import { getPostsByLang, getSeriesPostsByLang, getPostUrl } from "@/utils/posts";
+import { getPostsByLang, getSeriesPostsByLang } from "@/utils/posts/query";
+import { getPostUrl } from "@/utils/posts/url";
 import { LOCALES, type Locale } from "@/config/locale";
 
 export async function getStaticPaths() {

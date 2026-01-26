@@ -3,13 +3,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/post/PostList.astro";
 import HighlightedText from "@/components/post/HighlightedText.astro";
 import type { Locale } from "@/config/locale";
-import {
-  getPostUrl,
-  type PostEntry,
-} from "@/utils/posts";
+import { getPostUrl } from "@/utils/posts/url";
+import type { PostEntry } from "@/utils/posts/types";
 
 export async function getStaticPaths() {
-  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
+  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts/query");
   const { LOCALES } = await import("@/config/locale");
 
   const paths: Array<{

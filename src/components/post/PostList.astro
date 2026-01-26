@@ -1,7 +1,8 @@
 ---
 import { format } from "date-fns";
-import type { PostEntry } from "@/utils/posts";
-import { stripLangFromId, getPostSlug } from "@/utils/posts";
+import type { PostEntry } from "@/utils/posts/types";
+import { getPostSlug } from "@/utils/posts/url";
+import { stripLangFromId } from "@/utils/lang";
 import { siteConfig } from "@/config/site";
 
 interface Props {

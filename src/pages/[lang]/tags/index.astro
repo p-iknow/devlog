@@ -4,7 +4,7 @@ import HighlightedText from "@/components/post/HighlightedText.astro";
 import type { Locale } from "@/config/locale";
 
 export async function getStaticPaths() {
-  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts");
+  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts/query");
   const { LOCALES } = await import("@/config/locale");
 
   const paths = [];

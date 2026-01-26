@@ -2,12 +2,14 @@
 import { render } from "astro:content";
 import PostLayout from "@/layouts/PostLayout.astro";
 import type { Locale } from "@/config/locale";
-import { getPostSlug, getPostUrl, getSeriesUrl, stripLangFromId } from "@/utils/posts";
+import { getPostSlug, getPostUrl, getSeriesUrl } from "@/utils/posts/url";
+import { stripLangFromId } from "@/utils/lang";
 
 const isDev = import.meta.env.DEV;
 
 export async function getStaticPaths() {
-  const { getPostsByLang, getSeriesPostsByLang, getPostSlug } = await import("@/utils/posts");
+  const { getPostsByLang, getSeriesPostsByLang } = await import("@/utils/posts/query");
+  const { getPostSlug } = await import("@/utils/posts/url");
   const { LOCALES } = await import("@/config/locale");
   const { getCollection } = await import("astro:content");
 

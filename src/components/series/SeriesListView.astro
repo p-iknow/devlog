@@ -1,13 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 import { type Locale } from "@/config/locale";
-import {
-  getPostUrl,
-  getSeriesUrl,
-  sortSeriesPosts,
-  getPostLang,
-  isPublished,
-} from "@/utils/posts";
+import { getPostUrl, getSeriesUrl } from "@/utils/posts/url";
+import { sortSeriesPosts } from "@/utils/posts/sort";
+import { getPostLang } from "@/utils/posts/query";
+import { isPublished } from "@/utils/filter";
 import { formatDateLocalized } from "@/utils/date";
 
 interface Props {

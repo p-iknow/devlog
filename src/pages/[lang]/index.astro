@@ -8,11 +8,9 @@ import {
   getSeriesPostsByLang,
   filterPosts,
   filterSeriesPosts,
-  getPostUrl,
-  type PostWithLang,
-  type SeriesPostWithLang,
-  type PostEntry,
-} from "@/utils/posts";
+} from "@/utils/posts/query";
+import { getPostUrl } from "@/utils/posts/url";
+import type { PostWithLang, SeriesPostWithLang, PostEntry } from "@/utils/posts/types";
 
 export async function getStaticPaths() {
   return LOCALES.map((lang) => ({

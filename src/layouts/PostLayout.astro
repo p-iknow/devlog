@@ -7,12 +7,9 @@ import Bio from "@/components/shared/Bio.astro";
 import PostNavigation from "@/components/post/PostNavigation.astro";
 import { type Locale, defaultLocale } from "@/config/locale";
 import { getLangPath } from "@/utils/locale";
-import {
-  getAllCombinedPostsByLang,
-  getPostSlug,
-  getPostUrl,
-  stripLangFromId,
-} from "@/utils/posts";
+import { getAllCombinedPostsByLang } from "@/utils/posts/query";
+import { getPostSlug, getPostUrl } from "@/utils/posts/url";
+import { stripLangFromId } from "@/utils/lang";
 
 interface Props {
   title: string;

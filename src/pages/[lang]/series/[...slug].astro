@@ -3,7 +3,8 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostList from "@/components/post/PostList.astro";
 import { LOCALES, type Locale } from "@/config/locale";
-import { getPostUrl, extractOrderFromFilename } from "@/utils/posts";
+import { getPostUrl } from "@/utils/posts/url";
+import { extractOrderFromFilename } from "@/utils/posts/sort";
 
 const isDev = import.meta.env.DEV;
 
