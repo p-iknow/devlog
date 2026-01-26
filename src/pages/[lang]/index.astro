@@ -47,7 +47,7 @@ const getHref = (post: PostEntry) => getPostUrl(post, lang);
 
 <BaseLayout lang={lang}>
   <div class="h-8"></div>
-  <Bio />
+  <Bio lang={lang} />
   <hr class="mt-8 mb-7 border-0 border-b border-divider" />
 
   <PostList posts={sortedPosts} getHref={getHref} />

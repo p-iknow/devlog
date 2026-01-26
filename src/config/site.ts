@@ -1,7 +1,12 @@
+import type { Locale } from "./locale";
+
 export const siteConfig = {
   title: "p.log",
   subtitle: "Pragmatic Log",
-  description: "많은 것을 이해하고 싶습니다. 더 이해하기 위해 노력합니다.",
+  description: {
+    en: "I want to understand many things. I strive to understand more.",
+    ko: "많은 것을 이해하고 싶습니다. 더 이해하기 위해 노력합니다.",
+  } satisfies Record<Locale, string>,
   author: "p-iknow 🎹",
   siteUrl: "https://p-iknow.netlify.app",
   ogImage: "/og-img.webp",

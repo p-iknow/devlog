@@ -16,10 +16,12 @@ interface Props {
 
 const {
   title = siteConfig.title,
-  description = siteConfig.description,
+  description: descriptionProp,
   ogImage = siteConfig.ogImage,
   lang = defaultLocale,
 } = Astro.props;
+
+const description = descriptionProp ?? siteConfig.description[lang];
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl);
 const ogImageUrl = new URL(ogImage, siteConfig.siteUrl);

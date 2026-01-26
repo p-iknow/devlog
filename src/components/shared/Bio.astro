@@ -1,12 +1,19 @@
 ---
 import { siteConfig } from "@/config/site";
+import { type Locale, defaultLocale } from "@/config/locale";
+
+interface Props {
+  lang?: Locale;
+}
+
+const { lang = defaultLocale } = Astro.props;
 ---
 
 <div class="flex items-center max-md:px-[15px]" id="bio">
   <div class="flex-none mr-4 w-32 h-32 rounded-full bg-cover bg-center" style="background-image: url('/profile.webp')"></div>
   <div>
     <div class="mb-[4.8px] text-2xl font-bold text-default">@{siteConfig.author}</div>
-    <div class="mb-[11.2px] leading-normal text-base text-secondary">{siteConfig.description}</div>
+    <div class="mb-[11.2px] leading-normal text-base text-secondary">{siteConfig.description[lang]}</div>
     <div class="flex gap-0">
       {siteConfig.links.github && (
         <a href={siteConfig.links.github} target="_blank" rel="noreferrer" title="GitHub" class="mr-[9.6px] text-muted hover:text-accent transition-colors duration-200 hover:no-underline">
