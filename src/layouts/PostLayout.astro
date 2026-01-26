@@ -2,9 +2,9 @@
 import BaseLayout from "./BaseLayout.astro";
 import { siteConfig } from "@/config/site";
 import { format } from "date-fns";
-import Comments from "@/components/Comments.astro";
-import Bio from "@/components/Bio.astro";
-import PostNavigation from "@/components/PostNavigation.astro";
+import Comments from "@/components/shared/Comments.astro";
+import Bio from "@/components/shared/Bio.astro";
+import PostNavigation from "@/components/post/PostNavigation.astro";
 import { type Locale, defaultLocale } from "@/config/locale";
 import { getLangPath } from "@/utils/locale";
 import {
