@@ -2,7 +2,13 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "devlog",
   "compatibility_date": "2026-01-25",
-  "routes": [{ "pattern": "blog.p-iknow.dev", "custom_domain": true }],
+  "routes": [
+    {
+      "pattern": "blog.p-iknow.dev",
+      "zone_name": "p-iknow.dev",
+      "custom_domain": true,
+    },
+  ],
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
