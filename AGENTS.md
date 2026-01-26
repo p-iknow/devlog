@@ -1,6 +1,6 @@
 # PROJECT KNOWLEDGE BASE
 
-**Generated:** 2026-01-25 | **Commit:** 021b17a | **Branch:** main
+**Generated:** 2026-01-26 | **Commit:** eb9dde1 | **Branch:** main
 
 ## OVERVIEW
 
@@ -17,10 +17,20 @@ devlog/
 │   │   ├── posts/        # Category subdirs → {category}/{file}.md
 │   │   └── series/       # _index*.md (metadata) + *.md (posts)
 │   ├── pages/[lang]/     # All routes prefixed: /en/*, /ko/*
-│   ├── components/       # .astro components
+│   ├── components/       # Domain-organized .astro components
+│   │   ├── layout/       # Header.astro, Footer.astro
+│   │   ├── post/         # PostList, PostNavigation, HighlightedText
+│   │   ├── series/       # SeriesListView.astro
+│   │   └── shared/       # Bio, Comments, ThemeToggle
 │   ├── layouts/          # BaseLayout, PostLayout
 │   ├── config/           # locale.ts, site.ts
-│   ├── utils/            # posts.ts (URL generation, filtering)
+│   ├── utils/            # Domain-organized utility modules
+│   │   ├── posts/        # URL, query, sort, types for posts
+│   │   ├── date.ts       # Date formatting
+│   │   ├── filter.ts     # Content filtering
+│   │   ├── i18n.ts       # Internationalization helpers
+│   │   ├── lang.ts       # Language utilities
+│   │   └── locale.ts     # Locale configuration
 │   └── styles/           # global.css → modules/*.css
 ├── contents/             # Legacy mirror (NOT used in build)
 ├── astro.config.ts       # i18n, integrations, Vite aliases
@@ -33,7 +43,9 @@ devlog/
 | ------------------------ | ------------------------------------------ | ----------------------------------- |
 | Add blog post            | `src/content/posts/{category}/`            | See frontmatter in CLAUDE.md        |
 | Add series post          | `src/content/series/{series}/`             | Needs `series` field in frontmatter |
-| Modify URL generation    | `src/utils/posts.ts`                       | getPostUrl, getPostSlug             |
+| Modify URL generation    | `src/utils/posts/url.ts`                   | getPostUrl, getPostSlug             |
+| Query/filter posts       | `src/utils/posts/query.ts`                 | getPostsByLang, filterPosts         |
+| Sort posts               | `src/utils/posts/sort.ts`                  | sortPostsByDate, sortSeriesPosts    |
 | Add page route           | `src/pages/[lang]/`                        | Must have `[lang]` param            |
 | Edit global styles       | `src/styles/modules/`                      | theme, base, prose, callouts        |
 | Change code highlighting | `astro.config.ts`                          | astro-expressive-code section       |
