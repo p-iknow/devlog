@@ -1,6 +1,7 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
 import { glob } from "astro/loaders";
 import { LOCALES } from "@/config/locale";
+import { z } from "astro/zod";
 
 const posts = defineCollection({
   loader: glob({
