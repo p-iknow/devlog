@@ -36,10 +36,13 @@ const seriesPosts = await getSeriesPostsByLang({
 type AnyPost = PostWithLang | SeriesPostWithLang;
 const allPosts: AnyPost[] = [...posts, ...seriesPosts];
 
-// 날짜순 정렬 (내림차순)
-const sortedPosts = allPosts.sort(
-  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
-);
+// dev-only는 최상단 고정, 그 외는 날짜순 내림차순
+const sortedPosts = allPosts.sort((a, b) => {
+  const aDev = a.data["dev-only"] ?? false;
+  const bDev = b.data["dev-only"] ?? false;
+  if (aDev !== bDev) return aDev ? -1 : 1;
+  return b.data.date.valueOf() - a.data.date.valueOf();
+});
 
 // href 생성 함수
 const getHref = (post: PostEntry) => getPostUrl(post, lang);

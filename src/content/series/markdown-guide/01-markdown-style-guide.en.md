@@ -4,6 +4,7 @@ slug: 'markdown-style-guide'
 date: '2025-05-25'
 part: 1
 draft: false
+dev-only: true
 series: 'markdown-guide'
 category: 'guide'
 tags:

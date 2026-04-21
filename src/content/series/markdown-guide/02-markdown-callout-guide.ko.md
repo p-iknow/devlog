@@ -4,6 +4,7 @@ slug: 'markdown-callout-guide'
 date: '2025-05-26'
 part: 2
 draft: false
+dev-only: true
 series: 'markdown-guide'
 category: 'guide'
 tags:

@@ -4,6 +4,7 @@ slug: 'markdown-katex-guide'
 date: '2025-05-28'
 part: 4
 draft: false
+dev-only: true
 series: 'markdown-guide'
 category: 'guide'
 tags:
