@@ -90,7 +90,11 @@
 }
 
 /* === Text Formatting === */
-.prose strong,
+.prose strong {
+  font-weight: 600;
+  color: var(--color-default);
+}
+
 .prose mark {
   font-weight: 600;
   color: var(--color-default);
@@ -98,13 +102,11 @@
   padding: 0 2px;
 }
 
-[data-theme="dark"] .prose strong,
 [data-theme="dark"] .prose mark {
   background: linear-gradient(to top, rgba(99, 179, 237, 0.3) 50%, transparent 50%);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .prose strong,
   :root:not([data-theme="light"]) .prose mark {
     background: linear-gradient(to top, rgba(99, 179, 237, 0.3) 50%, transparent 50%);
   }
