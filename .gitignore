@@ -17,3 +17,4 @@ dist/
 # Backup
 src.gatsby-backup/
 .playwright-mcp/
+.omc/
