@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Draft PR"
+  short_description: "Create or update draft pull requests"
+  default_prompt: "Use $g-pr to create a draft pull request for the current branch."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Test Master"
+  short_description: "Write maintainable unit tests"
+  default_prompt: "Use $test-master to write or improve unit tests for this code."

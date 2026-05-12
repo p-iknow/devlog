@@ -1,0 +1,4 @@
+interface:
+  display_name: "Doc Frontmatter"
+  short_description: "Generate and validate doc metadata"
+  default_prompt: "Use $doc-frontmatter to add or validate frontmatter for this docs file."

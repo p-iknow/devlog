@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blog Post Translate"
+  short_description: "Translate Korean posts into English"
+  default_prompt: "Use $blog-post-translate to create an English version of this Korean post."

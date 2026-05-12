@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blog Post Polish"
+  short_description: "Polish Korean technical blog drafts"
+  default_prompt: "Use $blog-post-polish to polish this Korean technical blog post."

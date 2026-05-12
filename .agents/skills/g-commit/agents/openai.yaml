@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Commit"
+  short_description: "Plan and create atomic commits"
+  default_prompt: "Use $g-commit to create atomic commits from the current changes."

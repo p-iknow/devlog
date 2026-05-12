@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Branch Name"
+  short_description: "Generate conventional branch names"
+  default_prompt: "Use $g-branch to suggest a branch name for this task."
