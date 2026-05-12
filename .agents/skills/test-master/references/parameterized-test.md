@@ -23,17 +23,17 @@ describe('validateEmail', () => {
     const result = validateEmail('user@example.com');
     expect(result.isValid).toBe(true);
   });
-  
+
   it('유효하지 않은 이메일을 검증한다', () => {
     const result = validateEmail('invalid-email');
     expect(result.isValid).toBe(false);
   });
-  
+
   it('빈 문자열을 검증한다', () => {
     const result = validateEmail('');
     expect(result.isValid).toBe(false);
   });
-  
+
   it('도메인이 없는 이메일을 검증한다', () => {
     const result = validateEmail('user@');
     expect(result.isValid).toBe(false);
@@ -70,12 +70,12 @@ describe('formatDateAtMs', () => {
     const result = formatDateAtMs('1621500612000', 'M월 d일');
     expect(result).toEqual('5월 20일');
   });
-  
+
   it('금요일을 올바르게 포맷팅한다', () => {
     const result = formatDateAtMs('1640952000000', 'eeee');
     expect(result).toEqual('금요일');
   });
-  
+
   // 새로운 케이스 추가 시 또 다른 it 블록 생성 필요
   it('2024년 1월 1일을 올바르게 포맷팅한다', () => {
     const result = formatDateAtMs('1704067200000', 'yyyy년 M월 d일');
@@ -113,13 +113,13 @@ describe('calculateTax', () => {
     expect(result.taxAmount).toBe(100000);
     expect(result.netIncome).toBe(900000);
   });
-  
+
   it('소득 500만원에 세율 20%를 적용한다', () => {
     const result = calculateTax(5000000, 0.2);
     expect(result.taxAmount).toBe(1000000);
     expect(result.netIncome).toBe(4000000);
   });
-  
+
   it('소득 1000만원에 세율 30%를 적용한다', () => {
     const result = calculateTax(10000000, 0.3);
     expect(result.taxAmount).toBe(3000000);
@@ -138,7 +138,7 @@ describe('calculateTax', () => {
     ${1000000}  | ${0.1}  | ${100000}   | ${900000}
     ${5000000}  | ${0.2}  | ${1000000}  | ${4000000}
     ${10000000} | ${0.3}  | ${3000000}  | ${7000000}
-  `('소득 $income에 세율 $taxRate를 적용하면 세금 $expectedTax, 순소득 $expectedNetIncome이다', 
+  `('소득 $income에 세율 $taxRate를 적용하면 세금 $expectedTax, 순소득 $expectedNetIncome이다',
     ({ income, taxRate, expectedTax, expectedNetIncome }) => {
     const result = calculateTax(income, taxRate);
     expect(result.taxAmount).toBe(expectedTax);
@@ -157,15 +157,15 @@ describe('parseAmount', () => {
   it('유효한 숫자를 파싱한다', () => {
     expect(() => parseAmount('abc')).toThrow('Invalid number format');
   });
-  
+
   it('음수를 파싱한다', () => {
     expect(() => parseAmount('-1000')).toThrow('Amount cannot be negative');
   });
-  
+
   it('0을 파싱한다', () => {
     expect(() => parseAmount('0')).toThrow('Amount must be greater than 0');
   });
-  
+
   // 복사-붙여넣기로 인한 실수: expect 함수명이 다름
   it('빈 문자열을 파싱한다', () => {
     expect(() => parseAmount('')).toThrow('Amount is required');
@@ -203,7 +203,7 @@ describe('calculateDiscount', () => {
     expect(result.discountRate).toBe(0.2);
     expect(result.finalAmount).toBe(800000);
   });
-  
+
   it('일반 고객에게 할인을 적용한다', () => {
     const customer = customerFactory.build({ type: 'NORMAL', totalSpent: 500000 });
     const result = calculateDiscount(customer);
@@ -227,7 +227,7 @@ describe('calculateDiscount', () => {
   `('$description', ({ customerType, totalSpent, expectedDiscount, expectedFinalAmount }) => {
     const customer = customerFactory.build({ type: customerType, totalSpent });
     const result = calculateDiscount(customer);
-    
+
     expect(result.discountRate).toBe(expectedDiscount);
     expect(result.finalAmount).toBe(expectedFinalAmount);
   });
@@ -292,29 +292,29 @@ describe('formatDateAtMs', () => {
 describe('calculateLoanEligibility', () => {
   it.each([
     {
-      customer: { 
-        creditScore: 800, 
-        income: 50000000, 
+      customer: {
+        creditScore: 800,
+        income: 50000000,
         employmentYears: 5,
         hasDefaultHistory: false
       },
-      expected: { 
-        eligible: true, 
-        maxAmount: 100000000, 
+      expected: {
+        eligible: true,
+        maxAmount: 100000000,
         reason: null,
         interestRate: 3.5
       }
     },
     {
-      customer: { 
-        creditScore: 400, 
-        income: 20000000, 
+      customer: {
+        creditScore: 400,
+        income: 20000000,
         employmentYears: 1,
         hasDefaultHistory: true
       },
-      expected: { 
-        eligible: false, 
-        maxAmount: 0, 
+      expected: {
+        eligible: false,
+        maxAmount: 0,
         reason: 'LOW_CREDIT_SCORE',
         interestRate: null
       }
@@ -322,7 +322,7 @@ describe('calculateLoanEligibility', () => {
   ])('고객 정보로 대출 자격을 판단한다', ({ customer, expected }) => {
     const customerData = customerFactory.build(customer);
     const result = calculateLoanEligibility(customerData);
-    
+
     expect(result.eligible).toBe(expected.eligible);
     expect(result.maxAmount).toBe(expected.maxAmount);
     expect(result.reason).toBe(expected.reason);
@@ -359,12 +359,12 @@ describe('processUserOrder', () => {
   ])('$userType 고객의 주문을 처리한다', ({ userType, orderAmount, expectedDiscount, expectedStatus, shouldValidateCredit }) => {
     const user = userFactory.build({ type: userType });
     const order = orderFactory.build({ amount: orderAmount });
-    
+
     const result = processUserOrder(user, order);
-    
+
     expect(result.discountRate).toBe(expectedDiscount);
     expect(result.status).toBe(expectedStatus);
-    
+
     // 조건부 검증
     if (shouldValidateCredit) {
       expect(result.creditCheckRequired).toBe(true);
@@ -443,12 +443,12 @@ describe('calculateTax', () => {
     ${1000000}  | ${0.1}  | ${100000}
     ${5000000}  | ${0.2}  | ${1000000}
     ${10000000} | ${0.3}  | ${3000000}
-  `('소득 $income에 세율 $taxRate를 적용하면 세금 $expectedTax이다', 
+  `('소득 $income에 세율 $taxRate를 적용하면 세금 $expectedTax이다',
     ({ income, taxRate, expectedTax }) => {
     const result = calculateTax(income, taxRate);
     expect(result.taxAmount).toBe(expectedTax);
   });
-  
+
   // 복잡한 공제 계산은 배열로
   it.each([
     {

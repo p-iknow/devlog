@@ -37,11 +37,11 @@ describe('formatOrderTime', () => {
   it('주문 시간을 포맷팅한다', () => {
     const order = { id: '1', amount: 1000 };
     const result = formatOrderTime(order);
-    
+
     // 로컬(KST): 2024-01-01 09:00:00 통과
     // CI(UTC): 2024-01-01 00:00:00 실패
     expect(result.displayTime).toContain('2024-01-01 09:00:00');
-    
+
     // 평일 실행: true, 주말 실행: false
     expect(result.businessDay).toBe(true);
   });
@@ -87,7 +87,7 @@ const processUserData = async (userId: string) => {
   const userData = await fetchUser(userId); // API 호출 - 외부 의존성
   const formattedName = `${userData.lastName}${userData.firstName}`; // 비즈니스 로직
   const age = new Date().getFullYear() - new Date(userData.birthDate).getFullYear(); // 시간 의존성
-  
+
   return {
     displayName: formattedName,
     age: age,
@@ -157,12 +157,12 @@ const useUserProfile = (userId: string) => {
 
 const UserProfileComponent = ({ userId }: { userId: string }) => {
   const { data: userData } = useUserProfile(userId);
-  
+
   // 비즈니스 로직이 컴포넌트에 섞여있어 테스트하기 어려움
   const displayName = `${userData.lastName}${userData.firstName}`;
   const age = new Date().getFullYear() - new Date(userData.birthDate).getFullYear();
   const isAdult = age >= 20;
-  
+
   return (
     <div>
       <h1>{displayName}</h1>
@@ -245,21 +245,21 @@ describe(calculateLoanRate.name, () => {
   it('일반 고객의 기본 금리 5%를 계산한다', () => {
     // given
     const customer = customerFactory.build({ grade: 'NORMAL', creditScore: 700 });
-    
+
     // when
     const result = calculateLoanRate(customer, 1000000);
-    
+
     // then
     expect(result).toBe(50000); // 5% 금리
   });
-  
+
   it('VIP 고객에게 우대 금리 3%를 적용한다', () => {
     // given
     const vipCustomer = customerFactory.build({ grade: 'VIP', creditScore: 800 });
-    
+
     // when
     const result = calculateLoanRate(vipCustomer, 1000000);
-    
+
     // then
     expect(result).toBe(30000); // 3% 금리
   });
@@ -286,29 +286,29 @@ describe('processPayment', () => {
 describe(processPayment.name, () => {
   it('유효한 결제 정보로 결제를 성공한다', () => {
     // given
-    const validPaymentData = paymentFactory.build({ 
-      amount: 10000, 
-      cardNumber: '1234-5678-9012-3456' 
+    const validPaymentData = paymentFactory.build({
+      amount: 10000,
+      cardNumber: '1234-5678-9012-3456'
     });
-    
+
     // when
     const result = processPayment(validPaymentData);
-    
+
     // then
     expect(result.success).toBe(true);
     expect(result.transactionId).toBeDefined();
   });
-  
+
   it('잔액 부족 시 결제를 실패한다', () => {
     // given
-    const insufficientPaymentData = paymentFactory.build({ 
+    const insufficientPaymentData = paymentFactory.build({
       amount: 1000000, // 잔액보다 큰 금액
-      cardNumber: '1234-5678-9012-3456' 
+      cardNumber: '1234-5678-9012-3456'
     });
-    
+
     // when
     const result = processPayment(insufficientPaymentData);
-    
+
     // then
     expect(result.success).toBe(false);
     expect(result.errorCode).toBe('INSUFFICIENT_BALANCE');
@@ -332,20 +332,20 @@ describe(processPayment.name, () => {
 ```typescript
 // 경계값이 아닌 중간값들만 반복 테스트하여 진짜 버그를 놓침
 describe('validateAge', () => {
-  it('25세는 성인이다', () => { 
-    expect(validateAge(25)).toBe('adult'); 
+  it('25세는 성인이다', () => {
+    expect(validateAge(25)).toBe('adult');
   });
-  
-  it('30세는 성인이다', () => { 
-    expect(validateAge(30)).toBe('adult'); 
+
+  it('30세는 성인이다', () => {
+    expect(validateAge(30)).toBe('adult');
   });
-  
-  it('35세는 성인이다', () => { 
-    expect(validateAge(35)).toBe('adult'); 
+
+  it('35세는 성인이다', () => {
+    expect(validateAge(35)).toBe('adult');
   });
-  
-  it('40세는 성인이다', () => { 
-    expect(validateAge(40)).toBe('adult'); 
+
+  it('40세는 성인이다', () => {
+    expect(validateAge(40)).toBe('adult');
   });
   // 모두 성인 범위 안의 중간값만 테스트, 경계값(20세, 19세)은 테스트 안함
   // 실제 버그는 경계값에서 발생할 가능성이 높음
@@ -359,40 +359,40 @@ describe(validateAge.name, () => {
   it('정상 성인 나이를 검증한다', () => {
     // given
     const age = 25; // 일반적인 케이스
-    
+
     // when
     const result = validateAge(age);
-    
+
     // then
     expect(result).toBe('adult');
   });
-  
+
   it('성인 경계값(20세)을 올바르게 처리한다', () => {
     // given
     const age = 20; // 경계값 - 성인 최소 나이
-    
+
     // when
     const result = validateAge(age);
-    
+
     // then
     expect(result).toBe('adult');
   });
-  
+
   it('미성년자 경계값(19세)을 올바르게 처리한다', () => {
     // given
     const age = 19; // 경계값 - 미성년자 최대 나이
-    
+
     // when
     const result = validateAge(age);
-    
+
     // then
     expect(result).toBe('minor');
   });
-  
+
   it('유효하지 않은 나이인 경우 에러를 발생시킨다', () => {
     // given
     const invalidAge = -1; // 경계값 - 최소값 미만
-    
+
     // when & then
     expect(() => validateAge(invalidAge)).toThrow(AssertError);
   });
@@ -409,17 +409,17 @@ describe('calculateTotalPrice', () => {
     const items = [{ price: 1000 }];
     expect(calculateTotalPrice(items)).toBe(1000);
   });
-  
+
   it('2개 상품의 총 금액을 계산한다', () => {
     const items = [{ price: 1000 }, { price: 2000 }];
     expect(calculateTotalPrice(items)).toBe(3000);
   });
-  
+
   it('3개 상품의 총 금액을 계산한다', () => {
     const items = [{ price: 1000 }, { price: 2000 }, { price: 3000 }];
     expect(calculateTotalPrice(items)).toBe(6000);
   });
-  
+
   it('4개 상품의 총 금액을 계산한다', () => {
     const items = [{ price: 1000 }, { price: 2000 }, { price: 3000 }, { price: 4000 }];
     expect(calculateTotalPrice(items)).toBe(10000);
@@ -435,41 +435,41 @@ describe(calculateTotalPrice.name, () => {
   it('빈 배열(0개)인 경우 0을 반환한다', () => {
     // given - 경계값: 빈 배열 처리 로직 검증
     const items = [];
-    
+
     // when
     const result = calculateTotalPrice(items);
-    
+
     // then
     expect(result).toBe(0);
   });
-  
+
   it('단일 상품(1개)의 총 금액을 계산한다', () => {
     // given - 최소 정상 케이스: 기본 로직 작동 확인
     const items = [{ price: 1000 }];
-    
+
     // when
     const result = calculateTotalPrice(items);
-    
+
     // then
     expect(result).toBe(1000);
   });
-  
+
   it('여러 상품(2개)의 총 금액을 계산한다', () => {
     // given - 반복 로직 검증: 루프가 올바르게 작동하는지 확인
     const items = [{ price: 1000 }, { price: 2000 }];
-    
+
     // when
     const result = calculateTotalPrice(items);
-    
+
     // then
     expect(result).toBe(3000);
     // 2개로 반복 로직을 검증했다면, 3개, 4개... N개도 동일하게 작동함
   });
-  
+
   it('잘못된 price 값이 있는 경우 에러를 발생시킨다', () => {
     // given - 예외 케이스
     const items = [{ price: null }];
-    
+
     // when & then
     expect(() => calculateTotalPrice(items)).toThrow(AssertError);
   });
@@ -501,15 +501,15 @@ describe(formatUserData.name, () => {
       lastName: '홍',
       birthDate: '1990-01-01'
     });
-    
+
     // when
     const result = formatUserData(userData);
-    
+
     // then
     expect(result.displayName).toBe('홍길동');
     expect(result.isAdult).toBe(true);
   });
-  
+
   it('필수 필드가 누락된 경우 에러를 발생시킨다', () => {
     // given
     const invalidUserData = userFactory.build({
@@ -609,14 +609,14 @@ describe('calculateLoanEligibility', () => {
         realEstate: 50000000
       }
     };
-    
+
     // when
     const result = calculateLoanEligibility(userData);
-    
+
     // then - 테스트 의도를 파악하기 어려움
     expect(result.eligible).toBe(true);
   });
-  
+
   it('저신용자는 대출 자격이 없다', () => {
     // given - 새로운 케이스 추가 시 모든 필드를 다시 작성해야 함
     const userData = {
@@ -646,10 +646,10 @@ describe('calculateLoanEligibility', () => {
         realEstate: 0 // 일일이 변경
       }
     };
-    
+
     // when
     const result = calculateLoanEligibility(userData);
-    
+
     // then
     expect(result.eligible).toBe(false);
   });
@@ -672,15 +672,15 @@ describe(calculateLoanEligibility.name, () => {
       })
       // 나머지 필드들은 기본값으로 자동 생성
     });
-    
+
     // when
     const result = calculateLoanEligibility(highIncomeUser);
-    
+
     // then
     expect(result.eligible).toBe(true);
     expect(result.maxAmount).toBe(80000000); // 연봉의 10배
   });
-  
+
   it('저신용자는 대출 자격이 없다', () => {
     // given - 실패 케이스의 핵심 조건만 명시
     const lowCreditUser = userDataFactory.build({
@@ -689,10 +689,10 @@ describe(calculateLoanEligibility.name, () => {
       })
       // 다른 조건들은 기본값(정상값)으로 설정
     });
-    
+
     // when
     const result = calculateLoanEligibility(lowCreditUser);
-    
+
     // then
     expect(result.eligible).toBe(false);
     expect(result.reason).toBe('LOW_CREDIT_SCORE');
@@ -715,15 +715,15 @@ describe('trackUserAction', () => {
       getItem: jest.fn()
     };
   });
-  
+
   it('사용자 액션을 추적한다', () => {
     // given
     const action = 'click_button';
     const userId = 'user123';
-    
+
     // when
     trackUserAction(action, userId);
-    
+
     // then - Jest 실행 순서나 다른 테스트의 영향으로 자주 실패
     expect(window.gtag).toHaveBeenCalledTimes(1);
     expect(window.gtag).toHaveBeenCalledWith('event', action, {
@@ -731,21 +731,21 @@ describe('trackUserAction', () => {
     });
     expect(window.localStorage.setItem).toHaveBeenCalledTimes(1);
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
-      'last_action', 
+      'last_action',
       JSON.stringify({ action, userId, timestamp: expect.any(Number) })
     );
   });
-  
+
   it('중복 액션은 필터링한다', () => {
     // given
     const action = 'click_button';
     window.localStorage.getItem.mockReturnValue(
       JSON.stringify({ action, timestamp: Date.now() - 1000 })
     );
-    
+
     // when
     trackUserAction(action, 'user123');
-    
+
     // then - 이전 테스트의 mock 호출 횟수와 섞여서 실패
     expect(window.gtag).toHaveBeenCalledTimes(0); // 실제로는 이전 테스트 + 현재 = 1회
     expect(window.localStorage.setItem).not.toHaveBeenCalled(); // mock 상태 초기화 누락으로 실패
@@ -762,10 +762,10 @@ describe(formatTrackingData.name, () => {
     const action = 'click_button';
     const userId = 'user123';
     const timestamp = 1640995200000; // 고정된 시간
-    
+
     // when
     const result = formatTrackingData(action, userId, timestamp);
-    
+
     // then - 순수 함수이므로 안정적
     expect(result).toEqual({
       event: action,
@@ -773,20 +773,20 @@ describe(formatTrackingData.name, () => {
       timestamp: timestamp
     });
   });
-  
+
   it('중복 액션을 필터링해야 하는지 판단한다', () => {
     // given
     const currentAction = 'click_button';
     const currentTime = 1640995200000;
     const lastAction = { action: 'click_button', timestamp: 1640995199000 }; // 1초 전
-    
+
     // when
     const result = shouldFilterDuplicateAction(currentAction, lastAction, currentTime);
-    
+
     // then - 비즈니스 로직만 테스트하므로 안정적
     expect(result).toBe(true); // 1초 이내 중복 액션
   });
-  
+
   it('시간 차이가 충분한 경우 중복 필터링하지 않는다', () => {
       // given
     const currentAction = 'click_button';
@@ -811,10 +811,10 @@ describe('generateUserReport', () => {
   it('사용자 리포트를 생성한다', () => {
     // given
     const userData = userDataFactory.build();
-    
+
     // when
     const result = generateUserReport(userData);
-    
+
     // then - 테스트 파일이 비대해지고 무엇을 검증하려는지 불분명
     expect(result).toMatchInlineSnapshot(`
       {
@@ -879,10 +879,10 @@ describe(generateUserReport.name, () => {
       id: '12345',
       name: '홍길동'
     });
-    
+
     // when
     const result = generateUserReport(userData);
-    
+
     // then - Helper 함수로 핵심 정보만 추출하여 검증
     const essentialData = extractReportEssentials(result);
     expect(essentialData).toMatchInlineSnapshot(`
@@ -895,15 +895,15 @@ describe(generateUserReport.name, () => {
       }
     `);
   });
-  
+
   // 방법 2: 개별 expect로 핵심 필드들을 명시적으로 검증
   it('사용자 통계를 정확히 계산한다', () => {
       // given
     const userData = userDataFactory.build();
-    
+
     // when
     const result = generateUserReport(userData);
-    
+
     // then - 각 핵심 로직을 개별적으로 명확히 검증
     expect(result.user.name).toBe('홍길동');
     expect(result.statistics.totalOrders).toBe(42);
@@ -932,28 +932,28 @@ describe('LoginForm', () => {
   it('유효하지 않은 이메일 입력 시 에러 메시지를 표시한다', () => {
     // given
     render(<LoginForm onSubmit={jest.fn()} />);
-    
+
     // when
     const emailInput = screen.getByLabelText('이메일'); // 접근성 속성 변경 시 깨짐
     const submitButton = screen.getByRole('button', { name: '로그인' }); // 버튼 텍스트 변경 시 깨짐
-    
+
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } });
     fireEvent.click(submitButton);
-    
+
     // then - DOM 구조나 텍스트 변경에 매우 취약
     expect(screen.getByText('올바른 이메일 형식을 입력해주세요')).toBeInTheDocument();
     // 실행 시간이 오래 걸림 (DOM 렌더링 + 이벤트 처리)
     // 접근성 속성 누락 시 테스트 실패
   });
-  
+
   it('로그인 버튼 클릭 시 로딩 상태를 표시한다', () => {
       // given
     const mockSubmit = jest.fn().mockImplementation(() => new Promise(resolve => setTimeout(resolve, 1000)));
     render(<LoginForm onSubmit={mockSubmit} />);
-    
+
     // when
     fireEvent.click(screen.getByRole('button', { name: '로그인' }));
-    
+
     // then - DOM 의존성으로 인해 불안정하고 느림
     expect(screen.getByText('로그인 중...')).toBeInTheDocument();
     expect(screen.getByRole('button')).toBeDisabled();
@@ -971,12 +971,12 @@ describe(validateEmail.name, () => {
 
       // when
     const result = validateEmail(validEmail);
-    
+
     // then - 빠르고 안정적인 순수 함수 테스트
     expect(result.isValid).toBe(true);
     expect(result.errorMessage).toBeNull();
   });
-  
+
   it('유효하지 않은 이메일에 대해 적절한 에러 메시지를 반환한다', () => {
       // given
     const invalidEmail = 'invalid-email';
@@ -998,12 +998,12 @@ describe(getLoginButtonState.name, () => {
 
       // when
     const result = getLoginButtonState(isLoading, isValid);
-    
+
     // then - DOM 없이 순수 로직만 테스트
     expect(result.disabled).toBe(true);
     expect(result.text).toBe('로그인 중...');
   });
-  
+
   it('유효하지 않은 입력일 때 버튼을 비활성화한다', () => {
       // given
     const isLoading = false;

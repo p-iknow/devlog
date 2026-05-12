@@ -61,41 +61,41 @@ describe(calculateAge.name, () => {
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
   });
-  
+
   afterEach(() => {
     jest.useRealTimers();
   });
-  
+
   test('나이를 계산한다', () => {
     // given
     const birthDate = '1990-01-01';
-    
+
     // when
     const result = calculateAge(birthDate);
-    
+
     // then - 고정된 시간으로 항상 동일한 결과
     expect(result).toBe(34);
   });
-  
+
   test('윤년 출생자의 나이를 계산한다', () => {
     // given
     const birthDate = '1992-02-29'; // 윤년 출생
-    
+
     // when
     const result = calculateAge(birthDate);
-    
+
     // then
     expect(result).toBe(32);
   });
-  
+
   test('생일이 지나지 않은 경우 나이를 계산한다', () => {
     // given - 생일 전 날짜로 시간 고정
     jest.setSystemTime(new Date('2024-06-15T00:00:00.000Z'));
     const birthDate = '1990-12-25'; // 생일이 아직 안 지남
-    
+
     // when
     const result = calculateAge(birthDate);
-    
+
     // then
     expect(result).toBe(33); // 생일 전이므로 한 살 적음
   });
@@ -113,7 +113,7 @@ const generateReport = (data: ReportData) => {
   const now = new Date();
   const reportDate = format(now, 'yyyy-MM-dd HH:mm:ss');
   const weekendCheck = isWeekend(now);
-  
+
   return {
     ...data,
     generatedAt: reportDate,
@@ -125,7 +125,7 @@ const generateReport = (data: ReportData) => {
 test('리포트를 생성한다', () => {
   const data = { title: 'Test Report' };
   const result = generateReport(data);
-  
+
   // 주말/평일에 따라 priority가 달라져서 불안정
   expect(result.priority).toBe('high'); // 주말에 실행하면 실패
 });
@@ -140,7 +140,7 @@ const generateReport = (data: ReportData) => {
   const now = new Date();
   const reportDate = format(now, 'yyyy-MM-dd HH:mm:ss');
   const weekendCheck = isWeekend(now);
-  
+
   return {
     ...data,
     generatedAt: reportDate,
@@ -153,30 +153,30 @@ describe(generateReport.name, () => {
   afterEach(() => {
     jest.useRealTimers();
   });
-  
+
   test('평일에 생성된 리포트는 높은 우선순위를 갖는다', () => {
     // given - 월요일로 시간 고정
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2024-01-01T09:00:00.000Z')); // 월요일
     const data = { title: 'Test Report' };
-    
+
     // when
     const result = generateReport(data);
-    
+
     // then
     expect(result.priority).toBe('high');
     expect(result.generatedAt).toBe('2024-01-01 09:00:00');
   });
-  
+
   test('주말에 생성된 리포트는 낮은 우선순위를 갖는다', () => {
     // given - 토요일로 시간 고정
     jest.useFakeTimers();
     jest.setSystemTime(new Date('2024-01-06T09:00:00.000Z')); // 토요일
     const data = { title: 'Weekend Report' };
-    
+
     // when
     const result = generateReport(data);
-    
+
     // then
     expect(result.priority).toBe('low');
     expect(result.generatedAt).toBe('2024-01-06 09:00:00');
@@ -219,10 +219,10 @@ const formatBusinessTime = (timestamp: number, timeZone: string = 'Asia/Seoul') 
 test('업무 시간을 한국 시간대로 포맷팅한다', () => {
   // given
   const timestamp = 1704067200000; // 2024-01-01 00:00:00 UTC
-  
+
   // when
   const result = formatBusinessTime(timestamp, 'Asia/Seoul');
-  
+
   // then
   expect(result).toBe('2024-01-01 09:00:00'); // 어디서든 동일한 결과
 });
@@ -230,10 +230,10 @@ test('업무 시간을 한국 시간대로 포맷팅한다', () => {
 test('다른 시간대로도 포맷팅할 수 있다', () => {
   // given
   const timestamp = 1704067200000; // 2024-01-01 00:00:00 UTC
-  
+
   // when
   const result = formatBusinessTime(timestamp, 'America/New_York');
-  
+
   // then
   expect(result).toBe('2023-12-31 19:00:00'); // EST 기준
 });
@@ -258,46 +258,46 @@ describe(addWorkingDays.name, () => {
     // given
     const startDate = '2024-01-02'; // 화요일
     const businessDays = 3;
-    
+
     // when
     const result = addWorkingDays(startDate, businessDays);
-    
+
     // then
     expect(result).toBe('2024-01-05'); // 금요일
   });
-  
+
   test('금요일에 영업일을 더하면 주말을 건너뛴다', () => {
     // given
     const startDate = '2024-01-05'; // 금요일
     const businessDays = 1;
-    
+
     // when
     const result = addWorkingDays(startDate, businessDays);
-    
+
     // then
     expect(result).toBe('2024-01-08'); // 다음 주 월요일
   });
-  
+
   test('월말에서 영업일을 더한다', () => {
     // given
     const startDate = '2024-01-31'; // 1월 마지막 날 (수요일)
     const businessDays = 2;
-    
+
     // when
     const result = addWorkingDays(startDate, businessDays);
-    
+
     // then
     expect(result).toBe('2024-02-02'); // 2월 2일 (금요일)
   });
-  
+
   test('연휴가 포함된 기간의 영업일을 계산한다', () => {
     // given
     const startDate = '2024-01-04'; // 목요일
     const businessDays = 5; // 5 영업일
-    
+
     // when
     const result = addWorkingDays(startDate, businessDays);
-    
+
     // then
     expect(result).toBe('2024-01-11'); // 다음 주 목요일 (주말 2일 건너뜀)
   });
@@ -313,11 +313,11 @@ describe('윤년 검사', () => {
   test('4의 배수인 해는 윤년이다', () => {
     expect(isLeapYear(new Date(2024, 0, 1))).toBe(true);
   });
-  
+
   test('100의 배수이지만 400의 배수가 아닌 해는 평년이다', () => {
     expect(isLeapYear(new Date(1900, 0, 1))).toBe(false);
   });
-  
+
   test('400의 배수인 해는 윤년이다', () => {
     expect(isLeapYear(new Date(2000, 0, 1))).toBe(true);
   });
@@ -328,17 +328,17 @@ describe('월별 일수 계산', () => {
     const februaryInLeapYear = new Date(2024, 1, 1); // 2024년 2월
     expect(getDaysInMonth(februaryInLeapYear)).toBe(29);
   });
-  
+
   test('평년 2월은 28일이다', () => {
     const februaryInNormalYear = new Date(2023, 1, 1); // 2023년 2월
     expect(getDaysInMonth(februaryInNormalYear)).toBe(28);
   });
-  
+
   test('31일까지 있는 달을 확인한다', () => {
     const january = new Date(2024, 0, 1); // 1월
     expect(getDaysInMonth(january)).toBe(31);
   });
-  
+
   test('30일까지 있는 달을 확인한다', () => {
     const april = new Date(2024, 3, 1); // 4월
     expect(getDaysInMonth(april)).toBe(30);
@@ -357,7 +357,7 @@ import { differenceInDays, differenceInYears, differenceInMonths } from 'date-fn
 const calculatePeriod = (startDateString: string, endDateString: string) => {
   const startDate = new Date(startDateString);
   const endDate = new Date(endDateString);
-  
+
   return {
     days: differenceInDays(endDate, startDate),
     months: differenceInMonths(endDate, startDate),
@@ -370,52 +370,52 @@ describe(calculatePeriod.name, () => {
     // given
     const startDate = '2024-01-01';
     const endDate = '2024-01-01';
-    
+
     // when
     const result = calculatePeriod(startDate, endDate);
-    
+
     // then
     expect(result.days).toBe(0);
     expect(result.months).toBe(0);
     expect(result.years).toBe(0);
   });
-  
+
   test('연도를 넘나드는 기간을 계산한다', () => {
     // given
     const startDate = '2023-12-31';
     const endDate = '2024-01-02';
-    
+
     // when
     const result = calculatePeriod(startDate, endDate);
-    
+
     // then
     expect(result.days).toBe(2);
     expect(result.months).toBe(0);
     expect(result.years).toBe(0); // 1년 미만
   });
-  
+
   test('여러 해에 걸친 기간을 계산한다', () => {
     // given
     const startDate = '2022-01-01';
     const endDate = '2024-01-01';
-    
+
     // when
     const result = calculatePeriod(startDate, endDate);
-    
+
     // then
     expect(result.years).toBe(2);
     expect(result.months).toBe(24);
     expect(result.days).toBe(731); // 2년 + 윤년 1일
   });
-  
+
   test('월 단위 기간을 정확히 계산한다', () => {
     // given
     const startDate = '2024-01-15';
     const endDate = '2024-06-15';
-    
+
     // when
     const result = calculatePeriod(startDate, endDate);
-    
+
     // then
     expect(result.months).toBe(5);
     expect(result.days).toBe(152); // 실제 일수
@@ -432,24 +432,24 @@ describe('delayedFunction', () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
-  
+
   afterEach(() => {
     jest.useRealTimers();
   });
-  
+
   test('3초 후에 콜백을 실행한다', () => {
     // given
     const mockCallback = jest.fn();
-    
+
     // when
     delayedFunction(mockCallback, 3000);
-    
+
     // then - 아직 실행되지 않음
     expect(mockCallback).not.toHaveBeenCalled();
-    
+
     // 3초 경과
     jest.advanceTimersByTime(3000);
-    
+
     // then - 콜백이 실행됨
     expect(mockCallback).toHaveBeenCalledTimes(1);
   });
@@ -468,29 +468,29 @@ describe(getCurrentTimestamp.name, () => {
   beforeEach(() => {
     jest.useFakeTimers();
   });
-  
+
   afterEach(() => {
     jest.useRealTimers();
   });
-  
+
   test('현재 시간의 타임스탬프를 반환한다', () => {
     // given - 시간을 고정
     jest.setSystemTime(new Date('2024-01-01T00:00:00.000Z'));
-    
+
     // when
     const result = getCurrentTimestamp();
-    
+
     // then
     expect(result).toBe(1704067200000);
   });
-  
+
   test('다른 시간으로 설정하여 테스트한다', () => {
     // given - 다른 시간으로 고정
     jest.setSystemTime(new Date('2024-06-15T12:30:00.000Z'));
-    
+
     // when
     const result = getCurrentTimestamp();
-    
+
     // then
     expect(result).toBe(1718453400000);
   });
@@ -516,19 +516,19 @@ describe(isValidDateString.name, () => {
     expect(isValidDateString('2024-12-31')).toBe(true);
     expect(isValidDateString('2024-01-01T00:00:00.000Z')).toBe(true); // ISO 형식
   });
-  
+
   test('유효하지 않은 날짜 문자열을 검증한다', () => {
     expect(isValidDateString('2024-02-30')).toBe(false); // 2월 30일은 존재하지 않음
     expect(isValidDateString('2024-13-01')).toBe(false); // 13월은 존재하지 않음
     expect(isValidDateString('invalid-date')).toBe(false);
     expect(isValidDateString('')).toBe(false); // 빈 문자열
   });
-  
+
   test('윤년 날짜를 올바르게 검증한다', () => {
     expect(isValidDateString('2024-02-29')).toBe(true); // 윤년
     expect(isValidDateString('2023-02-29')).toBe(false); // 평년
   });
-  
+
   test('다양한 날짜 형식을 검증한다', () => {
     expect(isValidDateString('2024-01-01T15:30:00')).toBe(true);
     expect(isValidDateString('2024-01-01T15:30:00+09:00')).toBe(true);
@@ -548,14 +548,14 @@ const formatDuration = (seconds: number): string => {
   const start = new Date(0);
   const end = addSeconds(start, seconds);
   const duration = intervalToDuration({ start, end });
-  
+
   const parts: string[] = [];
-  
+
   if (duration.days && duration.days > 0) parts.push(`${duration.days}일`);
   if (duration.hours && duration.hours > 0) parts.push(`${duration.hours}시간`);
   if (duration.minutes && duration.minutes > 0) parts.push(`${duration.minutes}분`);
   if (duration.seconds && duration.seconds > 0) parts.push(`${duration.seconds}초`);
-  
+
   return parts.length > 0 ? parts.join(' ') : '0초';
 };
 
@@ -570,17 +570,17 @@ describe(formatDuration.name, () => {
     expect(formatDuration(90)).toBe('1분 30초');
     expect(formatDuration(3661)).toBe('1시간 1분 1초');
   });
-  
+
   test('0초는 "0초"로 표시한다', () => {
     expect(formatDuration(0)).toBe('0초');
   });
-  
+
   test('하루 이상의 시간을 포맷팅한다', () => {
     const oneDayInSeconds = 24 * 60 * 60;
     expect(formatDuration(oneDayInSeconds)).toBe('1일');
     expect(formatDuration(oneDayInSeconds + 3661)).toBe('1일 1시간 1분 1초');
   });
-  
+
   test('분 단위만 있는 경우를 포맷팅한다', () => {
     expect(formatDuration(120)).toBe('2분');
     expect(formatDuration(3600)).toBe('1시간');
@@ -591,21 +591,21 @@ describe(formatKoreanDate.name, () => {
   test('날짜를 한국어 형식으로 포맷팅한다', () => {
     // given
     const date = new Date('2024-01-01T00:00:00.000Z');
-    
+
     // when
     const result = formatKoreanDate(date);
-    
+
     // then
     expect(result).toBe('2024년 01월 01일');
   });
-  
+
   test('윤년 날짜를 포맷팅한다', () => {
     // given
     const date = new Date('2024-02-29T00:00:00.000Z');
-    
+
     // when
     const result = formatKoreanDate(date);
-    
+
     // then
     expect(result).toBe('2024년 02월 29일');
   });

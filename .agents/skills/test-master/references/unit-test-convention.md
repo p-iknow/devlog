@@ -36,10 +36,10 @@ describe(함수명.name, () => {
   test('구체적인 상황에서 예상되는 결과를 설명한다', () => {
     // given - 테스트 준비
     const input = 'test input';
-    
+
     // when - 실행
     const result = 함수명(input);
-    
+
     // then - 검증
     expect(result).toBe(expectedValue);
   });
@@ -67,23 +67,23 @@ describe('calculateTax', () => {
     // given - 테스트 데이터 준비
     const income = 50000;
     const taxRate = 0.1;
-    
+
     // when - 함수 실행
     const result = calculateTax(income, taxRate);
-    
+
     // then - 결과 검증
     expect(result.taxAmount).toBe(5000);
     expect(result.netIncome).toBe(45000);
   });
-  
+
   test('소득이 0일 때 세금을 0으로 계산한다', () => {
     // given
     const income = 0;
     const taxRate = 0.1;
-    
+
     // when
     const result = calculateTax(income, taxRate);
-    
+
     // then
     expect(result.taxAmount).toBe(0);
     expect(result.netIncome).toBe(0);
@@ -114,10 +114,10 @@ describe('calculateDiscount', () => {
       orderAmount: 10000,
       customerType: 'VIP'
     };
-    
+
     // when
     const actual = calculateDiscount(input);
-    
+
     // then
     expect(actual).toEqual({
       discountRate: 0.2,
@@ -139,19 +139,19 @@ describe('generateEmailTemplate', () => {
   test('환영 이메일 템플릿을 생성한다', () => {
     // given
     const user = { name: '홍길동', email: 'hong@example.com' };
-    
+
     // when
     const result = generateEmailTemplate('welcome', user);
-    
+
     // then - 문자열도 inline snapshot으로 처리
     expect(result).toMatchInlineSnapshot(`
       "안녕하세요, 홍길동님!
-      
+
       회원가입을 환영합니다.
       귀하의 이메일 주소: hong@example.com
-      
+
       서비스 이용에 궁금한 점이 있으시면 언제든 문의해 주세요.
-      
+
       감사합니다."
     `);
   });
@@ -166,10 +166,10 @@ describe('formatUserProfile', () => {
       email: 'hong@example.com',
       preferences: { theme: 'dark', language: 'ko' }
     };
-    
+
     // when
     const result = formatUserProfile(rawUser);
-    
+
     // then - 복잡한 객체도 inline snapshot으로 처리
     expect(result).toMatchInlineSnapshot(`
       {
@@ -183,11 +183,11 @@ describe('formatUserProfile', () => {
       }
     `);
   });
-  
+
   test('사용자 활동 목록을 생성한다', () => {
     // given
     const activities = generateUserActivities('user123');
-    
+
     // when & then - 배열도 inline snapshot으로 처리
     expect(activities).toMatchInlineSnapshot(`
       [
@@ -299,15 +299,15 @@ describe('calculateMembershipBenefit', () => {
       discountRate: 0.2       // 테스트 포인트: 20% 할인율
     });
     const orderAmount = 10000;
-    
+
     // when
     const result = calculateMembershipBenefit(vipUser, orderAmount);
-    
+
     // then
     expect(result.discount).toBe(2000); // 20% 할인 적용
     expect(result.finalAmount).toBe(8000);
   });
-  
+
   test('일반 회원은 할인을 받지 않는다', () => {
     // given - 일반 회원 등급을 명시적으로 설정
     const normalUser = userFactory.build({
@@ -315,15 +315,15 @@ describe('calculateMembershipBenefit', () => {
       discountRate: 0            // 테스트 포인트: 할인 없음
     });
     const orderAmount = 10000;
-    
+
     // when
     const result = calculateMembershipBenefit(normalUser, orderAmount);
-    
+
     // then
     expect(result.discount).toBe(0);
     expect(result.finalAmount).toBe(10000);
   });
-  
+
   test('비활성 사용자는 혜택을 받을 수 없다', () => {
     // given - 비활성 상태를 명시적으로 설정
     const inactiveUser = userFactory.build({
@@ -331,7 +331,7 @@ describe('calculateMembershipBenefit', () => {
       membershipLevel: 'VIP'     // VIP지만 비활성 상태
     });
     const orderAmount = 10000;
-    
+
     // when & then
     expect(() => calculateMembershipBenefit(inactiveUser, orderAmount))
       .toThrow('비활성 사용자는 혜택을 받을 수 없습니다');
@@ -387,7 +387,7 @@ describe(determineLoanAlimiRateResultType.name, () => {
     // then
     expect(result).toBe('empty');
   });
-  
+
   test('최근 결과가 있는 경우 recent를 반환한다', () => {
     // given
     const predictedResponse = getAlimiPredictedCreditInterestRateDecreaseResponseFactory.build({
